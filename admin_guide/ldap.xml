@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="topic_z4g_32q_54">
+  <title>Using LDAP Authentication with TLS/SSL </title>
+  <shortdesc>You can control access to Greenplum Database with an LDAP server and,
+    optionally, secure the connection with encryption by adding parameters to
+      <filepath>pg_hba.conf</filepath> file entries.</shortdesc>
+  <body>
+    <p>Greenplum Database supports LDAP authentication with the TLS/SSL protocol to
+      encrypt communication with an LDAP server: <ul id="ul_eyn_1gq_54">
+        <li>LDAP authentication with STARTTLS and TLS protocol &#8211; STARTTLS starts with a clear
+          text connection (no encryption) and upgrades it to a secure connection (with
+          encryption).</li>
+        <li>LDAP authentication with a secure connection and TLS/SSL (LDAPS) &#8211; Greenplum Database uses the TLS or SSL protocol based on the protocol that is used
+          by the LDAP server. </li>
+      </ul></p>
+    <p>If no protocol is specified, Greenplum Database communicates with the LDAP
+      server with a clear text connection.</p>
+    <p>To use LDAP authentication, the Greenplum Database master host must be
+      configured as an LDAP client. See your LDAP documentation for information about configuring
+      LDAP clients.</p>
+    <section>
+      <title>Enabing LDAP Authentication with STARTTLS and TLS</title>
+      <p>To enable STARTTLS with the TLS protocol, specify the <codeph>ldaptls</codeph> parameter
+        with the value 1. The default port is 389. In this example, the authentication method
+        parameters include the <codeph>ldaptls</codeph> parameter.
+        <codeblock>ldap ldapserver=myldap.com ldaptls=1 ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com"</codeblock></p>
+      <p>Specify a non-default port, with the <codeph>ldapport</codeph> parameter. In this example,
+        the authentication method includes the <codeph>ldaptls</codeph> parameter and the and
+          <codeph>ldapport</codeph> parameter to specify the port
+        550.<codeblock>ldap ldapserver=myldap.com ldaptls=1 ldapport=500 ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com"</codeblock></p>
+    </section>
+    <section>
+      <title>Enabing LDAP Authentication with a Secure Connection and TLS/SSL </title>
+      <p>To enable a secure connection with TLS/SSL, add <codeph>ldaps://</codeph> as the prefix to
+        the LDAP server name specified in the <codeph>ldapserver</codeph> parameter. The default
+        port is 636.</p>
+      <p>This example <codeph>ldapserver</codeph> parameter specifies a secure connection and the
+        TLS/SSL protocol for the LDAP server <codeph>myldap.com</codeph>.</p>
+      <codeblock>ldapserver=ldaps://myldap.com</codeblock>
+      <p>To specify a non-default port, add a colon (:) and the port number after the LDAP server
+        name. This example <codeph>ldapserver</codeph> parameter includes the
+          <codeph>ldaps://</codeph> prefix and the non-default port 550.</p>
+      <codeblock>ldapserver=ldaps://myldap.com:550</codeblock>
+    </section>
+    <section>
+      <title>Notes</title>
+      <p>Greenplum Database logs an error if the following are specified in an
+          <filepath>pg_hba.conf</filepath> file entry: <ul id="ul_cws_m3q_54">
+          <li>If both the <codeph>ldaps://</codeph> prefix and the <codeph>ldaptls=1</codeph>
+            parameter are specified.</li>
+          <li>If both the <codeph>ldaps://</codeph> prefix and the <codeph>ldapport</codeph>
+            parameter are specified.</li>
+        </ul></p>
+      <p>Enabling encrypted communication for LDAP authentication only encrypts the communication
+        between Greenplum Database and the LDAP server. </p>
+      <p>See <xref href="client_auth.xml#topic5" format="dita"/> for information
+        about encrypting client connections. </p>
+    </section>
+    <section>
+      <title>Examples</title>
+      <p>These are example entries from an <filepath>pg_hba.conf</filepath> file.</p>
+      <p>This example specifies LDAP authentication with no encryption between Greenplum Database and the LDAP server. </p>
+      <codeblock>host all plainuser 0.0.0.0/0 ldap ldapserver=myldap.com ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com"</codeblock>
+      <p>This example specifies LDAP authentication with the STARTTLS and TLS protocol between
+          Greenplum Database and the LDAP server. </p>
+      <codeblock>host all tlsuser 0.0.0.0/0 ldap ldapserver=myldap.com ldaptls=1 ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com" </codeblock>
+      <p>This example specifies LDAP authentication with a secure connection and TLS/SSL protocol
+        between Greenplum Database and the LDAP server. </p>
+      <codeblock>host all ldapsuser 0.0.0.0/0 ldap ldapserver=ldaps://myldap.com ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com"</codeblock>
+    </section>
+  </body>
+</topic>

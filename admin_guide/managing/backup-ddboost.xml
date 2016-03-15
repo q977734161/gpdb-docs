@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
+
+<topic id="topic17" xml:lang="en">
+  <title id="kk171433">Backing Up Databases with Data Domain Boost</title>
+  <body>
+    <p>EMC Data Domain Boost (DD Boost) is EMC software that can be used with the
+        <codeph>gpcrondump</codeph> and <codeph>gpdbrestore</codeph> utilities to perform faster
+      backups to the EMC Data Domain storage appliance. Data Domain performs deduplication on the
+      data it stores, so after the initial backup operation, the appliance stores only pointers to
+      data that is unchanged. This reduces the size of backups on disk. When DD Boost is used with
+        <codeph>gpchrondump</codeph>, Greenplum Database participates in the deduplication process,
+      reducing the volume of data sent over the network. When you restore files from the Data Domain
+      system with Data Domain Boost, some files are copied to the master local disk and are restored
+      from there, and others are restored directly.</p>
+    <p>With Data Domain Boost managed file replication, you can replicate Greenplum Database backup
+      images that are stored on a Data Domain system for disaster recover purposes. The
+        <codeph>gpmfr</codeph> utility manages the Greenplum Database backup sets that are on the
+      primary and a remote Data Domain system. For information about <codeph>gpmfr</codeph>, see the
+        <i>Greenplum Database Utility Guide</i>.</p>
+    <p>Managed file replication requires network configuration when a replication network is being
+      used between two Data Domain systems:</p>
+    <ul>
+      <li id="kk178323">The Greenplum Database system requires the Data Domain login credentials to
+        be configured using <codeph>gpcrondump</codeph>. Credentials must be created for both the
+        local and remote Data Domain systems. </li>
+      <li id="kk178334">When the non-management network interface is used for replication on the
+        Data Domain systems, static routes must be configured on the systems to pass the replication
+        data traffic to the correct interfaces.</li>
+    </ul>
+    <p>Do not use Data Domain Boost with <codeph>pg_dump</codeph> or <codeph>pg_dumpall</codeph>. </p>
+    <p>Refer to Data Domain Boost documentation for detailed information.</p>
+    <note type="important">For incremental back up sets, a full backup and the associated
+      incremental backups must be on a single device. For example, a backup set must all be on a
+      file system. The backup set cannot have some backups on the local file system and others on a
+      Data Domain system. </note>
+    <note>You can use a Data Domain server as an NFS file system (without Data Domain Boost) to
+      perform incremental backups. </note>
+  </body>
+  <topic id="topic18" xml:lang="en">
+    <title>Data Domain Boost Requirements</title>
+    <body>
+      <p>Using Data Domain Boost requires the following.</p>
+      <ul>
+        <li>Data Domain Boost in included only with Pivotal Greenplum Database. </li>
+        <li id="kk169399">Purchase and install EMC Data Domain Boost and Replicator licenses on the
+          Data Domain systems.</li>
+        <li id="kk169390">Obtain sizing recommendations for Data Domain Boost. Make sure the Data
+          Domain system supports sufficient write and read streams for the number of segment hosts
+          in your Greenplum cluster.</li>
+      </ul>
+      <p>Contact your EMC Data Domain account representative for assistance.</p>
+    </body>
+  </topic>
+  <topic id="topic19" xml:lang="en">
+    <title id="kk161655">One-Time Data Domain Boost Credential Setup</title>
+    <body>
+      <p>There is a one-time process to set up credentials to use Data Domain Boost. Credential
+        setup connects one Greenplum Database instance to one Data Domain instance. If you are using
+        the <codeph>gpcrondump --replicate</codeph> option or Data Domain Boost managed file
+        replication capabilities for disaster recovery purposes, you must set up credentials for
+        both the local and remote Data Domain systems. </p>
+      <p>To set up credentials, run <codeph>gpcrondump</codeph> with the following options:</p>
+      <codeblock>--ddboost-host <varname>ddboost_hostname</varname> --ddboost-user <varname>ddboost_user</varname> 
+--ddboost-backupdir <varname>backup_directory</varname></codeblock>
+      <p>To remove credentials, run <codeph>gpcrondump</codeph> with the
+          <codeph>--ddboost-config-remove</codeph> option.</p>
+      <p>To manage credentials for the remote Data Domain system that is used for backup
+        replication, include the <codeph>--ddboost-remote</codeph> option with the other
+          <codeph>gpcrondump</codeph> options. For example, the following options set up credentials
+        for a Data Domain system that is used for backup replication. The system IP address is
+          <codeph>172.28.8.230</codeph>, the user ID is <codeph>ddboostmyuser</codeph>, and the
+        location for the backups on the system is <codeph>GPDB/gp_production</codeph>:</p>
+      <codeblock>--ddboost-host 172.28.8.230 --ddboost-user ddboostmyuser 
+--ddboost-backupdir gp_production --ddboost-remote</codeblock>
+      <p>For details, see <codeph>gpcrondump</codeph> in the <i>Greenplum Database Utility
+        Guide</i>.</p>
+      <p>If you use two or more network connections to connect to the Data Domain system, use
+          <codeph>gpcrondump</codeph> to set up the login credentials for the Data Domain hostnames
+        associated with the network interfaces. To perform this setup for two network connections,
+        run <codeph>gpcrondump</codeph> with the following options:</p>
+      <codeblock>--ddboost-host <varname>ddboost_hostname1</varname> 
+--ddboost-host <varname>ddboost_hostname2</varname> --ddboost-user <varname>ddboost_user</varname> 
+--ddboost-backupdir <varname>backup_directory</varname></codeblock>
+    </body>
+  </topic>
+  <topic id="topic20" xml:lang="en">
+    <title>Configuring Data Domain Boost for Greenplum Database</title>
+    <body>
+      <p>After you set up credentials for Data Domain Boost on the Greenplum Database, perform the
+        following tasks in Data Domain to allow Data Domain Boost to work with Greenplum
+        Database:</p>
+      <ul>
+        <li id="kk164115">
+          <xref href="#topic21" type="topic" format="dita"/>
+        </li>
+        <li id="kk164176">
+          <xref href="#topic20b" type="topic" format="dita"/>
+        </li>
+        <li id="kk171548">
+          <xref href="#topic23" type="topic" format="dita"/>
+        </li>
+      </ul>
+    </body>
+  </topic>
+  <topic id="topic21" xml:lang="en">
+    <title id="title21">Configuring Distributed Segment Processing in Data Domain</title>
+    <body>
+      <p>Configure the distributed segment processing option on the Data Domain system. The
+        configuration applies to all the DCA servers and the Data Domain Boost plug-in installed on
+        them. This option is enabled by default, but verify that it is enabled before using Data
+        Domain Boost backups: </p>
+      <codeblock># ddboost option show</codeblock>
+      <p>To enable or disable distributed segment processing:</p>
+      <codeblock># ddboost option set distributed-segment-processing {enabled | disabled}</codeblock>
+    </body>
+    <topic id="topic20b">
+      <title id="topic20b">Configuring Advanced Load Balancing and Link Failover in Data
+        Domain</title>
+      <body>
+        <p>If you have multiple network connections on a network subnet, you can create an interface
+          group to provide load balancing and higher network throughput on your Data Domain system.
+          When a Data Domain system on an interface group receives data from the media server
+          clients, the data transfer is load balanced and distributed as separate jobs on the
+          private network. You can achieve optimal throughput with multiple 1 GbE connections. </p>
+        <note type="note">To ensure that interface groups function properly, use interface groups
+          only when using multiple network connections on the same networking subnet.</note>
+        <p>To create an interface group on the Data Domain system, create interfaces with the
+            <codeph>net</codeph> command. If interfaces do not already exist, add the interfaces to
+          the group, and register the Data Domain system with the backup application. </p>
+        <ol id="ol_wxj_lxw_yq">
+          <li id="kk163338">Add the interfaces to the
+              group:<codeblock># ddboost ifgroup add interface 192.168.1.1
+# ddboost ifgroup add interface 192.168.1.2
+# ddboost ifgroup add interface 192.168.1.3
+# ddboost ifgroup add interface 192.168.1.4
+</codeblock><note
+              type="note">You can create only one interface group and this group cannot be
+              named.</note></li>
+          <li id="kk163346">Select one interface on the Data Domain system to register with the
+            backup application. Create a failover aggregated interface and register that interface
+            with the backup application.<note type="note">You do not have to register one of the
+                <codeph>ifgroup</codeph> interfaces with the backup application. You can use an
+              interface that is not part of the <codeph>ifgroup</codeph> to register with the backup
+              application.</note></li>
+          <li id="kk163367">Enable <codeph>ddboost</codeph> on the Data Domain
+            system:<codeblock># ddboost ifgroup enable</codeblock></li>
+          <li id="kk163369">Verify the Data Domain system configuration as
+              follows:<codeblock># ddboost ifgroup show config</codeblock><p>Results similar to the
+              following are
+              displayed.<codeblock>Interface
+-------------
+192.168.1.1
+192.168.1.2
+192.168.1.3
+192.168.1.4
+-------------
+</codeblock></p></li>
+        </ol>
+        <p>You can add or delete interfaces from the group at any time.</p>
+        <note type="note">Manage Advanced Load Balancing and Link Failover (an interface group)
+          using the <codeph>ddboost ifgroup</codeph> command or from the <menucascade>
+            <uicontrol>Enterprise Manager Data Management</uicontrol>
+            <uicontrol>DD Boost</uicontrol>
+          </menucascade> view.</note>
+      </body>
+    </topic>
+  </topic>
+  <topic id="topic23" xml:lang="en">
+    <title id="kk166437">Export the Data Domain Path to the DCA Network</title>
+    <body>
+      <p>The commands and options in this topic apply to DDOS 5.0.x and 5.1.x. See the Data Domain
+        documentation for details.</p>
+      <p> Use the following Data Domain commands to export the <codeph>/backup/ost</codeph>
+        directory to the DCA for Data Domain Boost backups.
+          <codeblock># nfs add /backup/ost 172.28.8.0/24, 172.28.12.0/24 (insecure)</codeblock><note
+          type="note">The IP addresses refer to the Greenplum system working with the Data Domain
+          Boost system.</note></p>
+    </body>
+    <topic id="topic24" xml:lang="en">
+      <title>
+        <ph>Create the Data Domain Login Credentials for the DCA</ph>
+      </title>
+      <body>
+        <p> Create a username and password for the DCA to access the DD Boost Storage Unit (SU) at
+          the time of backup and restore: </p>
+        <codeblock># user add <varname>user</varname> [password <varname>password</varname>] [priv {admin | security | user}]</codeblock>
+      </body>
+    </topic>
+  </topic>
+  <topic id="topic25" xml:lang="en">
+    <title>Backup Options for Data Domain Boost</title>
+    <body>
+      <p>Specify the <codeph>gpcrondump</codeph> options to match the setup. </p>
+      <p>Data Domain Boost backs up files to the Data Domain system. Status and report files remain
+        on the local disk. </p>
+      <p>To configure Data Domain Boost to remove old backup directories before starting a backup
+        operation, specify a <codeph>gpcrondump</codeph> backup expiration option:</p>
+      <ul>
+        <li id="kk169801">The <codeph>-c</codeph> option clears all backup directories.</li>
+        <li id="kk169821">The <codeph>-o</codeph> option clears the oldest backup directory.</li>
+      </ul>
+      <p>To remove the oldest dump directory, specify <codeph>gpcrondump --ddboost</codeph> with the
+          <codeph>-o</codeph> option. For example, if your retention period is 30 days, use
+          <codeph>gpcrondump --ddboost</codeph> with the <codeph>-o</codeph> option on day 31.</p>
+      <p>Use <codeph>gpcrondump --ddboost</codeph> with the <codeph>-c</codeph> option to clear out
+        all the old dump directories in <codeph>db_dumps</codeph>. The <codeph>-c</codeph> option
+        deletes all dump directories that are at least one day old.</p>
+    </body>
+  </topic>
+  <concept id="concept_urz_chb_br">
+    <title>Using CRON to Schedule a Data Domain Boost Backup</title>
+    <conbody>
+      <section>
+        <ol id="ol_vpv_bdb_br">
+          <li id="kk160664">Ensure the <xref href="#topic19" type="topic" format="dita"/> is
+            complete.</li>
+          <li id="kk159968">Add the option <codeph>--ddboost</codeph> to the
+              <codeph>gpcrondump</codeph> option:<p>
+              <codeblock>gpcrondump -x mydatabase -z -v --ddboost </codeblock>
+            </p></li>
+        </ol>
+        <note type="important">Do not use compression with Data Domain Boost backups. The
+            <codeph>-z</codeph> option turns backup compression off.<p>Some of the options available
+            in <codeph>gpcrondump</codeph> have different implications when using Data Domain Boost.
+            For details, see <codeph>gpcrondump</codeph> in the <i>Greenplum Database Utility
+              Reference</i>.</p></note>
+      </section>
+    </conbody>
+  </concept>
+  <topic id="id_gj5_zwq_rt">
+    <title>Restoring From a Data Domain System with Data Domain Boost</title>
+    <body>
+      <ol id="ol_ljx_mlv_ft">
+        <li id="kk167029">Ensure the <xref href="backup-ddboost.xml#topic19"/> is complete.</li>
+        <li id="kk167030">Add the option <codeph>--ddboost</codeph> to the
+            <codeph>gpdbrestore</codeph>
+          command:<codeblock>$ gpdbrestore -t <i>backup_timestamp</i> -v -ddboost</codeblock></li>
+      </ol>
+      <note type="note">Some of the <codeph>gpdbrestore</codeph> options available have different
+        implications when using Data Domain. For details, see <codeph>gpdbrestore</codeph> in the
+          <i>Greenplum Database Utility Reference</i>.</note>
+    </body>
+  </topic>
+</topic>
