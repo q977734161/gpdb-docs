@@ -30,7 +30,7 @@ $ gpfdist -d /var/load_files2 -p 8082 -l /home/<codeph>gpadmin</codeph>/log2 &am
       <p>To stop <cmdname>gpfdist</cmdname> when it is running in the background:</p>
       <p>First find its process id:</p>
       <p>
-         <codeblock>$ ps –ef | grep gpfdist</codeblock>
+         <codeblock>$ ps -ef | grep gpfdist</codeblock>
       </p>
       <p>Then kill the process, for example (where 3456 is the process ID in this
                         example):</p>

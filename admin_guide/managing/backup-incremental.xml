@@ -64,10 +64,10 @@
         represents the time: hour, minute, and second.</p>
       <p>For this example, assume you have created both full and incremental backups of the database
           <i>mytest</i>. To create the full backup, you used the following command: </p>
-      <codeblock>gpcrondump –x mytest –u /backupdir </codeblock>
+      <codeblock>gpcrondump -x mytest -u /backupdir </codeblock>
       <p>Later, after some changes have been made to append optimized tables, you created an
         increment backup with the following command:</p>
-      <codeblock>gpcrondump –x mytest –u /backupdir --incremental</codeblock>
+      <codeblock>gpcrondump -x mytest -u /backupdir --incremental</codeblock>
       <p>When you specify the <codeph>-u</codeph> option, the backups are created in the
           <codeph>/backupdir</codeph> directory on each Greenplum Database host. The file names
         include the following timestamp keys. The full backups have the timestamp key

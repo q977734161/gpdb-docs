@@ -235,7 +235,7 @@
                 <codeph>gpcrondump</codeph> is being used to replicate a backup, it cannot be used
               to create a backup.</p><p>You can run a mixed backup that writes to both a local disk
               and Data Domain. If you want to use a backup directory on your local disk other than
-              the default, use the <codeph>–u</codeph> option. Mixed backups are not supported with
+              the default, use the <codeph>-u</codeph> option. Mixed backups are not supported with
               incremental backups. For more information about mixed backups and Data Domain Boost,
               see "Backing Up and Restoring Databases" in the <cite>Greenplum Database Administrator
                 Guide</cite>.</p><note type="important">Never use the Greenplum Database default

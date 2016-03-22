@@ -17,7 +17,7 @@
       <p>Set the <codeph>gp_backup_directIO</codeph> system configuration parameter on to enable
         direct I/O for backups:<codeblock>$ gpconfig -c gp_backup_directIO -v on</codeblock></p>
       <p>To see if direct I/O is enabled, use this command:
-        <codeblock>$ gpconfig –s gp_backup_directIO</codeblock></p>
+        <codeblock>$ gpconfig -s gp_backup_directIO</codeblock></p>
     </section>
     <section>
       <title>Decrease network data chunks sent to dump when the database is busy</title>
@@ -26,7 +26,7 @@
         been tested and found to be optimal. Decreasing it increases the backup time and increasing
         it results in little change to backup time. </p>
       <p>To find the current direct I/O chunk size, enter this command:</p>
-      <codeblock>$ gpconfig –s gp_backup_directIO_read_chunk_mb</codeblock>
+      <codeblock>$ gpconfig -s gp_backup_directIO_read_chunk_mb</codeblock>
       <p>The following example changes the default chunk size to 10MB.</p>
       <codeblock>$ gpconfig -c gp_backup_directIO_read_chunk_mb -v 10</codeblock>
     </section>

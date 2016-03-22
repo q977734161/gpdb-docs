@@ -5,7 +5,7 @@
 Database. These functions target PostgreSQL.</p></body><topic id="topic2" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title class="- topic/title ">Installing Oracle Compatibility Functions</title><body class="- topic/body "><p>Before using any Oracle Compatibility Functions, run the installation script <codeph
           class="+ topic/ph pr-d/codeph ">$GPHOME/share/postgresql/contrib/orafunc.sql</codeph> once
         for each database. For example, to install the functions in database <codeph
-          class="+ topic/ph pr-d/codeph ">testdb</codeph>, use the following command:</p><codeblock>$ psql –d testdb –f $GPHOME/share/postgresql/contrib/orafunc.sql</codeblock><p>To uninstall Oracle Compatibility Functions, run the <codeph class="+ topic/ph pr-d/codeph ">uinstall_orafunc.sql</codeph>
+          class="+ topic/ph pr-d/codeph ">testdb</codeph>, use the following command:</p><codeblock>$ psql -d testdb -f $GPHOME/share/postgresql/contrib/orafunc.sql</codeblock><p>To uninstall Oracle Compatibility Functions, run the <codeph class="+ topic/ph pr-d/codeph ">uinstall_orafunc.sql</codeph>
 script:</p><p>
         <codeblock>$GPHOME/share/postgresql/contrib/uninstall_orafunc.sql</codeblock>
       </p><p>The following functions are available by default and do not require
@@ -46,7 +46,7 @@ CASE
  f
 (1 row)
 SELECT decode(1,'M',true,false);
-ERROR: Invalid input syntax for integer:<i>"M" 
+ERROR: Invalid input syntax for integer:<i>"M"
 </i>LINE 1: SELECT decode(1,'M',true,false);</codeblock></li><li id="me144144" class="- topic/li ">Numbers in <codeph class="+ topic/ph pr-d/codeph "
             >bigint</codeph> format are displayed in scientific notation in Oracle, but not in
           Greenplum Database:<ul id="ul_cld_kz1_1p">
@@ -54,14 +54,14 @@ ERROR: Invalid input syntax for integer:<i>"M"
             <li>9223372036854775 remains 9223372036854775 in Greenplum Database. </li>
           </ul></li><li id="me144146" class="- topic/li ">The default date and timestamp format in Oracle is different
           than the default format in Greenplum Database. If the following code is
-            executed:<codeblock>CREATE TABLE TEST(date1 date, time1 timestamp, time2 
+            executed:<codeblock>CREATE TABLE TEST(date1 date, time1 timestamp, time2
                   timestamp with timezone);
-INSERT INTO TEST VALUES ('2001-11-11','2001-12-13 
+INSERT INTO TEST VALUES ('2001-11-11','2001-12-13
                  01:51:15','2001-12-13 01:51:15 -08:00');
 SELECT DECODE(date1, '2001-11-11', '2001-01-01') FROM TEST;</codeblock><p>Greenplum
             Database returns the row, but Oracle does not return any rows.</p><note>The correct
             syntax in Oracle to return the row
-            is:<codeblock>SELECT DECODE(to_char(date1, 'YYYY-MM-DD'), '2001-11-11', 
+            is:<codeblock>SELECT DECODE(to_char(date1, 'YYYY-MM-DD'), '2001-11-11',
               '2001-01-01') FROM TEST</codeblock></note></li></ul></body></topic><topic id="topic4" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title class="- topic/title ">Oracle Compatibility Functions Reference</title><body class="- topic/body "><p>The following are the Oracle Compatibility Functions.</p><simpletable id="me155958" class="- topic/simpletable ">
         <strow class="- topic/strow ">
           <stentry class="- topic/stentry ">
@@ -164,9 +164,9 @@ statements.</p><note type="note" class="- topic/note "><codeph class="+ topic/ph
       <note>Greenplum's implementation of this function transforms <codeph
           class="+ topic/ph pr-d/codeph ">decode</codeph> into <codeph
           class="+ topic/ph pr-d/codeph ">case</codeph>. <p>This results in the following type of
-          output:</p><codeblock>gptest=# select decode(a, 1, 'A', 2, 'B', 'C') from 
+          output:</p><codeblock>gptest=# select decode(a, 1, 'A', 2, 'B', 'C') from
 decodetest;
- case 
+ case
 ------
  C
  A
@@ -284,7 +284,7 @@ by the input character set.</p><p>The value returned is of <codeph class="+ topi
               the search begins at the first character of <varname>string</varname> for the first
               occurrence of <varname>substring</varname>. The return value is relative to the
               beginning of <varname>string</varname>, regardless of the value of
-                <varname>position</varname>, and is expressed in characters.</pd></plentry></parml><title class="- topic/title ">Examples</title><codeblock>SELECT instr('Greenplum', 'e') 
+                <varname>position</varname>, and is expressed in characters.</pd></plentry></parml><title class="- topic/title ">Examples</title><codeblock>SELECT instr('Greenplum', 'e')
 FROM ClientDB;</codeblock>
         <p>Returns 3; the first occurrence of 'e'</p><codeblock>SELECT instr('Greenplum', 'e',1,2)
 FROM ClientDB;</codeblock>
@@ -308,7 +308,7 @@ separating each by the separator specified in a second argument.</p><note type="
         Oracle-compliant <codeph class="+ topic/ph pr-d/codeph ">listagg</codeph> functions, one
         that takes one argument, the text to be aggregated (see previous page), and one that takes
         two arguments, the text to be aggregated and a delimiter (see below).</note><section id="me151350" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">listagg(<varname>text</varname>, <varname>separator</varname>) </codeblock><title class="- topic/title ">Description</title><p>This Oracle-compatible function aggregates text values into a string, separating each by the
-          separator specified in a second argument (<varname>separator</varname>).</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>text</varname></pt><pd>The text value to be aggregated into a string.</pd></plentry><plentry><pt><varname>separator</varname></pt><pd>The separator by which to delimit the text values.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT oracompat.listagg(t, '.') FROM (VALUES('abc'), 
+          separator specified in a second argument (<varname>separator</varname>).</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>text</varname></pt><pd>The text value to be aggregated into a string.</pd></plentry><plentry><pt><varname>separator</varname></pt><pd>The separator by which to delimit the text values.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT oracompat.listagg(t, '.') FROM (VALUES('abc'),
 ('def')) as l(t)</codeblock>
         <p>Returns: <codeph class="+ topic/ph pr-d/codeph ">abc.def</codeph></p><title class="- topic/title ">Compatibility</title><p>This command is compatible with Oracle syntax and is provided for
 convenience. </p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic17" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me151064" class="- topic/title ">lnnvl</title><body class="- topic/body "><p>Oracle-compliant function that returns <codeph class="+ topic/ph pr-d/codeph ">true</codeph> if the
@@ -326,8 +326,8 @@ given dates.</p><section id="me147112" class="- topic/section "><title class="- 
           Otherwise the function calculates the fractional portion of the month based on a 31-day
           month.</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>date_expression1</varname>, <varname>date_expression2</varname></pt><pd>The date values used to calculate the number of months. This can
 be any expression that can be implicitly converted to <codeph class="+ topic/ph pr-d/codeph ">DATE</codeph>.</pd></plentry></parml><title class="- topic/title ">Examples</title><codeblock>SELECT months_between
-    (to_date ('2003/07/01', 'yyyy/mm/dd'), 
-    to_date ('2003/03/14', 'yyyy/mm/dd'));</codeblock><p>Returns the number of months between July 1, 2003 and March 14, 2014.</p><codeblock>SELECT * FROM employees 
+    (to_date ('2003/07/01', 'yyyy/mm/dd'),
+    to_date ('2003/03/14', 'yyyy/mm/dd'));</codeblock><p>Returns the number of months between July 1, 2003 and March 14, 2014.</p><codeblock>SELECT * FROM employees
     where months_between(hire_date, leave_date) &lt;12;</codeblock><p>Returns the number of months between <codeph class="+ topic/ph pr-d/codeph ">hire_date</codeph> and <codeph class="+ topic/ph pr-d/codeph ">leave_date</codeph>.</p><title class="- topic/title ">Compatibility</title><p>This command is compatible with Oracle syntax and is provided for
 convenience. </p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic19" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me147255" class="- topic/title ">nanvl</title><body class="- topic/body "><p>Oracle-compliant function to substitute a value for a floating point
 number when a non-number value is encountered. </p><section id="me147257" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">nanvl(<varname>float1</varname>, <varname>float2</varname>)</codeblock><title class="- topic/title ">Description</title><p>This Oracle-compatible function evaluates a floating point number (<varname>float1</varname>)
@@ -367,7 +367,7 @@ returns the date of the following day.</p><note type="note" class="- topic/note 
           the datatype of <varname>date_expression</varname>.</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>date_expression</varname></pt><pd>The starting date. This can be any expression that can be implicitly
 converted to <codeph class="+ topic/ph pr-d/codeph ">DATE</codeph>.</pd></plentry><plentry><pt><varname>days_to_add</varname></pt><pd>The number of days to be add to the <varname>date_expression</varname>. This
               is an integer or any value that can be implicitly converted to an integer. This
-              parameter can be positive or negative.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT name, next_day(hiredate,90) "Benefits Eligibility 
+              parameter can be positive or negative.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT name, next_day(hiredate,90) "Benefits Eligibility
 Date"
 FROM EMPLOYEES;</codeblock><p>Returns the <codeph class="+ topic/ph pr-d/codeph ">name</codeph> and the <codeph
             class="+ topic/ph pr-d/codeph ">date</codeph> that is 90 days after <codeph
@@ -397,11 +397,11 @@ evaluates to <codeph class="+ topic/ph pr-d/codeph ">null</codeph>.</p><note typ
             <varname>null_replacement_value</varname>; otherwise, it returns
             <varname>expression_to_evaluate</varname>.</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>expression_to_evaluate</varname></pt><pd>The expression to evaluate for a null value.</pd></plentry><plentry><pt><varname>null_replacement_value</varname></pt><pd>The value to return if <varname>expression_to_evaluate</varname> is <codeph
                 class="+ topic/ph pr-d/codeph ">null</codeph>.</pd></plentry></parml><p>Both <varname>expression_to_evaluate</varname> and <varname>null_replacement_value</varname> must
-          be the same data type.</p><title class="- topic/title ">Examples</title><codeblock>SELECT nvl(contact_name,'None') 
+          be the same data type.</p><title class="- topic/title ">Examples</title><codeblock>SELECT nvl(contact_name,'None')
 FROM clients;
-SELECT nvl(amount_past_due,0) 
+SELECT nvl(amount_past_due,0)
 FROM txns;
-SELECT nvl(nickname, firstname) 
+SELECT nvl(nickname, firstname)
 FROM contacts;</codeblock><title class="- topic/title ">Compatibility</title><p>This command is compatible with Oracle syntax and is provided for
 convenience. </p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic24" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me149339" class="- topic/title ">nvl2 </title><body class="- topic/body "><p>Oracle-compliant function that returns alternate values for both null
 and non-null values.</p><section id="me149341" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">nvl2(<varname>expression_to_evaluate</varname>, <varname>non_null_replacement_value</varname>,
@@ -410,7 +410,7 @@ and non-null values.</p><section id="me149341" class="- topic/section "><title c
             <varname>non_null_replacement_value</varname>; otherwise, it returns
             <varname>null_replacement_value</varname>.</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>expression_to_evaluate</varname></pt><pd>The expression to evaluate for a null value.</pd></plentry><plentry><pt><varname>non_null_replacement_value</varname></pt><pd>The value to return if <varname>expression_to_evaluate</varname> is not
                 <codeph class="+ topic/ph pr-d/codeph ">null</codeph>.</pd></plentry><plentry><pt><varname>null_replacement_value</varname></pt><pd>The value to return if <varname>expression_to_evaluate</varname> is <codeph
-                class="+ topic/ph pr-d/codeph ">null</codeph>.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>select nvl2(unit_number,'Multi Unit','Single Unit') 
+                class="+ topic/ph pr-d/codeph ">null</codeph>.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>select nvl2(unit_number,'Multi Unit','Single Unit')
 from clients;</codeblock><title class="- topic/title ">Compatibility</title><p>This command is compatible with Oracle syntax and is provided for
 convenience. </p><title class="- topic/title ">See Also</title><p><codeph><xref href="#topic9" type="topic" format="dita" class="- topic/xref "/></codeph></p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic25" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me147446" class="- topic/title ">oracle.substr</title><body class="- topic/body "><p>This Oracle-compliant function extracts a portion of a string.</p><section id="me147448" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">oracle.substr(<varname>string</varname>, [<varname>start</varname> [,<varname>char_count</varname>]])</codeblock><title class="- topic/title ">Description</title><p>This Oracle-compatible function extract a portion of a string.</p><p>If <varname>start</varname> is 0, it is evaluated as 1.</p><p>If <varname>start</varname> is negative, the starting position is negative, the starting position
           is <varname>start</varname> characters moving backwards from the end of string.</p><p>If <varname>char_count</varname> is not passed to the function, all characters from start to the
@@ -419,7 +419,7 @@ convenience. </p><title class="- topic/title ">See Also</title><p><codeph><xref 
 character.</p><title class="- topic/title ">Compatibility</title><p>PostgreSQL <codeph><xref href="http://www.postgresql.org/docs/8.2/static/functions-string.html"
               scope="external" format="html" class="- topic/xref ">substr</xref></codeph> (not
           compatible with Oracle)</p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic26" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me147531" class="- topic/title ">reverse </title><body class="- topic/body "><p>Oracle-compliant function to return the input string in reverse order.</p><section id="me147533" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">reverse (<varname>string</varname>)</codeblock><title class="- topic/title ">Description</title><p>This Oracle-compatible function returns the input string (<varname>string</varname>) in reverse
-          order.</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>string</varname></pt><pd>The input string.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT reverse('gnirts') 
+          order.</p><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>string</varname></pt><pd>The input string.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT reverse('gnirts')
 FROM ClientDB;</codeblock><p>Returns <codeph class="+ topic/ph pr-d/codeph ">'string'</codeph>'</p><title class="- topic/title ">Compatibility</title><p>This command is compatible with Oracle syntax and is provided for
 convenience. </p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic27" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me147572" class="- topic/title ">round</title><body class="- topic/body "><p>Oracle-compliant function to round a date to a specific unit of measure
 (day, week, etc.).</p><note type="note" class="- topic/note ">This function is an overloaded function. It shares the same
@@ -450,7 +450,7 @@ convenience. </p><title class="- topic/title ">See Also</title><p>PostgreSQL <co
               scope="external" format="html" class="- topic/xref ">round</xref></codeph> (not
           compatible with Oracle)</p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic28" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me147490" class="- topic/title ">sinh</title><body class="- topic/body "><p>Oracle-compliant function to return the hyperbolic sine of a given number.</p><section id="me147492" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">sinh(<varname>float8</varname>)</codeblock><title class="- topic/title ">Description</title><p>This Oracle-compatible function returns the hyperbolic sine of the floating 8 input number
             (<varname>float8</varname>).</p><note type="note" class="- topic/note ">This function is available by default and can be accessed
-          without running the Oracle Compatibility installer.</note><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>float8</varname></pt><pd>The input number.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT sinh(3) 
+          without running the Oracle Compatibility installer.</note><title class="- topic/title ">Parameters</title><parml><plentry><pt><varname>float8</varname></pt><pd>The input number.</pd></plentry></parml><title class="- topic/title ">Example</title><codeblock>SELECT sinh(3)
 FROM ClientDB;</codeblock><p>Returns <codeph class="+ topic/ph pr-d/codeph ">'10.0178749274099'</codeph>'(hyperbolic sine of 3)</p><title class="- topic/title ">Compatibility</title><p>This command is compatible with Oracle syntax and is provided for
 convenience. </p></section></body></topic><topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="topic29" xml:lang="en" ditaarch:DITAArchVersion="1.1" domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d)                          (topic ut-d) (topic indexing-d)" class="- topic/topic "><title id="me147698" class="- topic/title ">tanh</title><body class="- topic/body "><p>Oracle-compliant function to return the hyperbolic tangent of a given
 number.</p><section id="me147700" class="- topic/section "><title class="- topic/title ">Synopsis</title><codeblock xml:space="preserve" class="+ topic/pre pr-d/codeblock ">tanh(<varname>float8</varname>)</codeblock><title class="- topic/title ">Description</title><p>This Oracle-compatible function returns the hyperbolic tangent of the floating 8 input number
