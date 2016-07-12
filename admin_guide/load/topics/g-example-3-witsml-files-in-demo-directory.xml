@@ -43,7 +43,7 @@
                         delimited with a pipe (|).</p>
       <p>
          <codeph>W-12|6507/7-A-42|xr31|Deep Drill #5|Deep Drilling Co.|John
-                            Doe|John.Doe@his-ISP.com|</codeph>
+                            Doe|John.Doe@example.com|</codeph>
       </p>
       <p>With the columns:</p>
       <ul>
@@ -60,7 +60,7 @@
          <li>
             <codeph>rig_contact text</codeph>, -- e.g. John Doe </li>
          <li>
-            <codeph>rig_email text</codeph>, -- e.g. John.Doe@his-ISP.com </li>
+            <codeph>rig_email text</codeph>, -- e.g. John.Doe@example.com </li>
          <li>
             <codeph>doc xml</codeph>
          </li>

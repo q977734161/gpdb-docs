@@ -4385,11 +4385,11 @@
       <body>
         <p>The email address used to send email alerts, in the format of:</p>
         <p>
-          <codeph>'username@domain.com'</codeph>
+          <codeph>'username@example.com'</codeph>
         </p>
         <p>or</p>
         <p>
-          <codeph>'Name &lt;username@domain.com&gt;'</codeph>
+          <codeph>'Name &lt;username@example.com&gt;'</codeph>
         </p>
         <table id="gp_email_from_table">
           <tgroup cols="3">
@@ -4503,10 +4503,10 @@
       <title>gp_email_to</title>
       <body>
         <p>A semi-colon (<codeph>;</codeph>) separated list of email addresses to receive email
-          alert messages to in the format of: <codeph>'username@domain.com'</codeph></p>
+          alert messages to in the format of: <codeph>'username@example.com'</codeph></p>
         <p>or</p>
         <p>
-          <codeph>'Name &lt;username@domain.com&gt;'</codeph>
+          <codeph>'Name &lt;username@example.com&gt;'</codeph>
         </p>
         <p>If this parameter is not set, then email alerts are disabled.</p>
         <table id="gp_email_to_table">

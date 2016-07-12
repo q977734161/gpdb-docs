@@ -224,7 +224,7 @@
             file is in the gpadmin user home directory. For
             example:<codeblock>$ kinit -k -t gpdb-kerberos.keytab
    -c /home/gpadmin/cache.txt
-   gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM</codeblock></li>
+   gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM</codeblock></li>
         </ol>
       </body>
     </topic>

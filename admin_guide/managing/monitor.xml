@@ -228,20 +228,20 @@ $ gpconfig -c gp_snmp_use_inform_or_trap -v trap --masteronly </codeblock></p></
             <li id="kj168963">In the <codeph>EMAIL ALERTS</codeph> section, uncomment the following
               parameters and enter the appropriate values for your email server and domain. For example:<p>
                 <codeblock>gp_email_smtp_server='smtp.company.com:25'
-gp_email_smtp_userid='gpadmin@company.com'
+gp_email_smtp_userid='gpadmin@example.com'
 gp_email_smtp_password='mypassword'
-gp_email_from='Greenplum Database &lt;gpadmin@company.com&gt;'
-gp_email_to='dba@company.com;John Smith &lt;jsmith@company.com&gt;'
+gp_email_from='Greenplum Database &lt;gpadmin@example.com&gt;'
+gp_email_to='dba@example.com;John Smith &lt;jsmith@example.com&gt;'
 </codeblock>
               </p><p>You may create specific email accounts or groups in your email system that send
                 and receive email alerts from the Greenplum Database system. For example:</p><p>
-                <codeblock>gp_email_from='GPDB Production Instance &lt;gpdb@company.com&gt;'
-gp_email_to='gpdb_dba_group@company.com'
+                <codeblock>gp_email_from='GPDB Production Instance &lt;gpdb@example.com&gt;'
+gp_email_to='gpdb_dba_group@example.com'
 </codeblock>
               </p><p>You can also specify multiple email addresses for both
                   <codeph>gp_email</codeph> parameters. Use a semi-colon ( ; ) to separate each
                 email address. For example:</p><p>
-                <codeblock>gp_email_to='gpdb_dba_group@company.com;admin@company.com'
+                <codeblock>gp_email_to='gpdb_dba_group@example.com;admin@example.com'
 </codeblock>
               </p></li>
             <li id="kj168975">Save and close the <codeph>postgresql.conf</codeph> file.</li>
@@ -277,8 +277,8 @@ gp_email_to='gpdb_dba_group@company.com'
             <codeblock>gp_email_smtp_server='smtp.gmail.com:25'
 #gp_email_smtp_userid=''
 #gp_email_smtp_password=''
-gp_email_from='gpadmin@company.com'
-gp_email_to='test_account@gmail.com'
+gp_email_from='gpadmin@example.com'
+gp_email_to='test_account@example.com'
 </codeblock>
           </p>
           <note type="note">If you have difficulty sending and receiving email notifications, verify

@@ -203,8 +203,8 @@
         <step>
           <cmd>Add principals:</cmd>
           <stepxmp>
-            <pre>kadmin.local: <userinput>addprinc gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM
-</userinput>kadmin.local: <userinput>addprinc postgres/master.test.com@KRB.GREENPLUM.COM</userinput></pre>
+            <pre>kadmin.local: <userinput>addprinc gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM
+</userinput>kadmin.local: <userinput>addprinc postgres/master.test.com@KRB.EXAMPLE.COM</userinput></pre>
           </stepxmp>
           <info>The <codeph>adprinc</codeph> commands prompt for passwords for each principal. The
             first <codeph>addprinc</codeph> creates a Greenplum Database user as a
@@ -219,8 +219,8 @@
             directory with authentication information for the two principals.</cmd>
           <stepxmp>
             <codeblock>kadmin.local: <userinput>xst -k gpdb-kerberos.keytab
-    gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM
-    postgres/master.test.com@KRB.GREENPLUM.COM</userinput></codeblock>
+    gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM
+    postgres/master.test.com@KRB.EXAMPLE.COM</userinput></codeblock>
           </stepxmp>
           <info>You will copy this file to the Greenplum Database master host.</info>
         </step>
@@ -266,10 +266,10 @@
         <step id="nr157529">
           <cmd>Use the Kerberos utility <codeph>kinit</codeph> to request a ticket using the keytab
             file on the Greenplum Database master for
-              <codeph>gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM</codeph>. The <option>-t</option>
+              <codeph>gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM</codeph>. The <option>-t</option>
             option specifies the keytab file on the Greenplum Database master.</cmd>
           <stepxmp>
-            <codeblock># kinit -k -t gpdb-kerberos.keytab gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM</codeblock>
+            <codeblock># kinit -k -t gpdb-kerberos.keytab gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM</codeblock>
           </stepxmp>
         </step>
         <step>
@@ -279,9 +279,9 @@
           <stepxmp>
             <screen># klist
 Ticket cache: FILE:/tmp/krb5cc_108061
-Default principal: gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM
+Default principal: gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM
 Valid starting     Expires            Service principal
-03/28/13 14:50:26  03/29/13 14:50:26  krbtgt/KRB.GREENPLUM.COM     @KRB.GREENPLUM.COM
+03/28/13 14:50:26  03/29/13 14:50:26  krbtgt/KRB.GREENPLUM.COM     @KRB.EXAMPLE.COM
     renew until 03/28/13 14:50:26</screen>
           </stepxmp>
         </step>

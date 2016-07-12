@@ -339,10 +339,10 @@ Checking 'iptables' command                              [OK]
               configures the connection between the hosts mdw and
                 sdw1:<codeblock>conn mdw-sdw1
     leftid=mdw 
-    left=192.1.2.214
+    left=192.0.2.214
     leftrsasigkey=0sAQOW+RwpLg7CGoyywCnv+vnasGJI7... # shortened for readability
     rightid=sdw1 
-    right=192.1.2.215
+    right=192.0.2.215
     rightrsasigkey=0sAQNfdDCoDte5bGaGLGkHTKa5GMRl... # shortened for readability
     type=tunnel
     authby=rsasig   
@@ -473,11 +473,11 @@ Checking 'iptables' command                              [OK]
         sdw2</codeph>:<codeblock># tcpdump -n -i eth0 host mdw
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
-08:22:10.186743 IP 192.168.1.214 > 192.168.1.215: ESP(spi=0xe56f19ea,seq=0x1), length 132
-08:22:10.186808 IP 192.168.1.214 > 192.168.1.215: ICMP echo request, id 30987, seq 1, length 64
-08:22:10.186863 IP 192.168.1.215 > 192.168.1.214: ESP(spi=0x4e55824c,seq=0x1), length 132
-08:22:11.189663 IP 192.168.1.214 > 192.168.1.215: ESP(spi=0xe56f19ea,seq=0x2), length 132
-08:22:11.189707 IP 192.168.1.214 > 192.168.1.215: ICMP echo request, id 30987, seq 2, length 64
+08:22:10.186743 IP 192.0.2.214 > 192.0.2.215: ESP(spi=0xe56f19ea,seq=0x1), length 132
+08:22:10.186808 IP 192.0.2.214 > 192.0.2.215: ICMP echo request, id 30987, seq 1, length 64
+08:22:10.186863 IP 192.0.2.215 > 192.0.2.214: ESP(spi=0x4e55824c,seq=0x1), length 132
+08:22:11.189663 IP 192.0.2.214 > 192.0.2.215: ESP(spi=0xe56f19ea,seq=0x2), length 132
+08:22:11.189707 IP 192.0.2.214 > 192.0.2.215: ICMP echo request, id 30987, seq 2, length 64
 </codeblock></p>
       <p>The ESP packets verify that the IP packets are encrypted and encapsulated. </p>
       <p>When you have connections set up between all of the hosts in the cluster and Greenplum

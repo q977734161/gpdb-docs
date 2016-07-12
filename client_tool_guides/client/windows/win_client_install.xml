@@ -207,7 +207,7 @@ dir</codeblock></li>
             file is in the gpadmin user home directory.
             <codeblock>&gt; kinit -k -t gpdb-kerberos.keytab
    -c C:\Users\gpadmin\cache.txt
-   gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM</codeblock></li>
+   gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM</codeblock></li>
         </ol>
       </body>
     </topic>

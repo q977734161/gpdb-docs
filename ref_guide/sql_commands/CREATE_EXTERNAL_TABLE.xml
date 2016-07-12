@@ -209,7 +209,7 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
             <codeblock>'gpfdist://filehost:8081/*'
 'gpfdist://masterhost/my_load_file'
 'file://seghost1/dbfast1/external/myfile.txt'
-'http://intranet.mycompany.com/finance/expenses.csv'</codeblock>
+'http://intranet.example.com/finance/expenses.csv'</codeblock>
           </pd>
           <pd>If you are using MapR clusters with the <codeph>gphdfs</codeph> protocol, you specify
             a specific cluster and the file:<ul id="ul_xdj_wzt_hq">

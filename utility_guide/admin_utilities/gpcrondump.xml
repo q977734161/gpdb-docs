@@ -271,7 +271,7 @@
               <codeph>gpmfr</codeph> management utility. </pd>
           <pd>For example:</pd>
           <pd>
-            <codeblock>gpcrondump --ddboost-host 172.28.8.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
+            <codeblock>gpcrondump --ddboost-host 192.0.2.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
           </pd>
           <pd>After running <codeph>gpcrondump</codeph> with these options, the system verifies the
             limits on the host and user names and prompts for the Data Domain Boost password. Enter

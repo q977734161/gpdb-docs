@@ -128,7 +128,7 @@
       <p>Start <codeph>gpsnmpd</codeph> as an agentx subagent:</p>
       <codeblock># gpsnmpd -s -b -m ALL -C "dbname=postgres user=gpadmin password=secret"</codeblock>
       <p>Start <codeph>gpsnmpd</codeph> as a stand-alone agent:</p>
-      <codeblock># gpsnmpd -b -c /etc/snmp/snmpd.conf -x 192.168.100.12:10161 -M /usr/mibs/mymibs 
+      <codeblock># gpsnmpd -b -c /etc/snmp/snmpd.conf -x 192.0.2.12:10161 -M /usr/mibs/mymibs 
 -C "dbname=postgres user=gpadmin password=secret"</codeblock>
     </section>
   </body>
