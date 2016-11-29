@@ -20,6 +20,7 @@
      <b>-O</b>
      <b>-R</b> <varname>test_name</varname> 
      <b>-C</b> <varname>catalog_name</varname>
+     <b>-B</b> <varname>parallel_processes</varname>
      <b>-v</b>
      <b>-A</b>
 
@@ -65,7 +66,7 @@
             installation.</pd>
         </plentry>
         <plentry>
-          <pt>-b <varname>parallel_processes</varname></pt>
+          <pt>-B <varname>parallel_processes</varname></pt>
           <pd>The number of processes to run in parallel. </pd>
         </plentry>
         <plentry>
@@ -150,9 +151,10 @@
         files are generated in the directory where <codeph>gpcheckcat</codeph> is invoked. </p>
       <p>This is the format of the file:</p>
       <pre>gpcheckcat.verify.<varname>dbname</varname>.<varname>catalog_table_name</varname>.<varname>test_name</varname>.<varname>TIMESTAMP</varname>.sql</pre>
-      <p>This is an example verification filename created by <codeph>gpcheckcat</codeph> when it detects
-        inconsistent OID (Object ID) information in the catalog table <i>pg_type</i> in the database
-          <codeph>mydb</codeph>:<codeblock>gpcheckcat.verify.mydb.pg_type.missing_extraneous.20150420102715.sql</codeblock></p>
+      <p>This is an example verification filename created by <codeph>gpcheckcat</codeph> when it
+        detects inconsistent OID (Object ID) information in the catalog table <i>pg_type</i> in the
+        database
+        <codeph>mydb</codeph>:<codeblock>gpcheckcat.verify.mydb.pg_type.missing_extraneous.20150420102715.sql</codeblock></p>
       <p>This is an example query from a verification file:</p>
       <pre>SELECT *
   FROM (
