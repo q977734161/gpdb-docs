@@ -14,7 +14,8 @@
    <b>-b</b> <varname>YYYYMMDD</varname> | <b>-R</b> <varname>hostname</varname>:<varname>path_to_dumpset</varname> | <b>-s</b> <varname>database_name</varname> }
    [<b>--noplan</b>] [<b>--noanalyze</b>] [<b>-u</b> backup_directory] [<b>--list-backup</b>]
    [<b>--prefix prefix_string</b>] [<b>--report-status-dir</b> <varname>report_directory</varname>]
-   [<b>-T</b> <varname>schema.table </varname>[,...]] [<b>--table-file</b> <varname>file_name</varname>] [<b>--truncate</b>] [<b>-e</b>]
+   [<b>-S</b> <varname>schema_name </varname>]
+   [<b>-T</b> <varname>schema.table </varname>] [<b>--table-file</b> <varname>file_name</varname>] [<b>--truncate</b>] [<b>-e</b>]
    [<b>-m</b>]
    [<b>--restore-stats</b> [<b>include</b> | <b>only</b>]]
    [<b>-G [include | only]</b>] [<b>--change-schema</b> <varname>schema_name</varname>]
@@ -72,6 +73,23 @@
         that the database table definition is the same as the table that was backed up. The utility
         does not check the table definitions.</note>
       <sectiondiv>
+        <b>Database, Schema, and Table Names</b>
+        <p>You can specify names of databases, schemas, and tables that contain these special
+          characters. </p>
+        <p>
+          <codeph>" ' ` ~ # $ % ^ &amp; * ( ) _ - + [ ] { } > &lt; \ | ; : / ?</codeph> and the
+          space character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and
+            period (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and
+            newline (<codeph>\n</codeph>) characters are not supported.</note></p>
+        <p>When the name contains special characters and is specified on the command line, the name
+          must be enclosed in double quotes (<codeph>"</codeph>). Double quotes are optional for
+          names that do not contain special characters. For example, For example, either use of
+          quotes is valid on the command line <codeph>"my#1schema".mytable</codeph> or
+            <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must
+          be escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
+        <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in
+          double quotes. Special characters do not require escaping. </p>
+      </sectiondiv><sectiondiv>
         <b>Restoring a Database from NetBackup</b>
         <p>Greenplum Database must be configured to communicate with the Symantec NetBackup master
           server that is used to restore database data. See the <cite>Greenplum Database System
@@ -86,7 +104,9 @@
         <b>Restoring a Database with Named Pipes</b>
         <p>If you used named pipes when you backed up a database with <codeph>gpcrondump</codeph>,
           named pipes with the backup data must be available when restoring the database from the
-          backup.</p>
+          backup. Specifying tables to be restored with the <codeph>-S</codeph>, <codeph>-T</codeph>
+          or <codeph>--table-file</codeph> option is not supported if data was backed up using named
+          pipes.</p>
       </sectiondiv>
       <sectiondiv id="section5">
         <b>Error Reporting</b>
@@ -127,6 +147,7 @@
               <varname>schema-name</varname>, the utility returns a warning and attempts to append
             the data to the table from the backup. You can specify the <codeph>--trunctate</codeph>
             option to truncate table data before restoring data to the table from the backup. </pd>
+          <pd>This option is not supported if <codeph>-S</codeph> is specified.</pd>
         </plentry>
         <plentry>
           <pt>-d <varname>master_data_directory</varname></pt>
@@ -138,7 +159,7 @@
           <pd>Use Data Domain Boost for this restore, if the <codeph>--ddboost</codeph> option was
             passed when the data was dumped. Before using Data Domain Boost, make sure the one-time
             Data Domain Boost credential setup is complete. See "Backing Up and Restoring Databases"
-            in the Greenplum Database Administrator Guide for details. </pd>
+            in the <cite>Greenplum Database Administrator Guide</cite> for details. </pd>
           <pd>If you backed up Greenplum Database configuration files with the
               <codeph>gpcrondump</codeph> option <codeph>-g</codeph> and specified the
               <codeph>--ddboost</codeph> option, you must manually restore the backup from the Data
@@ -307,6 +328,18 @@
             hosts.</pd>
         </plentry>
         <plentry>
+          <pt>-S <varname>schema_name</varname></pt>
+          <pd>Restore all the tables that are qualified by the specified schema from the backup. The
+              <codeph>-S</codeph> option can be specified multiple times. System catalog schemas are
+            not supported. The schema name must exist in the backup set of the database being
+            restored. To replace the data in the schema tables with the data from backup, you can
+            specify the <codeph>--truncate</codeph> option. The schema tables are truncated.</pd>
+          <pd>The <codeph>-S</codeph> option cannot be specified with the
+              <codeph>--change-schema</codeph> option.</pd>
+          <pd>This option is not valid if you are restoring data from a backup that uses named
+            pipes.</pd>
+        </plentry>
+        <plentry>
           <pt>-t <varname>timestamp_key</varname></pt>
           <pd>The 14 digit timestamp key that uniquely identifies a backup set of data to restore.
             It is of the form <codeph>YYYYMMDDHHMMSS</codeph>. Looks for dump files matching this
@@ -315,24 +348,22 @@
         </plentry>
         <plentry>
           <pt>-T <varname>schema.table_name</varname></pt>
-          <pd>A comma-separated list of specific table names to restore. The named table(s) must
-            exist in the backup set of the database being restored. Existing tables are not
-            automatically truncated before data is restored from backup. If your intention is to
-            replace existing data in the table from backup, truncate the table prior to running
-              <codeph>gpdbrestore -T</codeph>.</pd>
-          <pd>To restore the tables for a specific schema, you can specify the schema name with the
-              <codeph>*</codeph> wildcard character. For example <codeph>-T mytest.*</codeph>
-            restores the tables for the schema <codeph>mytest</codeph>. System catalog schemas are
-            not supported.</pd>
-          <pd>If you specify the <codeph>--truncate</codeph> option with the <codeph>-t
-                <varname>schema</varname>.*</codeph> option, all existing tables within the database
-            schema are truncated before tables are restored from the backup. </pd>
+          <pd>The name of a table to restore. The <codeph>-T</codeph> option can be specified
+            multiple times. The named table(s) must exist in the backup set of the database being
+            restored. Existing tables are not automatically truncated before data is restored from
+            backup. To replace existing data in the table from backup, you can specify the
+              <codeph>--truncate</codeph> option.</pd>
+          <pd>Wildcard characters are not supported.</pd>
+          <pd>This option is not valid if you are restoring data from a backup that uses named
+            pipes.</pd>
         </plentry>
         <plentry>
           <pt>--table-file <varname>file_name</varname></pt>
           <pd>Specify a file <varname>file_name</varname> that contains a list of table names to
             restore. The file contains any number of table names, listed one per line. See the
               <codeph>-T</codeph> option for information about restoring specific tables. </pd>
+          <pd>This option is not valid if you are restoring data from a backup that uses named
+            pipes.</pd>
         </plentry>
         <plentry>
           <pt>--truncate</pt>
@@ -340,9 +371,9 @@
             is not specified, existing table data is not removed before data is restored to the
             table. </pd>
           <pd>This option is supported only when restoring a set of tables with the option
-              <codeph>-T</codeph> or <codeph>--table-file</codeph>. If a table to be restored does
-            not exist in the database, the table is restored and the utility returns a warning
-            message stating that the table did not exist in the database.</pd>
+              <codeph>-S</codeph>, <codeph>-T</codeph> or <codeph>--table-file</codeph>. If a table
+            to be restored does not exist in the database, the table is restored and the utility
+            returns a warning message stating that the table did not exist in the database.</pd>
         </plentry>
         <plentry>
           <pt>-u <varname>backup_directory</varname></pt>
