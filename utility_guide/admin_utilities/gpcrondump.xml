@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE topic
-  PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
 <topic id="topic1">
   <title id="kp142557">gpcrondump</title>
   <body>
@@ -19,7 +18,7 @@
    [<b>-K</b> <varname>timestamp</varname> [<b>--list-backup-files</b>] ]
    [<b>--prefix</b> <varname>prefix_string</varname> [<b>--list-filter-tables</b>]
    [<b>-c</b> [<b>--cleanup-date</b> <varname>yyyymmdd</varname> | <b>--cleanup-total</b> <varname>n</varname>] ]
-   [<b>-z</b>] [<b>-r</b>]
+   [<b>-z</b>] [<b>-r</b>] 
    [<b>-f</b> <varname>free_space_percent</varname>] [<b>-b</b>] [<b>-h</b>] [<b>-j</b> | <b>-k</b>] [<b>-g</b>] [<b>-G</b>] [<b>-C</b>]
    [<b>-d</b> <varname>master_data_directory</varname>] [<b>-B</b> <varname>parallel_processes</varname>] [<b>-a</b>] [<b>-q</b>]
    [<b>-y</b> <varname>reportfile</varname>] [<b>-l</b> <varname>logfile_directory</varname>]
@@ -41,7 +40,7 @@
 
 <b>gpcrondump</b> <b>--ddboost-config-remove</b>
 
-<b>gpcrondump</b> <b>-o</b> [<b>--cleanup-date</b> <varname>yyyymmdd</varname> | <b>--cleanup-total</b> <varname>n</varname>]
+<b>gpcrondump</b> <b>-o</b> [<b>--cleanup-date</b> <varname>yyyymmdd</varname> | <b>--cleanup-total</b> <varname>n</varname>] 
 
 <b>gpcrondump</b> <b>-?</b>
 
@@ -113,8 +112,7 @@
         <p>EMC DD Boost is integrated with Pivotal Greenplum Database and requires a DD Boost
           license. Open source Greenplum Database cannot use the DD Boost software, but can back up
           to an EMC Data Domain system mounted as an NFS share on the Greenplum master and segment
-          hosts.</p>
-        <p>NetBackup is not compatible with DD Boost. Both NetBackup and DD Boost cannot be used in
+          hosts.</p><p>NetBackup is not compatible with DD Boost. Both NetBackup and DD Boost cannot be used in
           a single back up operation.</p>
         <p>For incremental back up sets, a full backup and associated incremental backups, the
           backup set must be on a single device. For example, a backup set must all be on a file
@@ -268,7 +266,7 @@
             parameters are for the remote Data Domain system used for backup replication and Data
             Domain Boost managed file replication. Credentials for the remote Data Domain system
             must be configured to use the <codeph>--replicate</codeph> option or the
-              <codeph>gpmfr</codeph> management utility. </pd>
+              <codeph>gpmfr</codeph> management utility.</pd>
           <pd>For example:</pd>
           <pd>
             <codeblock>gpcrondump --ddboost-host 172.28.8.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
@@ -277,7 +275,7 @@
             limits on the host and user names and prompts for the Data Domain Boost password. Enter
             the password when prompted; the password is not echoed on the screen. There is a
             40-character limit on the password that can include lowercase letters (a-z), uppercase
-            letters (A-Z), numbers (0-9), and special characters ($, %, #, +, etc.).</pd>
+, etc.).</pd>
           <pd>The system verifies the password. After the password is verified, the system creates
             encrypted DDBoost_CONFIG files in the user's home directory.</pd>
           <pd>In the example, the <codeph>--ddboost-backupdir</codeph> option specifies the backup

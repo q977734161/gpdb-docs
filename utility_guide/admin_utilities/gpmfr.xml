@@ -31,18 +31,14 @@
 
 <b>gpmfr</b> <b>--version</b></codeblock>
       </section>
-      <section id="section3">
-         <title>Prerequisites</title>
-         <p>The <codeph>gpmfr</codeph> utility requires Pivotal Greenplum Database and EMC Data
-            Domain Boost. </p>
-         <p>The Data Domain systems that are used as local and remote backup systems for managed
-            file replication must have Data Domain Boost and Replicator enabled. </p>
-         <p>The Greenplum Database master segment must be able to connect to both the local Data
-            Domain system and the remote Data Domain system. </p>
+      <section id="section3"><title>Prerequisites</title><p>The Data Domain systems that are used as
+            local and remote backup systems for managed file replication must have Data Domain Boost
+            and Replicator enabled. </p><p>The Greenplum Database master segment must be able to
+            connect to both the local Data Domain system and the remote Data Domain system.</p>
          <p>The login credentials for the local and remote Data Domain systems must be configured on
             the Greenplum master host with the <codeph>gpcrondump</codeph> utility.</p>
          <p>See the Greenplum Database release notes for information about the supported version of
-            Data Domain Boost. </p>
+            Data Domain Boost.</p>
       </section>
       <section id="section4">
          <title>Description</title>
