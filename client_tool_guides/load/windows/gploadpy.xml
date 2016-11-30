@@ -120,10 +120,9 @@
           </plentry>
           <plentry>
             <pt>-p <varname>port</varname></pt>
-            <pd>Specifies the TCP port on which the  master
-              database server is listening for connections. If not specified, reads from the load
-              control file, the environment variable <codeph>$PGPORT</codeph> or defaults to
-              5432.</pd>
+            <pd>Specifies the TCP port on which the Greenplum master database server is listening
+              for connections. If not specified, reads from the load control file, the environment
+              variable <codeph>$PGPORT</codeph> or defaults to 5432.</pd>
           </plentry>
           <plentry>
             <pt>-U <varname>username</varname></pt>
@@ -170,6 +169,7 @@
            - <varname>/path/to/input_file</varname>
          <xref href="#topic1/cfsourcessl" format="dita">SSL</xref>: true | false
          <xref href="#topic1/cfsourcecertificatespath" format="dita">CERTIFICATES_PATH</xref>: <varname>/path/to/certificates</varname>
+    - <xref href="#topic1/fqdn" format="dita">FULLY_QUALIFIED_DOMAIN_NAME</xref>: true | false
     - <xref href="#topic1/cfcolumns" format="dita">COLUMNS</xref>:
            - <varname>field_name</varname>:<varname> data_type</varname>
     - <xref href="#topic1/cftransform" format="dita">TRANSFORM</xref>: '<varname>transformation</varname>'
@@ -212,33 +212,33 @@
         </plentry>
         <plentry>
           <pt id="cfdatabase">DATABASE</pt>
-          <pd>Optional. Specifies which database in  to
-            connect to. If not specified, defaults to <codeph>$PGDATABASE</codeph> if set or the
-            current system user name. You can also specify the database on the command line using
-            the <codeph>-d</codeph> option. </pd>
+          <pd>Optional. Specifies which database in the Greenplum Database system to connect to. If
+            not specified, defaults to <codeph>$PGDATABASE</codeph> if set or the current system
+            user name. You can also specify the database on the command line using the
+              <codeph>-d</codeph> option. </pd>
         </plentry>
         <plentry>
           <pt id="cfuser">USER</pt>
           <pd>Optional. Specifies which database role to use to connect. If not specified, defaults
             to the current user or <codeph>$PGUSER</codeph> if set. You can also specify the
             database role on the command line using the <codeph>-U</codeph> option. </pd>
-          <pd>If the user running <codeph>gpload.py</codeph> is not a Greenplum superuser, then the server configuration parameter
-              <codeph>gp_external_grant_privileges</codeph> must be set to <codeph>on</codeph> in
-            order for the load to be processed.<ph otherprops="gpdb"> See the <i>Greenplum Database
-                Reference Guide</i> for more information.</ph></pd>
+          <pd>If the user running <codeph>gpload.py</codeph> is not a Greenplum Database superuser,
+            then the server configuration parameter <codeph>gp_external_grant_privileges</codeph>
+            must be set to <codeph>on</codeph> in order for the load to be processed.<ph
+              otherprops="gpdb"> See the <i>Greenplum Database Reference Guide</i> for more
+              information.</ph></pd>
         </plentry>
         <plentry>
           <pt id="cfhost">HOST</pt>
-          <pd>Optional. Specifies  master host name. If not
-            specified, defaults to localhost or <codeph>$PGHOST</codeph> if set. You can also
-            specify the master host name on the command line using the <codeph>-h</codeph>
-            option.</pd>
+          <pd>Optional. Specifies Greenplum Database master host name. If not specified, defaults to
+            localhost or <codeph>$PGHOST</codeph> if set. You can also specify the master host name
+            on the command line using the <codeph>-h</codeph> option.</pd>
         </plentry>
         <plentry>
           <pt id="cfport">PORT</pt>
-          <pd>Optional. Specifies  master port. If not
-            specified, defaults to 5432 or <codeph>$PGPORT</codeph> if set. You can also specify the
-            master port on the command line using the <codeph>-p</codeph> option.</pd>
+          <pd>Optional. Specifies Greenplum Database master port. If not specified, defaults to 5432
+            or <codeph>$PGPORT</codeph> if set. You can also specify the master port on the command
+            line using the <codeph>-p</codeph> option.</pd>
         </plentry>
         <plentry>
           <pt id="cfgpload">GPLOAD</pt>
@@ -251,10 +251,9 @@
                     <codeph>gpload.py</codeph> will start one or more instances of the <codeph><xref
                       href="gpfdistexe.xml#topic1" type="topic" format="dita"/></codeph> file
                   distribution program on the current host and create the required external table
-                  definition(s) in  that point to the source data.
-                  Note that the host from which you run <codeph>gpload.py</codeph> must be
-                  accessible over the network by all  hosts
-                  (master and segments).<parml>
+                  definition(s) in Greenplum Database that point to the source data. Note that the
+                  host from which you run <codeph>gpload.py</codeph> must be accessible over the
+                  network by all Greenplum Database hosts (master and segments).<parml>
                     <plentry>
                       <pt id="cfsource">SOURCE</pt>
                       <pd>Required. The <codeph>SOURCE</codeph> block of an <codeph>INPUT</codeph>
@@ -344,6 +343,17 @@
                         </parml></pd>
                     </plentry>
                     <plentry>
+                                            <pt id="fqdn">FULLY_QUALIFIED_DOMAIN_NAME</pt>
+                                            <pd>Optional. Specifies whether <codeph>gpload</codeph>
+                        resolves hostnames to the fully qualified domain name (FQDN) or the local
+                        hostname. If the value is set to <codeph>true</codeph>, names are resolved
+                        to the FQDN. If the value is set to <codeph>false</codeph>, resolution is to
+                        the local hostname. The default is <codeph>false</codeph>.<p>A fully
+                          qualified domain name might be required in some situations. For example,
+                          if the Greenplum Database system is in a different domain than an ETL
+                          application that is being accessed by <codeph>gpload</codeph>.</p></pd>
+                                          </plentry>
+                    <plentry>
                       <pt id="cfcolumns">COLUMNS</pt>
                       <pd>Optional. Specifies the schema of the source data file(s) in the format of
                             <codeph><varname>field_name</varname>:<varname>data_type</varname></codeph>.
@@ -368,7 +378,8 @@
                     <plentry>
                       <pt id="cftransformconfig">TRANSFORM_CONFIG</pt>
                       <pd>Optional. Specifies the location of the XML transformation configuration
-                        file that is specified in the TRANSFORM parameter, above.</pd>
+                        file that is specified in the <codeph>TRANSFORM</codeph> parameter,
+                        above.</pd>
                     </plentry>
                     <plentry>
                       <pt id="cfmaxlinelength">MAX_LINE_LENGTH</pt>
@@ -446,26 +457,25 @@
                       <pd>Optional. Character set encoding of the source data. Specify a string
                         constant (such as <codeph>'SQL_ASCII'</codeph>), an integer encoding number,
                         or <codeph>'DEFAULT'</codeph> to use the default client encoding. If not
-                        specified, the default client encoding is used. <ph otherprops="gpdb">For
-                          information about supported character sets, see the <i>Greenplum Database
-                            Reference Guide</i>.</ph></pd>
+                        specified, the default client encoding is used. For information about
+                        supported character sets, see the <i>Greenplum Database Reference
+                        Guide</i>.</pd>
                     </plentry>
                     <plentry>
                       <pt id="cferrorlimit">ERROR_LIMIT</pt>
                       <pd>Optional. Enables single row error isolation mode for this load operation.
                         When enabled, input rows that have format errors will be discarded provided
-                        that the error limit count is not reached on any Greenplum
-                         segment instance during input processing. If
-                        the error limit is not reached, all good rows will be loaded and any error
-                        rows will either be discarded or logged to the table specified in
-                          <codeph>ERROR_TABLE</codeph>. The default is to abort the load operation
-                        on the first error encountered. Note that single row error isolation only
-                        applies to data rows with format errors; for example, extra or missing
-                        attributes, attributes of a wrong data type, or invalid client encoding
-                        sequences. Constraint errors, such as primary key violations, will still
-                        cause the load operation to abort if encountered. <ph otherprops="gpdb">For
-                          information about handling load errors, see "Loading and Unloading Data"
-                          in the <i>Greenplum Database Administrator Guide.</i></ph></pd>
+                        that the error limit count is not reached on any Greenplum Database segment
+                        instance during input processing. If the error limit is not reached, all
+                        good rows will be loaded and any error rows will either be discarded or
+                        logged to the table specified in <codeph>ERROR_TABLE</codeph>. The default
+                        is to abort the load operation on the first error encountered. Note that
+                        single row error isolation only applies to data rows with format errors; for
+                        example, extra or missing attributes, attributes of a wrong data type, or
+                        invalid client encoding sequences. Constraint errors, such as primary key
+                        violations, will still cause the load operation to abort if encountered. For
+                        information about handling load errors, see "Loading and Unloading Data" in
+                        the <i>Greenplum Database Administrator Guide.</i></pd>
                     </plentry>
                     <plentry>
                       <pt id="cferrorlog">LOG_ERRORS</pt>
@@ -473,8 +483,8 @@
                           <codeph>true</codeph> or <codeph>false</codeph>. The default value is
                           <codeph>false</codeph>. If the value is <codeph>true</codeph>, rows with
                         formatting errors are logged internally when running in single row error
-                        isolation mode. You can examine formatting errors with the Greenplum Database
-                        built-in SQL function
+                        isolation mode. You can examine formatting errors with the Greenplum
+                        Database built-in SQL function
                             <codeph>gp_read_error_log('<varname>table_name</varname>')</codeph>. If
                         formatting errors are detected when loading data, <codeph>gpload.py</codeph>
                         generates a warning message with the name of the table that contains the
@@ -499,8 +509,8 @@
                           <codeph>ERROR_TABLE</codeph> specified already exists, it will be used. If
                         it does not exist, it will be automatically generated.</pd>
                       <pd>Only <codeph>LOG_ERRORS</codeph> or <codeph>ERROR_TABLE</codeph> can be
-                        specified. If both are specified, an error message is returned. Using 
-                        <codeph>LOG_ERRORS</codeph> to capture formatting errors is recommended. </pd>
+                        specified. If both are specified, an error message is returned. Using
+                          <codeph>LOG_ERRORS</codeph> to capture formatting errors is recommended. </pd>
                       <pd otherprops="gpdb">For more information about handling load errors, see
                         "Loading and Unloading Data" in the <cite>Greenplum Database Administrator
                           Guide</cite>.</pd>
@@ -509,8 +519,7 @@
                       <pt id="cfexternal">EXTERNAL</pt>
                       <pd>Optional. Defines the schema of the external table database objects
                         created by <codeph>gpload.py</codeph>. </pd>
-                      <pd>The default is to use the
-                        <codeph>search_path</codeph>. </pd>
+                      <pd>The default is to use the Greenplum Database <codeph>search_path</codeph>. </pd>
                       <pd>
                         <parml>
                           <plentry>
