@@ -159,7 +159,7 @@
             </p></pd>
         </plentry>
         <plentry>
-          <pt>-B parallel_processes</pt>
+          <pt>-B <varname>parallel_processes</varname></pt>
           <pd>The number of segments to check in parallel for pre/post-dump validation. If not
             specified, the utility will start up to 60 parallel processes depending on how many
             segment instances it needs to dump.</pd>
@@ -225,7 +225,7 @@
           <pd>If <codeph>--incremental</codeph> is specified, this option is not supported.</pd>
         </plentry>
         <plentry>
-          <pt>-d master_data_directory</pt>
+          <pt>-d <varname>master_data_directory</varname></pt>
           <pd>The master host data directory. If not specified, the value set for
               <codeph>$MASTER_DATA_DIRECTORY</codeph> will be used.</pd>
         </plentry>
@@ -238,8 +238,7 @@
               (uncompressed) is recommended. </p><p>Backup compression (turned on by default) should
               be turned off with the <codeph>-z</codeph> option. Data Domain Boost will deduplicate
               and compress the backup data before sending it to the Data Domain
-                system.</p><p><codeph>--replicate --max-streams</codeph>
-              <codeph>max_IO_streams</codeph> is optional. If you specify this option,
+                system.</p><p><codeph>--replicate --max-streams<varname>max_IO_streams</varname></codeph> is optional. If you specify this option,
                 <codeph>gpcrondump</codeph> replicates the backup on the remote Data Domain server
               after the backup is complete on the primary Data Domain server.
                 <codeph>max_IO_streams</codeph> specifies the maximum number of Data Domain I/O
@@ -292,7 +291,8 @@
                 <codeph>--ddboost-backupdir</codeph> option is ignored if the
                 <codeph>--ddboost-remote</codeph> option is specified for a Data Domain system that
               is used for the replication of backups. The <codeph>--ddboost-backupdir</codeph> value
-              is for backup operations on a Data Domain system, not for backup replication. </note>
+              is for backup operations with a Data Domain system, not for backup replication.
+            </note>
           </pd>
           <pd>After running <codeph>gpcrondump</codeph> with these options, the system verifies the
             limits on the host and user names and prompts for the Data Domain Boost password. Enter
