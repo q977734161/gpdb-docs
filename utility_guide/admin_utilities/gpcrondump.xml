@@ -70,7 +70,7 @@
         <p>You can specify names of databases, schemas, and tables that contain these special
           characters. </p>
         <p>
-          <codeph>" ' ` ~ # $ % ^ &amp; * ( ) _ - + [ ] { } > &lt; \ | ; : / ?</codeph> and the
+ [ ] { } > &lt; \ | ; : / ?</codeph> and the
           space character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and
             period (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and
             newline (<codeph>\n</codeph>) characters are not supported.</note></p>
@@ -296,7 +296,7 @@
             limits on the host and user names and prompts for the Data Domain Boost password. Enter
             the password when prompted; the password is not echoed on the screen. There is a
             40-character limit on the password that can include lowercase letters (a-z), uppercase
-            letters (A-Z), numbers (0-9), and special characters ($, %, #, +, etc.).</pd>
+, etc.).</pd>
           <pd>The system verifies the password. After the password is verified, the system creates
             encrypted DDBOOST_CONFIG files in the user's home directory.</pd>
           <pd>In the example, the <codeph>--ddboost-backupdir </codeph>option specifies the backup
