@@ -110,17 +110,17 @@
               duplicate entries</p><p><codeph>duplicate_persistent</codeph> - Check for duplicate
                 <i>gp_persistent_relation_node</i> entries</p><p><codeph>inconsistent</codeph> -
               Cross consistency check for master segment
-                inconsistency</p><p><codeph>foreign_key</codeph> - Check foreign
-                keys</p><p><codeph>missing_extraneous</codeph> - Cross consistency check for missing
+                inconsistency</p><p><codeph>index_duplicate</codeph> - Check for unique index
+              violations on catalog indexes</p><p><codeph>foreign_key</codeph> - Check foreign
+              keys</p><p><codeph>missing_extraneous</codeph> - Cross consistency check for missing
               or extraneous entries</p><p><codeph>owner</codeph> - Check table ownership that is
               inconsistent with the master database</p><p><codeph>part_integrity</codeph> - Check
                 <i>pg_partition</i> branch integrity, partition with OIDs, partition distribution
               policy</p><p><codeph>part_constraint</codeph> - Check constraints on partitioned
-              tables</p><p><codeph>unique_index_violation</codeph> - Check tables that have columns
-              with the unique index constraint for duplicate
-                entries</p><p><codeph>dependency</codeph> - Check for dependency on non-existent
-              objects (restricted mode only)</p><p><codeph>distribution_policy</codeph> - Check
-              constraints on randomly distributed tables (restricted mode
+              tables</p><p><codeph>table_duplicate</codeph> - Check for unique index violations on
+              catalog tables</p><p><codeph>dependency</codeph> - Check for dependency on
+              non-existent objects (restricted mode only)</p><p><codeph>distribution_policy</codeph>
+              - Check constraints on randomly distributed tables (restricted mode
                 only)</p><p><codeph>namespace</codeph> - Check for schemas with a missing schema
               definition (restricted mode only)</p><p><codeph>persistent</codeph> - Check persistent
               tables (restricted mode only)</p><p><codeph>pgclass</codeph> - Check <i>pg_class</i>
@@ -148,20 +148,21 @@
         </plentry>
       </parml>
     </section>
-    <section>
-      <title>Notes</title>
-      <p>If <codeph>gpcheckcat</codeph> detects inconsistent OID (Object ID) information, it
-        generates one or more verification files that contain an SQL query. You can run the SQL
-        query to see details about the OID inconsistencies and investigate the inconsistencies. The
-        files are generated in the directory where <codeph>gpcheckcat</codeph> is invoked. </p>
-      <p>This is the format of the file:</p>
-      <pre>gpcheckcat.verify.<varname>dbname</varname>.<varname>catalog_table_name</varname>.<varname>test_name</varname>.<varname>TIMESTAMP</varname>.sql</pre>
-      <p>This is an example verification filename created by <codeph>gpcheckcat</codeph> when it
-        detects inconsistent OID (Object ID) information in the catalog table <i>pg_type</i> in the
-        database
-        <codeph>mydb</codeph>:<codeblock>gpcheckcat.verify.mydb.pg_type.missing_extraneous.20150420102715.sql</codeblock></p>
-      <p>This is an example query from a verification file:</p>
-      <pre>SELECT *
+    <section><title>Notes</title>The utility identifies tables with missing attributes and displays
+      them in various locations in the output and in a non-standardized format. The utility also
+      displays a summary list of tables with missing attributes in the format
+          <codeph><varname>database</varname>.<varname>schema</varname>.<varname>table</varname>.<varname>segment_id</varname></codeph>
+      after the output information is displayed.<p>If <codeph>gpcheckcat</codeph> detects
+        inconsistent OID (Object ID) information, it generates one or more verification files that
+        contain an SQL query. You can run the SQL query to see details about the OID inconsistencies
+        and investigate the inconsistencies. The files are generated in the directory where
+          <codeph>gpcheckcat</codeph> is invoked. </p><p>This is the format of the
+        file:</p><pre>gpcheckcat.verify.<varname>dbname</varname>.<varname>catalog_table_name</varname>.<varname>test_name</varname>.<varname>TIMESTAMP</varname>.sql</pre><p>This
+        is an example verification filename created by <codeph>gpcheckcat</codeph> when it detects
+        inconsistent OID (Object ID) information in the catalog table <i>pg_type</i> in the database
+          <codeph>mydb</codeph>:<codeblock>gpcheckcat.verify.mydb.pg_type.missing_extraneous.20150420102715.sql</codeblock></p><p>This
+        is an example query from a verification
+      file:</p><pre>SELECT *
   FROM (
        SELECT relname, oid FROM pg_class WHERE reltype 
          IN (1305822,1301043,1301069,1301095)
@@ -169,7 +170,6 @@
        SELECT relname, oid FROM gp_dist_random('pg_class') WHERE reltype 
          IN (1305822,1301043,1301069,1301095)
        ) alltyprelids
-  GROUP BY relname, oid ORDER BY count(*) desc ;</pre>
-    </section>
+  GROUP BY relname, oid ORDER BY count(*) desc ;</pre></section>
   </body>
 </topic>
