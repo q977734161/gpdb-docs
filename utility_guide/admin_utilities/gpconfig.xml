@@ -148,12 +148,12 @@
       <p otherprops="gpdb">Set the server configuration parameters <codeph>gp_email_to</codeph> and
           <codeph>gp_email_from</codeph>. These parameters require single quotes around the values.
         When you specify the values for the parameters, enclose the values with double quotes
-          (<codeph>"</codeph>).<codeblock>$ gpconfig -c gp_email_from -v "'gpdb-server@my-email.com'"
-$ gpconfig -c gp_email_to -v "'gpdb-admin@my-email.com'"</codeblock></p>
+          (<codeph>"</codeph>).<codeblock>$ gpconfig -c gp_email_from -v "'gpdb-server@example.com'"
+$ gpconfig -c gp_email_to -v "'gpdb-admin@example.com'"</codeblock></p>
       <p otherprops="gpdb">In the <codeph>postgresql.conf</codeph> file, the parameters are set
         correctly, with single quotes around the
-        values:<codeblock>gp_email_from='gpdb-server@my-email.com'
-gp_email_to='gpdb-admin@my-email.com'</codeblock></p>
+        values:<codeblock>gp_email_from='gpdb-server@example.com'
+gp_email_to='gpdb-admin@example.com'</codeblock></p>
       <p>Comment out all instances of the <codeph>default_statistics_target</codeph> configuration
         parameter, and restore the system default:</p>
       <codeblock>gpconfig -r default_statistics_target</codeblock>

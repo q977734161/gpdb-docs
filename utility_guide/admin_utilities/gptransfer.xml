@@ -508,10 +508,10 @@
             a comma: <codeph>hostname,IPaddress</codeph>. This example lists four Greenplum Database
             hosts and their IP addresses.</pd>
           <pd>
-            <codeblock>sdw1,172.168.2.1
-sdw2,172.168.2.2
-sdw3,172.168.2.3
-sdw4,172.168.2.4</codeblock>
+            <codeblock>sdw1,192.0.2.1
+sdw2,192.0.2.2
+sdw3,192.0.2.3
+sdw4,192.0.2.4</codeblock>
           </pd>
           <pd>This option is required if the <codeph>--full</codeph> option is specified or if the
             source Greenplum Database system is different than the destination system. This option

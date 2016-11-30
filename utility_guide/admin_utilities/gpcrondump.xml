@@ -313,7 +313,7 @@
               <codeph>gpmfr</codeph> management utility.</pd>
           <pd>For example:</pd>
           <pd>
-            <codeblock>gpcrondump --ddboost-host 172.28.8.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
+            <codeblock>gpcrondump --ddboost-host 192.0.2.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
             <note>When setting Data Domain Boost credentials, the
                 <codeph>--ddboost-backupdir</codeph> option is ignored if the
                 <codeph>--ddboost-remote</codeph> option is specified for a Data Domain system that
