@@ -28,6 +28,8 @@
         file. For instance, if the archive was made using the "dump data as <codeph>INSERT</codeph>
         commands" option, <codeph>pg_restore</codeph> will not be able to load the data using
           <codeph>COPY</codeph> statements.</p>
+      <note>The <codeph>--ignore-version</codeph> option is deprecated and will be removed in a
+        future release.</note>
     </section>
     <section id="section4">
       <title>Options</title>
@@ -84,7 +86,8 @@
           </plentry>
           <plentry>
             <pt>-i | --ignore-version</pt>
-            <pd>Ignore database version checks.</pd>
+            <pd><note>This option is deprecated and will be removed in a future
+              release.</note>Ignore database version checks.</pd>
           </plentry>
           <plentry>
             <pt>-I <varname>index</varname> | --index=<varname>index</varname></pt>
