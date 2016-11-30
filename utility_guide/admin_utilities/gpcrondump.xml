@@ -9,25 +9,25 @@
       a <codeph>crontab</codeph> entry.</p>
     <section id="section2">
       <title>Synopsis</title>
-      <codeblock><b>gpcrondump</b> <b>-x</b> <varname>database_name</varname>
-   [<b>-s</b> <varname>schema</varname> | <b>-S</b> <varname>schema</varname> | <b>-t</b> <varname>schema.table</varname> | <b>-T</b> <varname>schema.table</varname>]
-   [<b>--table-file</b>=<varname>filename</varname> | <b>--exclude-table-file</b>=<varname>filename</varname>]
+      <codeblock><b>gpcrondump</b> <b>-x</b> <varname>database_name</varname> 
+   [<b>-s</b> <varname>schema</varname> | <b>-S</b> <varname>schema</varname> | <b>-t</b> <varname>schema.table</varname> | <b>-T</b> <varname>schema.table</varname>] 
+   [<b>--table-file</b>=<varname>filename</varname> | <b>--exclude-table-file</b>=<varname>filename</varname>] 
    [<b>--schema-file</b>=<varname>filename</varname> | <b>--exclude-schema-file</b>=<varname>filename</varname>]
-   [<b>--dump-stats</b>]
-   [<b>-u</b> <varname>backup_directory</varname>] [<b>-R</b> <varname>post_dump_script</varname>] [<b>--incremental</b>]
+   [<b>--dump-stats</b>] 
+   [<b>-u</b> <varname>backup_directory</varname>] [<b>-R</b> <varname>post_dump_script</varname>] [<b>--incremental</b>] 
    [<b>-K</b> <varname>timestamp</varname> [<b>--list-backup-files</b>] ]
    [<b>--prefix</b> <varname>prefix_string</varname> [<b>--list-filter-tables</b>]
    [<b>-c</b> [<b>--cleanup-date</b> <varname>yyyymmdd</varname> | <b>--cleanup-total</b> <varname>n</varname>] ]
    [<b>-z</b>] [<b>-r</b>] 
-   [<b>-f</b> <varname>free_space_percent</varname>] [<b>-b</b>] [<b>-h</b>] [<b>-j</b> | <b>-k</b>] [<b>-g</b>] [<b>-G</b>] [<b>-C</b>]
+   [<b>-f</b> <varname>free_space_percent</varname>] [<b>-b</b>] [<b>-h</b>] [<b>-j</b> | <b>-k</b>] [<b>-g</b>] [<b>-G</b>] [<b>-C</b>] 
    [<b>-d</b> <varname>master_data_directory</varname>] [<b>-B</b> <varname>parallel_processes</varname>] [<b>-a</b>] [<b>-q</b>]
    [<b>-y</b> <varname>reportfile</varname>] [<b>-l</b> <varname>logfile_directory</varname>]
    [<b>--email-file</b> <varname>path_to_file</varname>] [<b>-v</b>]
-   { [<b>-E</b> <varname>encoding</varname>] [<b>--inserts</b> | <b>--column-inserts</b>] [<b>--oids</b>]
-     [<b>--no-owner</b> | <b>--use-set-session-authorization</b>] [<b>--no-privileges</b>]
+   { [<b>-E</b> <varname>encoding</varname>] [<b>--inserts</b> | <b>--column-inserts</b>] [<b>--oids</b>] 
+     [<b>--no-owner</b> | <b>--use-set-session-authorization</b>] [<b>--no-privileges</b>] 
      [<b>--rsyncable</b>]
      { [<b>--ddboost </b>[<b>--replicate --max-streams</b> <varname>max_IO_streams</varname>
-     [<b>--ddboost-skip-ping</b>] ] ] } |
+     [<b>--ddboost-skip-ping</b>] ] ] } | 
      { [<b>--netbackup-service-host</b> <varname>netbackup_server</varname>
      <b>--netbackup-policy</b> <varname>netbackup_policy</varname>
      <b>--netbackup-schedule</b> <varname>netbackup_schedule</varname> [<b>--netbackup-block-size</b> <varname>size</varname>] ]
@@ -35,14 +35,14 @@
 
 <b>gpcrondump</b> <b>--ddboost-host</b> <varname>ddboost_hostname</varname>
    [<b>--ddboost-host</b> <varname>ddboost_hostname</varname> ... ]
-   <b>--ddboost-user</b> <varname>ddboost_user</varname> <b>--ddboost-backupdir</b> <varname>backup_directory</varname>
-   [<b>--ddboost-remote]</b> [<b>--ddboost-skip-ping</b>]
+   <b>--ddboost-user</b> <varname>ddboost_user</varname> <b>--ddboost-backupdir</b> <varname>backup_directory</varname> 
+   [<b>--ddboost-remote]</b> [<b>--ddboost-skip-ping</b>] 
 
 <b>gpcrondump</b> <b>--ddboost-config-remove</b>
 
 <b>gpcrondump</b> <b>-o</b> [<b>--cleanup-date</b> <varname>yyyymmdd</varname> | <b>--cleanup-total</b> <varname>n</varname>] 
 
-<b>gpcrondump</b> <b>-?</b>
+<b>gpcrondump</b> <b>-?</b> 
 
 <b>gpcrondump</b> <b>--version</b></codeblock>
     </section>
@@ -65,18 +65,35 @@
       <note type="warning">Backing up a database with <codeph>gpcrondump</codeph> while
         simultaneously running <codeph>ALTER TABLE</codeph> might cause <codeph>gpcrondump</codeph>
         to fail.</note>
-      <sectiondiv id="section4">
+      <sectiondiv>
+        <b>Database, Schema, and Table Names</b>
+        <p>You can specify names of databases, schemas, and tables that contain these special
+          characters. </p>
+        <p>
+          <codeph>" ' ` ~ # $ % ^ &amp; * ( ) _ - + [ ] { } > &lt; \ | ; : / ?</codeph> and the
+          space character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and
+            period (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and
+            newline (<codeph>\n</codeph>) characters are not supported.</note></p>
+        <p>When the name contains special characters and is specified on the command line, the name
+          must be enclosed in double quotes (<codeph>"</codeph>). Double quotes are optional for
+          names that do not contain special characters. For example, either use of quotes is valid
+          on the command line <codeph>"my#1schema".mytable</codeph> or
+            <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must
+          be escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
+        <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in
+          double quotes. Special characters do not require escaping. </p>
+      </sectiondiv><sectiondiv id="section4">
         <b>Data Domain Boost</b>
-        <p><codeph>gpcrondump</codeph> is used to schedule Data Domain Boost backup and restore
-          operations. <codeph>gpcrondump</codeph> is also used to set or remove one-time credentials
-          for Data Domain Boost.</p>
+        <p><codeph>gpcrondump</codeph> is used to schedule Data Domain Boost (DD Boost) backup and
+          restore operations. <codeph>gpcrondump</codeph> is also used to set or remove one-time
+          credentials for Data Domain Boost.</p>
       </sectiondiv>
       <sectiondiv id="NetBackup">
         <b>NetBackup</b>
-        <p>Symantec NetBackup integration is included with Pivotal Greenplum Database. Pivotal Greenplum
+        <p>Symantec NetBackup integration is included with Pivotal Greenplum Database. Greenplum
           Database must be configured to communicate with the Symantec NetBackup master server that
           is used to backup the database. See the <cite>Greenplum Database Administrator
-            Guide</cite> for information on configuring Pivotal Greenplum Database and NetBackup and backing
+            Guide</cite> for information on configuring Greenplum Database and NetBackup and backing
           up and restoring with NetBackup. </p>
       </sectiondiv>
       <sectiondiv id="section5">
@@ -112,8 +129,8 @@
         <p>EMC DD Boost is integrated with Pivotal Greenplum Database and requires a DD Boost
           license. Open source Greenplum Database cannot use the DD Boost software, but can back up
           to an EMC Data Domain system mounted as an NFS share on the Greenplum master and segment
-          hosts.</p><p>NetBackup is not compatible with DD Boost. Both NetBackup and DD Boost cannot be used in
-          a single back up operation.</p>
+          hosts.</p><p>NetBackup is not compatible with DD Boost. Both NetBackup and DD Boost cannot
+          be used in a single back up operation.</p>
         <p>For incremental back up sets, a full backup and associated incremental backups, the
           backup set must be on a single device. For example, a backup set must all be on a file
           system. The backup set cannot have some backups on the local file system and others on a
@@ -242,7 +259,7 @@
                 <codeph>-c</codeph>, <codeph>-f</codeph>, <codeph>-G</codeph>, <codeph>-g</codeph>,
                 <codeph>-R</codeph>, and <codeph>-u</codeph> options change if
                 <codeph>--ddboost</codeph> is specified. See the options for details. </note></pd>
-          <pd>The DD Boost backup options are not supported if the NetBackup options are specified.
+          <pd>The DDBoost backup options are not supported if the NetBackup options are specified.
           </pd>
         </plentry>
         <plentry>
@@ -270,15 +287,19 @@
           <pd>For example:</pd>
           <pd>
             <codeblock>gpcrondump --ddboost-host 172.28.8.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
+            <note>If the <codeph>--ddboost-remote</codeph> option is specified,
+                <codeph>--ddboost-backupdir</codeph> option is ignored. The Greenplum Database host
+              backup directory is not needed when configuring a Data Domain system for backup
+              replications.</note>
           </pd>
           <pd>After running <codeph>gpcrondump</codeph> with these options, the system verifies the
             limits on the host and user names and prompts for the Data Domain Boost password. Enter
             the password when prompted; the password is not echoed on the screen. There is a
             40-character limit on the password that can include lowercase letters (a-z), uppercase
-, etc.).</pd>
+            letters (A-Z), numbers (0-9), and special characters ($, %, #, +, etc.).</pd>
           <pd>The system verifies the password. After the password is verified, the system creates
-            encrypted DDBoost_CONFIG files in the user's home directory.</pd>
-          <pd>In the example, the <codeph>--ddboost-backupdir</codeph> option specifies the backup
+            encrypted DDBOOST_CONFIG files in the user's home directory.</pd>
+          <pd>In the example, the <codeph>--ddboost-backupdir </codeph>option specifies the backup
             directory <codeph>gp_production</codeph> in the Data Domain Storage Unit GPDB.<note>If
               there is more than one operating system user using Data Domain Boost for backup and
               restore operations, repeat this configuration process for each of those
@@ -366,11 +387,11 @@
             </ul><p>An incremental backup is similar to a full back up except for append-optimized
               tables, including column-oriented tables. An append-optimized table is backed up only
               if one of the following operations was performed on the table after the last
-              backup.</p><pre>ALTER TABLE
-INSERT
-DELETE
-UPDATE
-TRUNCATE
+              backup.</p><pre>ALTER TABLE 
+INSERT 
+DELETE 
+UPDATE 
+TRUNCATE 
 DROP and then re-create the table</pre><p>For
               partitioned append-optimized tables, only the changed table partitions are backed up.
               </p><p>The <codeph>-u</codeph> option must be used consistently within a backup set
@@ -414,13 +435,13 @@ DROP and then re-create the table</pre><p>For
             if the <codeph>timestamp</codeph> does not specify a date and time that is more recent
             than all other backups in the set. </pd>
           <pd><codeph>--list-backup-files</codeph> is optional. When you specify both this option
-            and the <codeph>-K </codeph><codeph>timestamp</codeph> option,
+            and the <codeph>-K </codeph><codeph>timestamp</codeph> option,
               <codeph>gpcrondump</codeph> does not perform a backup. <codeph>gpcrondump</codeph>
             creates two text files that contain the names of the files that will be created when
               <codeph>gpcrondump</codeph> backs up a Greenplum database. The text files are created
             in the same location as the backup files. </pd>
           <pd>The file names use the <codeph>timestamp</codeph> specified by the
-              <codeph>-K </codeph><codeph>timestamp</codeph> option and have the suffix
+              <codeph>-K </codeph><codeph>timestamp</codeph> option and have the suffix
               <codeph>_pipes</codeph> and <codeph>_regular_files</codeph>. For example: </pd>
           <pd>
             <codeblock>gp_dump_20130514093000_pipes
@@ -451,7 +472,7 @@ gp_dump_20130514093000_regular_files</codeblock>
           <pt>--netbackup-block-size <varname>size</varname></pt>
           <pd>Specify the block size, in bytes, of data being transferred to the Symantec NetBackup
             server. The default is 512 bytes.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified.</pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-keyword <varname>keyword</varname></pt>
@@ -459,23 +480,23 @@ gp_dump_20130514093000_regular_files</codeblock>
             Symantec NetBackup server. NetBackup adds the keyword property and the specified keyword
             value to the NetBackup .img files that are created for the backup.</pd>
           <pd>The minimum length is 1 character, and the maximum length is 100 characters.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified.</pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-policy <varname>netbackup_policy</varname></pt>
-          <pd>The name of the NetBackup policy created for backing up Pivotal Greenplum Database.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified.</pd>
+          <pd>The name of the NetBackup policy created for backing up Greenplum Database.</pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-service-host <varname>netbackup_server</varname></pt>
-          <pd>The NetBackup master server that Pivotal Greenplum Database connects to when backing up to
+          <pd>The NetBackup master server that Greenplum Database connects to when backing up to
             NetBackup.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified.</pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-schedule <varname>netbackup_schedule</varname></pt>
-          <pd>The name of the NetBackup schedule created for backing up Pivotal Greenplum Database.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified</pd>
+          <pd>The name of the NetBackup schedule created for backing up Greenplum Database.</pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified</pd>
         </plentry>
         <plentry>
           <pt>--no-owner</pt>
@@ -650,8 +671,7 @@ gp_dump_20130514093000_regular_files</codeblock>
         </plentry>
         <plentry>
           <pt>-x <varname>database_name</varname></pt>
-          <pd>Required. The name of the Greenplum database to dump. Multiple databases can be
-            specified in a comma-separated list.</pd>
+          <pd>Required. The name of the Greenplum database to dump. </pd>
         </plentry>
         <plentry>
           <pt>-y <varname>reportfile</varname></pt>
@@ -666,7 +686,7 @@ gp_dump_20130514093000_regular_files</codeblock>
           <pt>-z (no compression)</pt>
           <pd>Do not use compression. Default is to compress the dump files using
               <codeph>gzip</codeph>.</pd>
-          <pd>This option (<codeph>-z</codeph>) should be used for NFS and Data Domain
+          <pd>Pivotal recommends this option (<codeph>-z</codeph>) be used for NFS and Data Domain
             Boost backups.</pd>
         </plentry>
         <plentry>
@@ -719,7 +739,7 @@ EMAIL_DETAILS:
       <codeblock>#!/bin/bash
   export GPHOME=/usr/local/greenplum-db
   export MASTER_DATA_DIRECTORY=/data/gpdb_p1/gp-1
-  . $GPHOME/greenplum_path.sh
+  . $GPHOME/greenplum_path.sh  
   gpcrondump -x sales -c -g -G -a -q </codeblock>
       <p>This example creates two text files, one with the suffix <codeph>_pipes</codeph> and the
         other with <codeph>_regular_files</codeph>. The <codeph>_pipes</codeph> file contain the
@@ -731,14 +751,14 @@ EMAIL_DETAILS:
         of files listed in the file <codeph>user-tables</codeph>. The prefix
           <codeph>user_backup</codeph> identifies the backup set. </p>
       <codeblock>gpcrondump -x mydatabase --table-file=user-tables
-  --prefix user_backup</codeblock>
+  --prefix user_backup</codeblock>
       <p>To create an incremental backup for the full backup created in the previous example,
         specify the <codeph>--incremental</codeph> option and the option <codeph>--prefix
           user_backup</codeph> to identify backup set. This example creates an incremental
         backup.</p>
       <codeblock>gpcrondump -x mydatabase --incremental --prefix user_backup</codeblock>
       <p>This command lists the tables that were included or excluded for the full backup.</p>
-      <codeblock>gpcrondump -x mydatabase --incremental --prefix user_backup
+      <codeblock>gpcrondump -x mydatabase --incremental --prefix user_backup 
   --list-filter-tables</codeblock>
       <p>This command backs up the database <i>customer</i> and specifies a NetBackup policy and
         schedule that are defined on the NetBackup master server<codeph> nbu_server1</codeph>. A
