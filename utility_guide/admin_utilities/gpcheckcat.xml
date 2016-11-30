@@ -38,6 +38,10 @@
         report inconsistencies due to ongoing database operations rather than the actual number of
         inconsistencies. If you run <codeph>gpcheckcat</codeph> without stopping database activity,
         run it with <codeph>-O</codeph> option. </p>
+       <note>Any time you run the utility, it checks for and deletes orphaned, temporary database
+        schemas (temporary schemas without a session ID) in the specified databases. The utility
+        displays the results of the orphaned, temporary schema check on the command line and also
+        logs the results.</note>
       <p>Catalog inconsistencies are inconsistencies that occur between Greenplum Database system
         tables. In general, there are three types of inconsistencies:<ul id="ul_jry_gmh_mp">
           <li>Inconsistencies in system tables at the segment level. For example, an inconsistency
@@ -110,7 +114,7 @@
               privileges</p><p><codeph>persistent</codeph> - Check persistent tables (restricted
               mode only)</p><p><codeph>pgclass</codeph> - Check <i>pg_class</i> entry that does not
               have any corresponding <i>pg_attribute</i> entry (restricted mode
-                only)</p><p><codeph>namespace</codeph> - Check for leaked temporary schema and
+                only)</p><p><codeph>namespace</codeph> - Check for schemas with a
               missing schema definition (restricted mode
                 only)</p><p><codeph>distribution_policy</codeph> - Check constraints on randomly
               distributed tables (restricted mode only)</p><p><codeph>dependency</codeph> - Check
