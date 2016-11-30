@@ -287,10 +287,14 @@
           <pd>For example:</pd>
           <pd>
             <codeblock>gpcrondump --ddboost-host 172.28.8.230 --ddboost-user ddboostusername --ddboost-backupdir gp_production</codeblock>
-            <note>If the <codeph>--ddboost-remote</codeph> option is specified,
-                <codeph>--ddboost-backupdir</codeph> option is ignored. The Greenplum Database host
-              backup directory is not needed when configuring a Data Domain system for backup
-              replications.</note>
+            <note>When setting Data Domain Boost credentials, the
+                <codeph>--ddboost-backupdir</codeph> option must be specified even if the
+                <codeph>--ddboost-remote</codeph> option is specified. When the
+                <codeph>--ddboost-remote</codeph> option is specified for a Data Domain system that
+              is used for the replication of backups, <codeph>gpcrondump</codeph> ignores the
+                <codeph>--ddboost-backupdir</codeph> value. The <codeph>--ddboost-backupdir</codeph>
+              value is set for backup operations on a local Data Domain system, not for backup
+              replication. </note>
           </pd>
           <pd>After running <codeph>gpcrondump</codeph> with these options, the system verifies the
             limits on the host and user names and prompts for the Data Domain Boost password. Enter
@@ -298,7 +302,7 @@
             40-character limit on the password that can include lowercase letters (a-z), uppercase
 , etc.).</pd>
           <pd>The system verifies the password. After the password is verified, the system creates
-            encrypted DDBOOST_CONFIG files in the user's home directory.</pd>
+            encrypted <codeph>DDBOOST_CONFIG</codeph> files in the user's home directory.</pd>
           <pd>In the example, the <codeph>--ddboost-backupdir </codeph>option specifies the backup
             directory <codeph>gp_production</codeph> in the Data Domain Storage Unit GPDB.<note>If
               there is more than one operating system user using Data Domain Boost for backup and
