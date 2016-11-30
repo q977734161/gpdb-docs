@@ -179,8 +179,10 @@
             specified. </pd>
         </plentry>
         <plentry>
-          <pt>-e (drop target database before restore)</pt>
-          <pd>Drops the target database before doing the restore and then recreates it.</pd>
+          <pt>-e (create target database before restore)</pt>
+          <pd>Creates the target database and then performs a restore operation. If the target
+            database exists, drops the existing database before creating the database and performing
+            a restore operation. </pd>
         </plentry>
         <plentry>
           <pt>-G [include | only] (restore global objects) </pt>
