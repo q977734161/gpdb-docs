@@ -11,17 +11,22 @@
       <section id="section2">
          <title>Synopsis</title>
          <codeblock><b>gpmfr</b> <b>--delete</b> {<b>LATEST</b> | <b>OLDEST</b> | <varname>timestamp</varname>}[<b>--remote</b>]
-   [<b>--master-port=</b> <varname>master_port</varname>] [<b>--skip-ping</b>] [<b>-a</b>] [<b>-v</b> | <b>--verbose</b>]
+   [<b>--master-port=</b> <varname>master_port</varname>] [<b>--skip-ping</b>] 
+   [<b>--ddboost-storage-unit</b> =<varname>unit-ID</varname>]
+   [<b>-a</b>] [<b>-v</b> | <b>--verbose</b>]
 
 <b>gpmfr</b> {<b>--replicate | --recover</b>} {<b>LATEST</b> | <b>OLDEST | </b> <varname>timestamp</varname>}
    <b>--max-streams </b> <varname>max_IO_streams</varname> [<b>--master-port=</b> <varname>master_port</varname>] <b>[--skip-ping]</b>
+   [<b>--ddboost-storage-unit</b> =<varname>unit-ID</varname>]
    [<b>-a</b>] [<b>-q</b> | <b>--quiet</b>] [<b>-v</b> | <b>--verbose</b>]
 
-<b>gpmfr</b> {<b>--list</b> | <b>--list-files</b> {<b>LATEST</b> | <b>OLDEST</b> | <varname>timestamp</varname>} }
+<b>gpmfr</b> {<b>--list</b> {<b>LATEST</b> | <b>OLDEST</b> | <varname>timestamp</varname>} }
+   [<b>--ddboost-storage-unit</b> =<varname>unit-ID</varname>]
    [<b>--master-port=</b> <varname>master_port</varname>] [<b>--remote</b>] [<b>--skip-ping</b>]
    [<b>-v</b> | <b>--verbose</b>]
 
 <b>gpmfr</b> <b>--list-files</b> {<b>LATEST</b> | <b>OLDEST</b> | <varname>timestamp</varname>}
+   [<b>--ddboost-storage-unit</b> =<varname>unit-ID</varname>]
    [<b>--master-port=</b> <varname>master_port</varname>] [<b>--remote</b>] [<b>--skip-ping</b>]
    [-v | <b>--verbose</b>]
 
@@ -31,14 +36,18 @@
 
 <b>gpmfr</b> <b>--version</b></codeblock>
       </section>
-      <section id="section3"><title>Prerequisites</title><p>The Data Domain systems that are used as
-            local and remote backup systems for managed file replication must have Data Domain Boost
-            and Replicator enabled. </p><p>The Greenplum Database master segment must be able to
-            connect to both the local Data Domain system and the remote Data Domain system.</p>
+      <section id="section3">
+         <title>Prerequisites</title>
+         <p>The Data Domain systems that are used as local and remote backup systems for managed
+            file replication must have Data Domain Boost and Replicator enabled. </p>
+         <p>The Greenplum Database master host segment hosts must be able to connect to both the
+            local Data Domain system and the remote Data Domain system.</p>
          <p>The login credentials for the local and remote Data Domain systems must be configured on
-            the Greenplum master host with the <codeph>gpcrondump</codeph> utility.</p>
-         <p>See the Greenplum Database release notes for information about the supported version of
-            Data Domain Boost.</p>
+            the Greenplum master host with the <codeph>gpcrondump</codeph> utility. See "Backing Up
+            and Restoring Databases" in the <cite>Greenplum Database Administrator Guide</cite> for
+            information about setting up Data Domain systems for use with Greenplum Database.</p>
+         <p>See the <cite>Greenplum Database Release Notes</cite> for information about the
+            supported version of Data Domain Boost. </p>
       </section>
       <section id="section4">
          <title>Description</title>
@@ -73,7 +82,18 @@
                   write progress information to the log file.</pd>
             </plentry>
             <plentry>
-               <pt>--delete {LATEST | OLDEST | <varname>timestamp</varname>}</pt>
+               <pt>--ddboost-storage-unit=<varname>unit-ID</varname></pt>
+               <pd>Optional. Specify a valid storage unit ID for the Data Domain system that is used
+                  for the <codeph>gpmfr</codeph> operation. A replicate or recover operation uses
+                  the same storage unit ID on both local and remote Data Domain systems. If the
+                  storage unit on the destination Data Domain system (where the backup is being
+                  copied) is created if it does not exist.</pd>
+               <pd>If this option is not specified, the utility uses the storage unit specified when
+                  configuring the DD Boost credentials or the default ID <codeph>GPDB</codeph>.
+               </pd>
+            </plentry>
+            <plentry>
+             <pt>--delete {LATEST | OLDEST | <varname>timestamp</varname>}</pt>
                <pd>Deletes a Greenplum Database backup set from the local Data Domain system.
                   Specify the option <codeph>--remote</codeph> to delete the backup set from the
                   remote Data Domain system.</pd>

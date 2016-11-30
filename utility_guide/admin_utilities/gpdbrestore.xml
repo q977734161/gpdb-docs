@@ -20,7 +20,8 @@
    [<b>-restore-stats</b> [<b>include</b> | <b>only</b>]]
    [<b>-G</b> [<b>include</b> | <b>only</b>]] [<b>--change-schema</b> <varname>schema_name</varname>] 
    [<b>-B </b> <varname>parallel_processes</varname>] [<b>-d</b> <varname>master_data_directory</varname>] [<b>-a</b>] [<b>-q</b>] 
-   [<b>-l</b> <varname>logfile_directory</varname>] [<b>-v</b>] [<b>--ddboost</b>] 
+   [<b>-l</b> <varname>logfile_directory</varname>] [<b>-v</b>]
+   [<b>--ddboost</b> [<b>--ddboost-storage-unit</b>=<varname>unit-ID</varname>] ]
    [<b>--redirect</b> <varname>database_name</varname> ]
 
 <b>gpdbrestore</b> <b>-?</b> 
@@ -72,48 +73,49 @@
       <note type="important">When restoring table data to an existing table, the utility assumes
         that the database table definition is the same as the table that was backed up. The utility
         does not check the table definitions.</note>
-      <sectiondiv>
-        <b>Database, Schema, and Table Names</b>
-        <p>You can specify names of databases, schemas, and tables that contain these special
-          characters. </p>
-        <p>
-          <codeph>" ' ` ~ # $ % ^ &amp; * ( ) _ - + [ ] { } > &lt; \ | ; : / ?</codeph> and the
-          space character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and
-            period (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and
-            newline (<codeph>\n</codeph>) characters are not supported.</note></p>
-        <p>When the name contains special characters and is specified on the command line, the name
-          must be enclosed in double quotes (<codeph>"</codeph>). Double quotes are optional for
-          names that do not contain special characters. For example, For example, either use of
-          quotes is valid on the command line <codeph>"my#1schema".mytable</codeph> or
-            <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must
-          be escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
-        <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in
-          double quotes. Special characters do not require escaping. </p>
-      </sectiondiv><sectiondiv>
-        <b>Restoring a Database from NetBackup</b>
-        <p>Greenplum Database must be configured to communicate with the Symantec NetBackup master
-          server that is used to restore database data. See the <cite>Greenplum Database System
-            Administrator Guide</cite> for information about configuring Greenplum Database and
-          NetBackup.</p>
-        <p>When restoring from NetBackup server, you must specify the timestamp of the backup with
-          the <codeph>-t</codeph> option.</p>
-        <p>NetBackup is not compatible with DDBoost. Both NetBackup and DDBoost cannot be used in a
-          single back up operation.</p>
-      </sectiondiv>
-      <sectiondiv id="section4">
-        <b>Restoring a Database with Named Pipes</b>
-        <p>If you used named pipes when you backed up a database with <codeph>gpcrondump</codeph>,
-          named pipes with the backup data must be available when restoring the database from the
-          backup.</p>
-      </sectiondiv>
-      <sectiondiv id="section5">
-        <b>Error Reporting</b>
-        <p>After a restore operation completes, the utility checks the <codeph>gpdbrestore</codeph>
-          status file for SQL execution errors and displays a warning if an error is found. The
-          default location of the restore status files are in the
-              <codeph>db_dumps/<varname>date</varname>/</codeph> directory.</p>
-      </sectiondiv>
     </section>
+    <section><b>Database, Schema, and Table Names</b>
+      <p>You can specify names of databases, schemas, and tables that contain these special
+        characters. </p>
+      <p>
+        <codeph>" ' ` ~ # $ % ^ &amp; * ( ) _ - + [ ] { } > &lt; \ | ; : / ?</codeph> and the space
+          character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and period
+            (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and newline
+            (<codeph>\n</codeph>) characters are not supported.</note></p>
+      <p>When the name contains special characters and is specified on the command line, the name
+        must be enclosed in double quotes (<codeph>"</codeph>). Double quotes are optional for names
+        that do not contain special characters. For example, For example, either use of quotes is
+        valid on the command line <codeph>"my#1schema".mytable</codeph> or
+          <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must be
+        escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
+      <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in double
+        quotes. Special characters do not require escaping. </p></section>
+    <section id="data_domain"><b>Restoring from a Data Domain System with DD Boost</b><p>When you
+        create a backup with <codeph>gpcrondump</codeph> using DD Boost, the backup is stored on a
+        Data Domain system storage unit. When restore the backup, you must use the same storage unit
+        ID that was used when you backed up the data. You can use the <codeph>gpcrondump</codeph>
+        option <codeph>--ddboost-show-config</codeph> to display the current DD Boost configuration
+        information that includes the storage unit ID. </p><p>For information about using DD Boost
+        and Data Domain systems with Greenplum Database, see "Backing Up and Restoring Databases" in
+        the <cite>Greenplum Database Administrator Guide</cite>. </p><p>NetBackup is not compatible
+        with DD Boost. Both NetBackup and DD Boost cannot be used in a single back up
+      operation.</p></section>
+    <section><b>Restoring a Database from NetBackup</b>
+      <p>Greenplum Database must be configured to communicate with the Symantec NetBackup master
+        server that is used to restore database data. See the <cite>Greenplum Database System
+          Administrator Guide</cite> for information about configuring Greenplum Database and
+        NetBackup.</p><p>When restoring from NetBackup server, you must specify the timestamp of the
+        backup with the <codeph>-t</codeph> option.</p><p>NetBackup is not compatible with DD Boost.
+        Both NetBackup and DD Boost cannot be used in a single back up operation.</p></section>
+    <section><b>Restoring a Database with Named Pipes</b>
+      <p>If you used named pipes when you backed up a database with <codeph>gpcrondump</codeph>,
+        named pipes with the backup data must be available when restoring the database from the
+        backup.</p></section>
+    <section><b>Error Reporting</b>
+      <p>After a restore operation completes, the utility checks the <codeph>gpdbrestore</codeph>
+        status file for SQL execution errors and displays a warning if an error is found. The
+        default location of the restore status files are in the
+            <codeph>db_dumps/<varname>date</varname>/</codeph> directory.</p></section>
     <section id="section6">
       <title>Options</title>
       <parml>
@@ -153,20 +155,26 @@
               <codeph>$MASTER_DATA_DIRECTORY</codeph> will be used.</pd>
         </plentry>
         <plentry>
-          <pt>--ddboost</pt>
-          <pd>Use Data Domain Boost for this restore, if the <codeph>--ddboost</codeph> option was
-            passed when the data was dumped. Before using Data Domain Boost, make sure the one-time
-            Data Domain Boost credential setup is complete. See "Backing Up and Restoring Databases"
-            in the <cite>Greenplum Database Administrator Guide</cite> for details. </pd>
+          <pt>--ddboost [--ddboost-storage-unit=<varname>unit-ID</varname> ]</pt>
+          <pd>Use Data Domain Boost for this restore operation, if the <codeph>--ddboost</codeph>
+            option was specified when the data was backed up with the <codeph>gpcrondump</codeph>
+            utility. Before using Data Domain Boost, make sure the one-time Data Domain Boost
+            credential setup is complete. </pd>
+          <pd>The <codeph>--ddboost-storage-unit</codeph> option is optional. When restoring a
+            backup from a Data Domain server, you must use the same storage unit that was used when
+            you backed up the data. </pd>
+          <pd>See <xref href="#topic1/data_domain" format="dita">Restoring from a Data Domain System
+              with DD Boost</xref>.</pd>
           <pd>If you backed up Greenplum Database configuration files with the
               <codeph>gpcrondump</codeph> option <codeph>-g</codeph> and specified the
               <codeph>--ddboost</codeph> option, you must manually restore the backup from the Data
             Domain system. The configuration files must be restored for the Greenplum Database
             master and all the hosts and segments. The backup location on the Data Domain system is
             the directory
-              <codeph>GPDB/</codeph><codeph>backup_directory</codeph><codeph>/</codeph><varname>date</varname>.
+              <codeph><varname>unit_ID</varname>/</codeph><codeph>backup_directory</codeph><codeph>/</codeph><varname>date</varname>.
             The <codeph>backup_directory</codeph> is set when you specify the Data Domain
-            credentials with <codeph>gpcrondump</codeph>. </pd>
+            credentials with <codeph>gpcrondump</codeph>. The <varname>unit_ID</varname> is the Data
+            Domain system storage unit that was used when you backed up the database.</pd>
           <pd>This option is not supported if <codeph>--netbackup-service-host</codeph> is
             specified. </pd>
         </plentry>

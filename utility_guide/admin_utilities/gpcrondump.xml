@@ -26,8 +26,8 @@
    { [<b>-E</b> <varname>encoding</varname>] [<b>--inserts</b> | <b>--column-inserts</b>] [<b>--oids</b>] 
      [<b>--no-owner</b> | <b>--use-set-session-authorization</b>] [<b>--no-privileges</b>] 
      [<b>--rsyncable</b>]
-     { [<b>--ddboost </b>[<b>--replicate --max-streams</b> <varname>max_IO_streams</varname>
-     [<b>--ddboost-skip-ping</b>] ] ] } | 
+     { [<b>--ddboost</b> [<b>--replicate --max-streams</b> <varname>max_IO_streams</varname>]
+     [<b>--ddboost-skip-ping</b>] [<b>--ddboost-storage-unit</b>=<varname>unit-ID</varname>]] } | 
      { [<b>--netbackup-service-host</b> <varname>netbackup_server</varname>
      <b>--netbackup-policy</b> <varname>netbackup_policy</varname>
      <b>--netbackup-schedule</b> <varname>netbackup_schedule</varname> [<b>--netbackup-block-size</b> <varname>size</varname>] ]
@@ -36,7 +36,10 @@
 <b>gpcrondump</b> <b>--ddboost-host</b> <varname>ddboost_hostname</varname>
    [<b>--ddboost-host</b> <varname>ddboost_hostname</varname> ... ]
    <b>--ddboost-user</b> <varname>ddboost_user</varname> <b>--ddboost-backupdir</b> <varname>backup_directory</varname> 
-   [<b>--ddboost-remote]</b> [<b>--ddboost-skip-ping</b>] 
+   [<b>--ddboost-remote]</b> [<b>--ddboost-skip-ping</b>]
+   [<b>--ddboost-storage-unit</b>=<varname>unit-ID</varname>] 
+
+<b>gpcrondump</b> <b>--ddboost-show-config</b> [<b>--remote</b>]
 
 <b>gpcrondump</b> <b>--ddboost-config-remove</b>
 
@@ -65,81 +68,103 @@
       <note type="warning">Backing up a database with <codeph>gpcrondump</codeph> while
         simultaneously running <codeph>ALTER TABLE</codeph> might cause <codeph>gpcrondump</codeph>
         to fail.</note>
-      <sectiondiv>
-        <b>Database, Schema, and Table Names</b>
-        <p>You can specify names of databases, schemas, and tables that contain these special
-          characters. </p>
-        <p>
- [ ] { } > &lt; \ | ; : / ?</codeph> and the
-          space character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and
-            period (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and
-            newline (<codeph>\n</codeph>) characters are not supported.</note></p>
-        <p>When the name contains special characters and is specified on the command line, the name
-          must be enclosed in double quotes (<codeph>"</codeph>). Double quotes are optional for
-          names that do not contain special characters. For example, either use of quotes is valid
-          on the command line <codeph>"my#1schema".mytable</codeph> or
-            <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must
-          be escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
-        <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in
-          double quotes. Special characters do not require escaping. </p>
-      </sectiondiv><sectiondiv id="section4">
-        <b>Data Domain Boost</b>
-        <p><codeph>gpcrondump</codeph> is used to schedule Data Domain Boost (DD Boost) backup and
-          restore operations. <codeph>gpcrondump</codeph> is also used to set or remove one-time
-          credentials for Data Domain Boost.</p>
-      </sectiondiv>
-      <sectiondiv id="NetBackup">
-        <b>NetBackup</b>
-        <p>Symantec NetBackup integration is included with Pivotal Greenplum Database. Greenplum
-          Database must be configured to communicate with the Symantec NetBackup master server that
-          is used to backup the database. See the <cite>Greenplum Database Administrator
-            Guide</cite> for information on configuring Greenplum Database and NetBackup and backing
-          up and restoring with NetBackup. </p>
-      </sectiondiv>
-      <sectiondiv id="section5">
-        <b>Return Codes</b>
-        <p>The following is a list of the codes that <codeph>gpcrondump</codeph> returns.</p>
-        <ul id="ul_hhb_sqp_n4">
+    </section>
+    <section><b>About Database, Schema, and Table Names</b>
+      <p>You can specify names of databases, schemas, and tables that contain these special
+        characters. </p><p>
+        <codeph>" ' ` ~ # $ % ^ &amp; * ( ) _ - + [ ] { } > &lt; \ | ; : / ?</codeph> and the space
+          character.<note>The characters <codeph>!</codeph>, comma (<codeph>,</codeph>), and period
+            (<codeph>.</codeph>) are not supported. Also, the tab (<codeph>\t</codeph>) and newline
+            (<codeph>\n</codeph>) characters are not supported.</note></p><p>When the name contains
+        special characters and is specified on the command line, the name must be enclosed in double
+        quotes (<codeph>"</codeph>). Double quotes are optional for names that do not contain
+        special characters. For example, either use of quotes is valid on the command line
+          <codeph>"my#1schema".mytable</codeph> or <codeph>"my#1schema"."mytable"</codeph>. Within
+        the name, these special characters must be escaped with a backslash (<codeph>\</codeph>) :
+          <codeph>" ` $ \</codeph> .</p><p>When the name is specified in an input file, the name
+        must <i>not</i> be enclosed in double quotes. Special characters do not require escaping.
+      </p></section>
+    <section id="ddboost"><b>Using Data Domain Boost</b><p>The <codeph>gpcrondump</codeph> utility
+        is used to schedule Data Domain Boost (DD Boost) backup operations. The utility is also used
+        to set, change, or remove one-time credentials and storage unit ID for DD Boost. The
+          <codeph>gpcrondump</codeph>, <codeph>gpdbrestore</codeph>, and <codeph>gpmfr</codeph>
+        utilities use the DD Boost credentials to access Data Domain systems. DD Boost information
+        is stored in these files.<ul id="ul_o1w_rpt_xv">
+          <li><codeph>DDBOOST_CONFIG</codeph> is used by <codeph>gpdbrestore</codeph> and
+              <codeph>gpcrondump</codeph> for backup and restore operations with the Data Domain
+            system. The <codeph>gpdbrestore</codeph> utility creates or updates the file when you
+            specify Data Domain information with the <codeph>--ddboost-host</codeph> option. </li>
+          <li><codeph>DDBOOST_MFR_CONFIG</codeph> is used by <codeph>gpmfr</codeph> for remote
+            replication operations with the remote Data Domain system. The
+              <codeph>gpdbrestore</codeph> utility creates or updates the file when you specify Data
+            Domain information with the <codeph>--ddboost-host</codeph> option and the
+              <codeph>--ddboost-remote</codeph> option. </li>
+        </ul></p><p>The configuration files are created in the current user
+          (<codeph>gpadmin</codeph>) home directory on the Greenplum Database master and segment
+        hosts. The path and file name cannot be changed. </p><p>When you use DD Boost to perform a
+        backup operation, the operation uses a storage unit on a Data Domain system. You can specify
+        the storage unit ID when you perform these operations:</p><ul id="ul_dvd_kg5_xv">
+        <li>When you set the DD Boost credentials with the <codeph>--ddboost-host</codeph> option.
+          If you specify the <codeph>--ddboost-storage-unit</codeph> option, the storage unit ID is
+          written to the Greenplum Database DD Boost configuration file
+            <codeph>DDBOOST_CONFIG</codeph>. If the storage unit ID is not specified, the default
+          value is <codeph>GPDB</codeph>.</li>
+        <li>When you perform a backup operation with the <codeph>--ddboost</codeph> option. When you
+          specify the <codeph>--ddboost-storage-unit</codeph> option, the utility uses the specified
+          Data Domain storage unit for the operation. The value in the configuration file is not
+          changed.</li>
+      </ul><p>When performing a full backup operation (not an incremental backup), the storage unit
+        is created on the Data Domain system if it does not exist. </p><p>A storage unit is not
+        created if these <codeph>gpcrondump</codeph> options are specified:
+          <codeph>--incremental</codeph>, <codeph>--list-backup-file</codeph>,
+          <codeph>--list-filter-tables</codeph>, <codeph>-o</codeph>, or
+          <codeph>--ddboost-config-remove</codeph>. </p><p>Use the <codeph>gpcrondump</codeph>
+        option <codeph>--ddboost-show-config</codeph> to display the current DD Boost configuration
+        information from the master configuration file. Specify the <codeph>--remote</codeph> option
+        to display the configuration information for the remote Data Domain system.</p><p>For
+        information about using DD Boost and Data Domain systems with Greenplum Database, see
+        "Backing Up and Restoring Databases" in the <cite>Greenplum Database Administrator
+          Guide</cite>.</p></section>
+    <section><b>Using NetBackup</b>
+      <p>Symantec NetBackup integration is included with Pivotal Greenplum Database. Greenplum
+        Database must be configured to communicate with the Symantec NetBackup master server that is
+        used to backup the database. See the <cite>Greenplum Database Administrator Guide</cite> for
+        information on configuring Greenplum Database and NetBackup and backing up and restoring
+        with NetBackup. </p></section>
+    <section><b>About Return Codes</b>
+      <p>The following is a list of the codes that <codeph>gpcrondump</codeph> returns.<ul
+          id="ul_hhb_sqp_n4">
           <li><b>0</b> – Dump completed with no problems </li>
           <li><b>1</b> – Dump completed, but one or more warnings were generated</li>
           <li><b>2</b> – Dump failed with a fatal error</li>
-        </ul>
-      </sectiondiv>
-      <sectiondiv id="section6">
-        <b>Email Notifications</b>
-        <p>To have <codeph>gpcrondump</codeph> send out status email notifications after a back up
-          operation completes, you must place a file named <codeph>mail_contacts</codeph> in the
-          home directory of the Greenplum superuser (<codeph>gpadmin</codeph>) or in the same
-          directory as the <codeph>gpcrondump</codeph> utility (<codeph>$GPHOME/bin</codeph>). This
-          file should contain one email address per line. <codeph>gpcrondump</codeph> will issue a
-          warning if it cannot locate a <codeph>mail_contacts</codeph> file in either location. If
-          both locations have a <codeph>mail_contacts</codeph> file, then the one in
-            <codeph>$HOME</codeph> takes precedence. </p>
-        <p>You can customize the email Subject and From lines of the email notifications that
-          gpcrondump sends after a back up completes for a database. You specify the option
-            <codeph>--email-file</codeph> with the location of a YAML file that contains email
-          Subject and From lines that <codeph>gpcrondump</codeph> uses. for information about the
-          format of the YAML file, see <xref href="#topic1/email_yaml" format="dita"/>. </p>
-        <note>The UNIX mail utility must be running on Greenplum Database host and must be
-          configured to allow the Greenplum superuser (<codeph>gpadmin</codeph>) to send
-          email.</note>
-      </sectiondiv>
-      <sectiondiv>
-        <b>Limitations</b>
-        <p>EMC DD Boost is integrated with Pivotal Greenplum Database and requires a DD Boost
-          license. Open source Greenplum Database cannot use the DD Boost software, but can back up
-          to an EMC Data Domain system mounted as an NFS share on the Greenplum master and segment
-          hosts.</p><p>NetBackup is not compatible with DD Boost. Both NetBackup and DD Boost cannot
-          be used in a single back up operation.</p>
-        <p>For incremental back up sets, a full backup and associated incremental backups, the
-          backup set must be on a single device. For example, a backup set must all be on a file
-          system. The backup set cannot have some backups on the local file system and others on a
-          Data Domain system or a NetBackup system.</p>
-        <p>For external tables, the table definition is backed up, however the data is not backed
-          up. For leaf child partition of a partitioned table that is a readable external table, the
-          leaf child partition data is not backed up. </p>
-      </sectiondiv>
-    </section>
+        </ul></p></section>
+    <section><b>Email Notifications</b>
+      <p>To have <codeph>gpcrondump</codeph> send out status email notifications after a back up
+        operation completes, you must place a file named <codeph>mail_contacts</codeph> in the home
+        directory of the Greenplum superuser (<codeph>gpadmin</codeph>) or in the same directory as
+        the <codeph>gpcrondump</codeph> utility (<codeph>$GPHOME/bin</codeph>). This file should
+        contain one email address per line. <codeph>gpcrondump</codeph> will issue a warning if it
+        cannot locate a <codeph>mail_contacts</codeph> file in either location. If both locations
+        have a <codeph>mail_contacts</codeph> file, then the one in <codeph>$HOME</codeph> takes
+        precedence. </p><p>You can customize the email Subject and From lines of the email
+        notifications that gpcrondump sends after a back up completes for a database. You specify
+        the option <codeph>--email-file</codeph> with the location of a YAML file that contains
+        email Subject and From lines that <codeph>gpcrondump</codeph> uses. for information about
+        the format of the YAML file, see <xref href="#topic1/email_yaml" format="dita"/>.
+        </p><note>The UNIX mail utility must be running on Greenplum Database host and must be
+        configured to allow the Greenplum superuser (<codeph>gpadmin</codeph>) to send
+      email.</note></section>
+    <section><b>Limitations</b><p>EMC DD Boost is integrated with Pivotal Greenplum Database and
+        requires a DD Boost license. Open source Greenplum Database cannot use the DD Boost
+        software, but can back up to an EMC Data Domain system mounted as an NFS share on the
+        Greenplum master and segment hosts.</p><p>NetBackup is not compatible with DD Boost. Both
+        NetBackup and DD Boost cannot be used in a single back up operation.</p><p>For incremental
+        back up sets, a full backup and associated incremental backups, the backup set must be on a
+        single device. For example, a backup set must all be on a file system. The backup set cannot
+        have some backups on the local file system and others on a Data Domain system or a NetBackup
+        system.</p><p>For external tables, the table definition is backed up, however the data is
+        not backed up. For leaf child partition of a partitioned table that is a readable external
+        table, the leaf child partition data is not backed up. </p></section>
     <section id="section7">
       <title>Options</title>
       <parml>
@@ -230,17 +255,19 @@
               <codeph>$MASTER_DATA_DIRECTORY</codeph> will be used.</pd>
         </plentry>
         <plentry>
-          <pt>--ddboost [--replicate --max-streams <varname>max_IO_streams</varname>
-            [--ddboost-skip-ping] ]</pt>
+          <pt>--ddboost [--replicate --max-streams <varname>max_IO_streams</varname> ]
+            [--ddboost-skip-ping] </pt>
           <pd>Use Data Domain Boost for this backup. Before using Data Domain Boost, set up the Data
-            Domain Boost credential, as described in the next option below.<p>If
+            Domain Boost credential with the <codeph>--ddboost-host </codeph>option. Also, see <xref
+              href="#topic1/ddboost" format="dita">Using Data Domain Boost</xref>.<p>If
                 <codeph>--ddboost</codeph> is specified, the <codeph>-z</codeph> option
               (uncompressed) is recommended. </p><p>Backup compression (turned on by default) should
               be turned off with the <codeph>-z</codeph> option. Data Domain Boost will deduplicate
               and compress the backup data before sending it to the Data Domain
-                system.</p><p><codeph>--replicate --max-streams<varname>max_IO_streams</varname></codeph> is optional. If you specify this option,
-                <codeph>gpcrondump</codeph> replicates the backup on the remote Data Domain server
-              after the backup is complete on the primary Data Domain server.
+                system.</p><p><codeph>--replicate
+                --max-streams<varname>max_IO_streams</varname></codeph> is optional. If you specify
+              this option, <codeph>gpcrondump</codeph> replicates the backup on the remote Data
+              Domain server after the backup is complete on the primary Data Domain server.
                 <codeph>max_IO_streams</codeph> specifies the maximum number of Data Domain I/O
               streams that can be used when replicating the backup set on the remote Data Domain
               server from the primary Data Domain server. </p><p>You can use <codeph>gpmfr</codeph>
@@ -263,9 +290,9 @@
           </pd>
         </plentry>
         <plentry>
-          <pt>--ddboost-host <varname>ddboost_hostname</varname></pt>
-          <pt>[--ddboost-host <varname>ddboost_hostname</varname> ...] --ddboost-user
-              <varname>ddboost_user</varname> --ddboost-backupdir
+          <pt>--ddboost-host <varname>ddboost_hostname</varname> [--ddboost-host
+              <varname>ddboost_hostname</varname> ...]</pt>
+          <pt>--ddboost-user <varname>ddboost_user</varname> --ddboost-backupdir
               <varname>backup_directory</varname></pt>
           <pt>[--ddboost-remote] [--ddboost-skip-ping]</pt>
           <pd>Sets the Data Domain Boost credentials. Do not combine this options with any other
@@ -315,13 +342,37 @@
             system. Do not enter this option with any other <codeph>gpcrondump</codeph> option.</pd>
         </plentry>
         <plentry>
+          <pt>--ddboost-show-config [--remote]</pt>
+          <pd>Optional. Displays the DD Boost configuration file information for the Data Domain
+            server. Specify this option with the <codeph>--remote</codeph> option to display the
+            configuration file information for remote Data Domain server. No backup is performed.
+          </pd>
+        </plentry>
+        <plentry>
           <pt>--ddboost-skip-ping</pt>
           <pd>Specify this option to skip the ping of a Data Domain system. When working with a Data
             Domain system, ping is used to ensure that the Data Domain system is reachable. If the
             Data Domain system is configured to block ICMP ping probes, specify this option.</pd>
         </plentry>
         <plentry>
-          <pt>--dump-stats</pt>
+          <pt>--ddboost-storage-unit=<varname>unit-ID</varname></pt>
+          <pd>Optional. Specify a valid storage unit name for the Data Domain system that is used
+            for backup and restore operations. The default storage unit ID is <codeph>GPDB</codeph>.
+            See <xref href="#topic1/ddboost" format="dita">Using Data Domain Boost</xref>.<ul
+              id="ul_f4s_krt_xv">
+              <li>Specify this option with the <codeph>--ddboost-host</codeph> option to create or
+                update the storage unit ID in the DD Boost credentials file. </li>
+              <li>Specify this option with the <codeph>--ddboost</codeph> option to override the
+                storage unit ID in the DD Boost credentials file when performing a backup
+                operation.</li>
+            </ul></pd>
+          <pd>When performing a full backup operation (not an incremental backup), the storage unit
+            is created on the Data Domain system if it does not exist.</pd>
+          <pd>A replication operation uses the same storage unit ID on both local and remote Data
+            Domain systems. </pd>
+        </plentry>
+        <plentry>
+        <pt>--dump-stats</pt>
           <pd>Specify this option to back up database statistics. The data is written to an SQL file
             and can be restored manually or with <codeph>gpdbrestore</codeph> utility. </pd>
           <pd>The statistics are written in the master data directory to
