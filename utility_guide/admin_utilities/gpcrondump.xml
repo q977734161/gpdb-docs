@@ -230,7 +230,8 @@
               <codeph>$MASTER_DATA_DIRECTORY</codeph> will be used.</pd>
         </plentry>
         <plentry>
-          <pt>--ddboost [--replicate --max-streams max_IO_streams [--ddboost-skip-ping] ]</pt>
+          <pt>--ddboost [--replicate --max-streams <varname>max_IO_streams</varname>
+            [--ddboost-skip-ping] ]</pt>
           <pd>Use Data Domain Boost for this backup. Before using Data Domain Boost, set up the Data
             Domain Boost credential, as described in the next option below.<p>If
                 <codeph>--ddboost</codeph> is specified, the <codeph>-z</codeph> option
