@@ -72,6 +72,18 @@
         <plentry>
           <pt>-B <varname>parallel_processes</varname></pt>
           <pd>The number of processes to run in parallel. </pd>
+          <pd>
+            <p>The <codeph>gpcheckcat</codeph> utility attempts to determine the number of
+              simultaneous processes (the batch size) to use. The utility assumes it can use a
+              buffer with a minimum of 20MB for each process. The maximum number of parallel
+              processes is the number of Greenplum Database segment instances. The utility displays
+              the number of parallel processes that it uses when it starts checking the
+                catalog.<note>The utility might run out of memory if the number of errors returned
+                exceeds the buffer size. If an out of memory error occurs, you can lower the batch
+                size with the <codeph>-B</codeph> option. For example, if the utility displays a
+                batch size of 936 and runs out of memory, you can specify <codeph>-B 468</codeph> to
+                run 468 processes in parallel. </note></p>
+          </pd>
         </plentry>
         <plentry>
           <pt>-C <varname>catalog_table</varname></pt>
@@ -110,17 +122,17 @@
               duplicate entries</p><p><codeph>duplicate_persistent</codeph> - Check for duplicate
                 <i>gp_persistent_relation_node</i> entries</p><p><codeph>inconsistent</codeph> -
               Cross consistency check for master segment
-                inconsistency</p><p><codeph>index_duplicate</codeph> - Check for unique index
-              violations on catalog indexes</p><p><codeph>foreign_key</codeph> - Check foreign
-              keys</p><p><codeph>missing_extraneous</codeph> - Cross consistency check for missing
+                inconsistency</p><p><codeph>foreign_key</codeph> - Check foreign
+                keys</p><p><codeph>missing_extraneous</codeph> - Cross consistency check for missing
               or extraneous entries</p><p><codeph>owner</codeph> - Check table ownership that is
               inconsistent with the master database</p><p><codeph>part_integrity</codeph> - Check
                 <i>pg_partition</i> branch integrity, partition with OIDs, partition distribution
               policy</p><p><codeph>part_constraint</codeph> - Check constraints on partitioned
-              tables</p><p><codeph>table_duplicate</codeph> - Check for unique index violations on
-              catalog tables</p><p><codeph>dependency</codeph> - Check for dependency on
-              non-existent objects (restricted mode only)</p><p><codeph>distribution_policy</codeph>
-              - Check constraints on randomly distributed tables (restricted mode
+              tables</p><p><codeph>unique_index_violation</codeph> - Check tables that have columns
+              with the unique index constraint for duplicate
+                entries</p><p><codeph>dependency</codeph> - Check for dependency on non-existent
+              objects (restricted mode only)</p><p><codeph>distribution_policy</codeph> - Check
+              constraints on randomly distributed tables (restricted mode
                 only)</p><p><codeph>namespace</codeph> - Check for schemas with a missing schema
               definition (restricted mode only)</p><p><codeph>persistent</codeph> - Check persistent
               tables (restricted mode only)</p><p><codeph>pgclass</codeph> - Check <i>pg_class</i>
