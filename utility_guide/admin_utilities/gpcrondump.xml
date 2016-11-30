@@ -67,7 +67,9 @@
         that call <codeph>gpcrondump</codeph> should be scheduled on the master host.</p>
       <note type="warning">Backing up a database with <codeph>gpcrondump</codeph> while
         simultaneously running <codeph>ALTER TABLE</codeph> might cause <codeph>gpcrondump</codeph>
-        to fail.</note>
+        to fail.<p>Backing up a database with <codeph>gpcrondump</codeph> while simultaneously
+          running DDL commands might cause issues with locks. You might see either the DDL command
+          or <codeph>gpcrondump</codeph> waiting to acquire locks.</p></note>
     </section>
     <section><b>About Database, Schema, and Table Names</b>
       <p>You can specify names of databases, schemas, and tables that contain these special
