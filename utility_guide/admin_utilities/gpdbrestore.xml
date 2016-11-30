@@ -84,8 +84,8 @@
             (<codeph>\n</codeph>) characters are not supported.</note></p>
       <p>When the name contains special characters and is specified on the command line, the name
         must be enclosed in double quotes (<codeph>"</codeph>). Double quotes are optional for names
-        that do not contain special characters. For example, For example, either use of quotes is
-        valid on the command line <codeph>"my#1schema".mytable</codeph> or
+        that do not contain special characters. For example, either use of quotes is valid on the
+        command line <codeph>"my#1schema".mytable</codeph> or
           <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must be
         escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
       <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in double
