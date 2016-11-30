@@ -9,22 +9,21 @@
     <section id="section2">
       <title>Synopsis</title>
       <codeblock><b>gpdbrestore</b> { <b>-t</b> <varname>timestamp_key</varname> { [<b>-L</b>] |
-   [<b>--netbackup-service-host</b> <varname>netbackup_server</varname>
+   [<b>--netbackup-service-host</b> <varname>netbackup_server</varname> 
    [<b>--netbackup-block-size</b> <varname>size</varname>] ] }
-   <b>-b</b> <varname>YYYYMMDD</varname> | <b>-R</b> <varname>hostname</varname>:<varname>path_to_dumpset</varname> | <b>-s</b> <varname>database_name</varname> }
+   <b>-b</b> <varname>YYYYMMDD</varname> | <b>-R</b> <varname>hostname</varname>:<varname>path_to_dumpset</varname> | <b>-s</b> <varname>database_name</varname> } 
    [<b>--noplan</b>] [<b>--noanalyze</b>] [<b>-u</b> backup_directory] [<b>--list-backup</b>]
    [<b>--prefix prefix_string</b>] [<b>--report-status-dir</b> <varname>report_directory</varname>]
    [<b>-S</b> <varname>schema_name </varname>]
    [<b>-T</b> <varname>schema.table </varname>] [<b>--table-file</b> <varname>file_name</varname>] [<b>--truncate</b>] [<b>-e</b>]
    [<b>-m</b>]
-   [<b>--restore-stats</b> [<b>include</b> | <b>only</b>]]
-   [<b>-G [include | only]</b>] [<b>--change-schema</b> <varname>schema_name</varname>]
-   [<b>-B </b> <varname>parallel_processes</varname>] [<b>-d</b> <varname>master_data_directory</varname>] [<b>-a</b>] [<b>-q</b>]
-   [<b>-l</b> <varname>logfile_directory</varname>] [<b>-v</b>]
-   [<b>--ddboost</b> [<b>--ddboost-storage-unit</b>=<varname>unit-ID</varname>] ]
+   [<b>-restore-stats</b> [<b>include</b> | <b>only</b>]]
+   [<b>-G</b> [<b>include</b> | <b>only</b>]] [<b>--change-schema</b> <varname>schema_name</varname>] 
+   [<b>-B </b> <varname>parallel_processes</varname>] [<b>-d</b> <varname>master_data_directory</varname>] [<b>-a</b>] [<b>-q</b>] 
+   [<b>-l</b> <varname>logfile_directory</varname>] [<b>-v</b>] [<b>--ddboost</b>] 
    [<b>--redirect</b> <varname>database_name</varname> ]
 
-<b>gpdbrestore</b> <b>-?</b>
+<b>gpdbrestore</b> <b>-?</b> 
 
 <b>gpdbrestore</b> <b>--version</b></codeblock>
     </section>
@@ -73,8 +72,8 @@
       <note type="important">When restoring table data to an existing table, the utility assumes
         that the database table definition is the same as the table that was backed up. The utility
         does not check the table definitions.</note>
-      </section>
-      <section><b>Database, Schema, and Table Names</b>
+      <sectiondiv>
+        <b>Database, Schema, and Table Names</b>
         <p>You can specify names of databases, schemas, and tables that contain these special
           characters. </p>
         <p>
@@ -89,33 +88,32 @@
             <codeph>"my#1schema"."mytable"</codeph>. Within the name, these special characters must
           be escaped with a backslash (<codeph>\</codeph>) : <codeph>" ` $ \</codeph> .</p>
         <p>When the name is specified in an input file, the name must <i>not</i> be enclosed in
-          double quotes. Special characters do not require escaping. </p></section>
-          <section id="data_domain"><b>Restoring from a Data Domain System with DD Boost</b><p>When you
-              create a backup with <codeph>gpcrondump</codeph> using DD Boost, the backup is stored on a
-              Data Domain system storage unit. When restore the backup, you must use the same storage unit
-              ID that was used when you backed up the data. You can use the <codeph>gpcrondump</codeph>
-              option <codeph>--ddboost-show-config</codeph> to display the current DD Boost configuration
-              information that includes the storage unit ID. </p><p>For information about using DD Boost
-              and Data Domain systems with Greenplum Database, see "Backing Up and Restoring Databases" in
-              the <cite>Greenplum Database Administrator Guide</cite>. </p><p>NetBackup is not compatible
-              with DD Boost. Both NetBackup and DD Boost cannot be used in a single back up
-            operation.</p></section>
-          <section><b>Restoring a Database from NetBackup</b>
-            <p>Greenplum Database must be configured to communicate with the Symantec NetBackup master
-               server that is used to restore database data. See the <cite>Greenplum Database System
-                 Administrator Guide</cite> for information about configuring Greenplum Database and
-               NetBackup.</p><p>When restoring from NetBackup server, you must specify the timestamp of the
-               backup with the <codeph>-t</codeph> option.</p><p>NetBackup is not compatible with DD Boost.
-               Both NetBackup and DD Boost cannot be used in a single back up operation.</p></section>
-         <section><b>Restoring a Database with Named Pipes</b>
-           <p>If you used named pipes when you backed up a database with <codeph>gpcrondump</codeph>,
-             named pipes with the backup data must be available when restoring the database from the
-             backup.</p></section>
-         <section><b>Error Reporting</b>
-           <p>After a restore operation completes, the utility checks the <codeph>gpdbrestore</codeph>
-             status file for SQL execution errors and displays a warning if an error is found. The
-             default location of the restore status files are in the
-                 <codeph>db_dumps/<varname>date</varname>/</codeph> directory.</p></section>
+          double quotes. Special characters do not require escaping. </p>
+      </sectiondiv><sectiondiv>
+        <b>Restoring a Database from NetBackup</b>
+        <p>Greenplum Database must be configured to communicate with the Symantec NetBackup master
+          server that is used to restore database data. See the <cite>Greenplum Database System
+            Administrator Guide</cite> for information about configuring Greenplum Database and
+          NetBackup.</p>
+        <p>When restoring from NetBackup server, you must specify the timestamp of the backup with
+          the <codeph>-t</codeph> option.</p>
+        <p>NetBackup is not compatible with DDBoost. Both NetBackup and DDBoost cannot be used in a
+          single back up operation.</p>
+      </sectiondiv>
+      <sectiondiv id="section4">
+        <b>Restoring a Database with Named Pipes</b>
+        <p>If you used named pipes when you backed up a database with <codeph>gpcrondump</codeph>,
+          named pipes with the backup data must be available when restoring the database from the
+          backup.</p>
+      </sectiondiv>
+      <sectiondiv id="section5">
+        <b>Error Reporting</b>
+        <p>After a restore operation completes, the utility checks the <codeph>gpdbrestore</codeph>
+          status file for SQL execution errors and displays a warning if an error is found. The
+          default location of the restore status files are in the
+              <codeph>db_dumps/<varname>date</varname>/</codeph> directory.</p>
+      </sectiondiv>
+    </section>
     <section id="section6">
       <title>Options</title>
       <parml>
@@ -155,34 +153,26 @@
               <codeph>$MASTER_DATA_DIRECTORY</codeph> will be used.</pd>
         </plentry>
         <plentry>
-          <pt>--ddboost [--ddboost-storage-unit=<varname>unit-ID</varname> ]</pt>
-          <pd>Use Data Domain Boost for this restore operation, if the <codeph>--ddboost</codeph>
-            option was specified when the data was backed up with the <codeph>gpcrondump</codeph>
-            utility. Before using Data Domain Boost, make sure the one-time Data Domain Boost
-            credential setup is complete. </pd>
-          <pd>The <codeph>--ddboost-storage-unit</codeph> option is optional. When restoring a
-            backup from a Data Domain server, you must use the same storage unit that was used when
-            you backed up the data. </pd>
-          <pd>See <xref href="#topic1/data_domain" format="dita">Restoring from a Data Domain System
-              with DD Boost</xref>.</pd>
+          <pt>--ddboost</pt>
+          <pd>Use Data Domain Boost for this restore, if the <codeph>--ddboost</codeph> option was
+            passed when the data was dumped. Before using Data Domain Boost, make sure the one-time
+            Data Domain Boost credential setup is complete. See "Backing Up and Restoring Databases"
+            in the <cite>Greenplum Database Administrator Guide</cite> for details. </pd>
           <pd>If you backed up Greenplum Database configuration files with the
               <codeph>gpcrondump</codeph> option <codeph>-g</codeph> and specified the
               <codeph>--ddboost</codeph> option, you must manually restore the backup from the Data
             Domain system. The configuration files must be restored for the Greenplum Database
             master and all the hosts and segments. The backup location on the Data Domain system is
             the directory
-              <codeph><varname>unit_ID</varname>/</codeph><codeph>backup_directory</codeph><codeph>/</codeph><varname>date</varname>.
+              <codeph>GPDB/</codeph><codeph>backup_directory</codeph><codeph>/</codeph><varname>date</varname>.
             The <codeph>backup_directory</codeph> is set when you specify the Data Domain
-            credentials with <codeph>gpcrondump</codeph>. The <varname>unit_ID</varname> is the Data
-            Domain system storage unit that was used when you backed up the database.</pd>
+            credentials with <codeph>gpcrondump</codeph>. </pd>
           <pd>This option is not supported if <codeph>--netbackup-service-host</codeph> is
             specified. </pd>
         </plentry>
         <plentry>
-          <pt>-e (create target database before restore)</pt>
-          <pd>Creates the target database and then performs a restore operation. If the target
-            database exists, drops the existing database before creating the database and performing
-            a restore operation. </pd>
+          <pt>-e (drop target database before restore)</pt>
+          <pd>Drops the target database before doing the restore and then recreates it.</pd>
         </plentry>
         <plentry>
           <pt>-G [include | only] (restore global objects) </pt>
@@ -240,17 +230,17 @@
           <pt>--netbackup-block-size <varname>size</varname></pt>
           <pd>Specify the block size, in bytes, of data being transferred from the Symantec
             NetBackup server. The default is 512 bytes.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified. </pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified. </pd>
         </plentry>
         <plentry>
           <pt>--netbackup-service-host <varname>netbackup_server </varname></pt>
-          <pd>The NetBackup master server that Pivotal Greenplum Database connects to when backing up to
+          <pd>The NetBackup master server that Greenplum Database connects to when backing up to
             NetBackup. If you specify this option, you must specify the timestamp of the backup with
             the <codeph>-t</codeph> option. </pd>
           <pd>This option is not supported with any of the these options: <codeph>-R</codeph>,
               <codeph>-s</codeph>, <codeph>-b</codeph>, <codeph>-L</codeph>, or
               <codeph>--ddboost</codeph>.</pd>
-          <pd>NetBackup options are not supported if DD Boost backup options are specified. </pd>
+          <pd>NetBackup options are not supported if DDBoost backup options are specified. </pd>
         </plentry>
         <plentry>
           <pt>--noanalyze</pt>
@@ -422,10 +412,10 @@
         backup set must be available to <codeph>gpdbrestore</codeph>. For example, the following
         timestamp keys specify a backup set. 20120514054532 is the full backup and the others are
         incremental.</p>
-      <pre>20120514054532
-20120714095512
-20120914081205
-20121114064330
+      <pre>20120514054532 
+20120714095512 
+20120914081205 
+20121114064330 
 20130114051246</pre>
       <p>The following <codeph>gbdbrestore</codeph> command specifies the timestamp key
         20121114064330. The incremental backup with the timestamps 20120714095512 and 20120914081205
@@ -436,7 +426,7 @@
         timestamp key 20121114064330. Data in the previous incremental backups and the data in the
         full backup are not restored.</p>
       <codeblock>gpdbrestore -t 20121114064330 --noplan</codeblock>
-      <p>This gpdbrestore command restores Pivotal Greenplum Database data from the data managed by
+      <p>This gpdbrestore command restores Greenplum Database data from the data managed by
         NetBackup master server <codeph>nbu_server1</codeph>. The option <codeph>-t
           20130530090000</codeph> specifies the timestamp generated by <codeph>gpcrondump</codeph>
         when the backup was created. The <codeph>-e</codeph> option specifies that the target
