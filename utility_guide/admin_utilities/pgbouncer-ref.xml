@@ -321,20 +321,8 @@ db = ...
                     details.<p>Default: not set.</p></pd>
               </plentry>
               <plentry>
-                <pt>auth_hba_file</pt>
-                <pd>HBA configuration file to use when <codeph>auth_type</codeph> is
-                    <codeph>hba</codeph>.</pd>
-              </plentry>
-              <plentry>
                 <pt>auth_type</pt>
                 <pd>How to authenticate users.<parml>
-                    <plentry>
-                      <pt>hba</pt>
-                      <pd>Actual auth type is loaded from <codeph>auth_hba_file</codeph>. This
-                        allows different authentication methods different access paths. For example
-                        Unix socket connections use <codeph>peer</codeph> auth method; TCP
-                        connections must use TLS.</pd>
-                    </plentry>
                     <plentry>
                       <pt>cert</pt>
                       <pd>Clients must connect with TLS using a valid client certificate. The
@@ -815,31 +803,6 @@ forcedb = host=127.0.0.1 port=300 user=baz password=foo client_encoding=UNICODE 
         <codeblock>$ echo -n "1234admin" | md5sum
 $ 45f2603610af569b6155c45067268c6b</codeblock>
         <p>The MD5-hidden password is:<codeblock>md545f2603610af569b6155c45067268c6b</codeblock></p>
-      </body>
-    </topic>
-    <topic id="topic_w5j_55d_bt">
-      <title>PgBouncer HBA File Format</title>
-      <body>
-        <p>The PgBouncer HBA file follows the format of the PostgreSQL <codeph>pg_hba.conf</codeph>
-          file. See <xref href="http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html"
-            format="html" scope="external"/> for details. </p>
-        <p>The PgBouncer HBA file differs from the PostgreSQL file format in the following ways:<ul
-            id="ul_asn_bvd_bt">
-            <li>Supported record types: <codeph>local</codeph>, <codeph>host</codeph>,
-                <codeph>hostssl</codeph>, <codeph>hostnossl</codeph>.</li>
-            <li>Database field: Supports <codeph>all</codeph>, <codeph>sameuser</codeph>,
-                <codeph>@file</codeph>, multiple names. Not supported: <codeph>replication</codeph>,
-                <codeph>samerole</codeph>, <codeph>samegroup</codeph>.</li>
-            <li>Username field: Supports <codeph>all</codeph>, <codeph>@file</codeph>, multiple
-              names. Not supported <codeph>+groupname</codeph>.</li>
-            <li>Address field: Supported IPv4, IPv6. Not supported: DNS names, domain prefixes.</li>
-            <li>Auth-method field: Supported methods: <codeph>trust</codeph>,
-                <codeph>reject</codeph>, <codeph>jd5</codeph>, <codeph>password</codeph>,
-                <codeph>peer</codeph>, <codeph>cert</codeph>. Not supported: <codeph>gss</codeph>,
-                <codeph>sspi</codeph>, <codeph>ident</codeph>, <codeph>ldap</codeph>,
-                <codeph>radius</codeph>, <codeph>pam</codeph>. Also username map
-                (<codeph>map=</codeph>) parameter is not supported.</li>
-          </ul></p>
       </body>
     </topic>
     <topic id="topic_fvj_k1p_fs">
