@@ -242,9 +242,8 @@
                     <pd>If the user running <codeph>gpload</codeph> is not a Greenplum Database
                         superuser, then the server configuration parameter
                             <codeph>gp_external_grant_privileges</codeph> must be set to
-                            <codeph>on</codeph> in order for the load to be processed.<ph
-                            otherprops="gpdb"> See the <i>Greenplum Database Reference Guide</i> for
-                            more information.</ph></pd>
+                            <codeph>on</codeph> in order for the load to be processed. See the
+                            <i>Greenplum Database Reference Guide</i> for more information.</pd>
                 </plentry>
                 <plentry>
                     <pt id="cfhost">HOST</pt>
@@ -289,10 +288,10 @@
                                                   format="dita"/></codeph> file distribution program
                                                 that will be started on the local machine. Each
                                                   <codeph>SOURCE</codeph> block defined must have a
-                                                  <codeph>FILE</codeph> specification. <p
-                                                  otherprops="gpdb">For more information about using
-                                                  the <codeph>gpfdist</codeph> parallel file server
-                                                  and single and multiple <codeph>gpfdist</codeph>
+                                                  <codeph>FILE</codeph> specification. <p>For more
+                                                  information about using the
+                                                  <codeph>gpfdist</codeph> parallel file server and
+                                                  single and multiple <codeph>gpfdist</codeph>
                                                   instances, see "Loading and Unloading Data" in the
                                                   <i>Greenplum Database Administrator Guide</i>.</p><parml>
                                                   <plentry>
@@ -430,10 +429,9 @@
                                             <pt id="cftransform">TRANSFORM</pt>
                                             <pd>Optional. Specifies the name of the input XML
                                                 transformation passed to <codeph>gpload</codeph>.
-                                                  <ph otherprops="gpdb">For more information about
-                                                  XML transformations, see "Loading and Unloading
-                                                  Data" in the <i>Greenplum Database Administrator
-                                                  Guide</i>.</ph></pd>
+                                                For more information about XML transformations, see
+                                                "Loading and Unloading Data" in the <i>Greenplum
+                                                  Database Administrator Guide</i>.</pd>
                                         </plentry>
                                         <plentry>
                                             <pt id="cftransformconfig">TRANSFORM_CONFIG</pt>
@@ -454,11 +452,10 @@
                                                 file(s) - either plain text (<codeph>TEXT</codeph>)
                                                 or comma separated values (<codeph>CSV</codeph>)
                                                 format. Defaults to <codeph>TEXT</codeph> if not
-                                                  specified.<ph otherprops="gpdb"> For more
-                                                  information about the format of the source data,
-                                                  see "Loading and Unloading Data" in the
-                                                  <i>Greenplum Database Administrator
-                                                  Guide</i>.</ph></pd>
+                                                specified. For more information about the format of
+                                                the source data, see "Loading and Unloading Data" in
+                                                the <i>Greenplum Database Administrator
+                                                Guide</i>.</pd>
                                         </plentry>
                                         <plentry>
                                             <pt id="cfdelimiter">DELIMITER</pt>
@@ -542,10 +539,9 @@
                                                   <codeph>'SQL_ASCII'</codeph>), an integer encoding
                                                 number, or <codeph>'DEFAULT'</codeph> to use the
                                                 default client encoding. If not specified, the
-                                                default client encoding is used. <ph
-                                                  otherprops="gpdb">For information about supported
-                                                  character sets, see the <i>Greenplum Database
-                                                  Reference Guide</i>.</ph></pd>
+                                                default client encoding is used. For information
+                                                about supported character sets, see the <i>Greenplum
+                                                  Database Reference Guide</i>.</pd>
                                         </plentry>
                                         <plentry>
                                             <pt id="cferrorlimit">ERROR_LIMIT</pt>
@@ -565,10 +561,10 @@
                                                 a wrong data type, or invalid client encoding
                                                 sequences. Constraint errors, such as primary key
                                                 violations, will still cause the load operation to
-                                                abort if encountered. <ph otherprops="gpdb">For
-                                                  information about handling load errors, see
-                                                  "Loading and Unloading Data" in the <i>Greenplum
-                                                  Database Administrator Guide.</i></ph></pd>
+                                                abort if encountered. For information about handling
+                                                load errors, see "Loading and Unloading Data" in the
+                                                  <i>Greenplum Database Administrator
+                                                Guide.</i></pd>
                                         </plentry>
                                         <plentry>
                                             <pt id="cferrorlog">LOG_ERRORS</pt>
@@ -588,14 +584,24 @@
                                                 error information similar to this message.
                                                 <codeblock><varname>timestamp</varname>|WARN|1 bad row, please use GPDB built-in function gp_read_error_log('<parmname>table-name</parmname>')
    to access the detailed error row</codeblock></pd>
+                                            <pd>If <codeph>LOG_ERRORS: true</codeph> is specified,
+                                                  <codeph>REUSE TABLES: true</codeph> must be
+                                                specified to retain the formatting errors in
+                                                Greenplum Database error logs. If <codeph>REUSE
+                                                  TABLES: true</codeph> is not specified, the error
+                                                information is deleted after the
+                                                  <codeph>gpload</codeph> operation. You can delete
+                                                the formatting errors from the error logs with the
+                                                Greenplum Database function
+                                                  <codeph>gp_truncate_error_log()</codeph>.</pd>
                                             <pd>Only <codeph>LOG_ERRORS</codeph> or
                                                   <codeph>ERROR_TABLE</codeph> can be specified. If
                                                 both are specified, an error message is
                                                 returned.</pd>
-                                            <pd otherprops="gpdb">For more information about
-                                                handling load errors, see "Loading and Unloading
-                                                Data" in the <cite>Greenplum Database Administrator
-                                                  Guide</cite>. For information about the
+                                            <pd>For more information about handling load errors, see
+                                                "Loading and Unloading Data" in the <cite>Greenplum
+                                                  Database Administrator Guide</cite>. For
+                                                information about the
                                                   <codeph>gp_read_error_log()</codeph> function, see
                                                 the <codeph>CREATE EXTERNAL TABLE</codeph> command
                                                 in the <cite>Greenplum Database Reference
@@ -617,10 +623,9 @@
                                                 both are specified, an error message is returned.
                                                 Using <codeph>LOG_ERRORS</codeph>
                                                 to capture formatting errors is recommended. </pd>
-                                            <pd otherprops="gpdb">For more information about
-                                                handling load errors, see "Loading and Unloading
-                                                Data" in the <cite>Greenplum Database Administrator
-                                                  Guide</cite>.</pd>
+                                            <pd>For more information about handling load errors, see
+                                                "Loading and Unloading Data" in the <cite>Greenplum
+                                                  Database Administrator Guide</cite>.</pd>
                                         </plentry>
                                         <plentry>
                                             <pt id="cfexternal">EXTERNAL</pt>
@@ -758,6 +763,12 @@
                                     the same load specifications. This improves performance of
                                     trickle loads (ongoing small loads to the same target
                                     table).</pd>
+                                <pd>If <codeph>LOG_ERRORS: true</codeph> is specified, <codeph>REUSE
+                                        TABLES: true</codeph> must be specified to retain the
+                                    formatting errors in Greenplum Database error logs. If
+                                        <codeph>REUSE TABLES: true</codeph> is not specified,
+                                    formatting error information is deleted after the
+                                        <codeph>gpload</codeph> operation.</pd>
                             </plentry>
                         </parml></pd>
                 </plentry>
@@ -857,8 +868,8 @@ current_timestamp)"</codeblock>
         <section id="section11">
             <title>See Also</title>
             <p><codeph><xref href="gpfdist.xml#topic1" type="topic" format="dita"/></codeph>,
-                    <codeph>CREATE EXTERNAL TABLE</codeph><ph otherprops="gpdb"> in the <i>Greenplum
-                        Database Reference Guide</i></ph></p>
+                    <codeph>CREATE EXTERNAL TABLE</codeph> in the <i>Greenplum Database Reference
+                    Guide</i></p>
         </section>
     </body>
 </topic>
