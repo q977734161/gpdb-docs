@@ -435,7 +435,8 @@
           <pt>-H (disable recording dump details)</pt>
           <pd>Disable recording details of database dump in database table
               <codeph>public.gpcrondump_history</codeph> in the database supplied via -x option. If
-            not specified, the utility will create/update the history table.</pd>
+            not specified, the utility will create/update the history table. The <codeph>-H</codeph>
+          option cannot be selected with the <codeph>-h</codeph> option.</pd>
         </plentry>
         <plentry>
           <pt>--incremental (backup changes to append-optimized tables)</pt>
