@@ -218,49 +218,5 @@ chunksize = 67108864</codeblock></p><p>You
                      Encryption</uicontrol> must be <codeph>None</codeph>.</li>
             </ul></p>
       </section>
-      <section id="s3chkcfg_utility"><title>About the s3chkcfg Utility</title><p>The Greenplum
-            Database utility <codeph>s3ckfcg</codeph> helps users create an <codeph>s3</codeph>
-            protocol configuration file and test a configuration file. You can specify options to
-            test the ability to access an S3 bucket with a configuration file, and optionally
-            download data from files in the bucket.</p><p>If you run the utility without any
-            options, it sends a template configuration file to <codeph>STDOUT</codeph>. You can
-            capture the output and create an <codeph>s3</codeph> protocol configuration file to
-            connect to Amazon S3. </p><p>The utility is installed in the Greenplum Database
-               <codeph>$GPHOME/bin</codeph> directory.</p><b>Syntax</b>
-         <codeblock>s3ckcfg [[<b>-D</b>] <b>-c</b> <varname>s3_conf_file</varname> <b>s3://</b><varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>]]
-
-s3chkcfg <b>-h</b></codeblock>
-         <b>Options</b>
-         <parml>
-            <plentry>
-               <pt><b>-c</b>
-                  <varname>s3_conf_file</varname>
-                  <b>s3://</b><varname>s3_endpoint</varname>/<varname>bucketname</varname>/<varname>[S3_prefix]</varname></pt>
-               <pd>Connect to the specified S3 location with the configuration specified in
-                     <varname>s3_conf_file</varname> and return information about the files in the
-                  S3 location.</pd>
-               <pd>If the connection fails, the utility displays information about failures such as
-                  invalid credentials, prefix, or server address (DNS error), or server not
-                  available.</pd>
-            </plentry>
-            <plentry>
-               <pt>-D</pt>
-               <pd>Download data in the files that are in the S3 location specified by the
-                     <codeph>-c</codeph> option and send the output to <codeph>STDOUT</codeph>.</pd>
-               <pd>If files are gzip compressed, the uncompressed data is sent to
-                     <codeph>STDOUT</codeph>.</pd>
-            </plentry>
-            <plentry>
-               <pt>-h</pt>
-               <pd>Display <codeph>s3ckcfg</codeph> help.</pd>
-            </plentry>
-         </parml><p><b>Examples</b>
-         </p><p>This example runs the utility without options to create a template
-               <codeph>s3</codeph> configuration file <codeph>mytest_s3.config</codeph> in the
-            current directory.<codeblock>s3ckcfg > ./mytest_s3.config</codeblock></p><p>This example
-            attempts to connect to an S3 bucket with the <codeph>s3</codeph> configuration file
-               <codeph>s3.mytestconf</codeph>.<codeblock>s3ckcfg -c s3.mytestconf s3://domain/test1/abc</codeblock></p><p>Download
-            all files from the S3 bucket location and send the output to <codeph>STDOUT</codeph>.
-            <codeblock>s3ckcfg -D -c s3.conf s3://domain/test1/abc</codeblock></p></section>
    </body>
 </topic>
