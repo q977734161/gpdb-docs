@@ -148,9 +148,7 @@ LANGUAGE C STABLE;</codeblock></li>
 secret = "secret"
 accessid = "user access id"
 connections = 3
-chunksize = 67108864</codeblock></p><p>You
-            can use the <codeph>s3chkcfg</codeph> utility to test the S3 configuration file. See
-               <xref href="#amazon-emr/s3chkcfg_utility" format="dita"/>.</p>
++chunksize = 67108864</codeblock></p>
          <sectiondiv>
             <p><b>s3 Configuration File Parameters</b></p>
             <parml>
