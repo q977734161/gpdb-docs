@@ -19,7 +19,7 @@
    [<b>--prefix</b> <varname>prefix_string</varname> [<b>--list-filter-tables</b>]
    [<b>-c</b> [<b>--cleanup-date</b> <varname>yyyymmdd</varname> | <b>--cleanup-total</b> <varname>n</varname>] ]
    [<b>-z</b>] [<b>-r</b>] 
-   [<b>-f</b> <varname>free_space_percent</varname>] [<b>-b</b>] [<b>-h</b>] [<b>-j</b> | <b>-k</b>] [<b>-g</b>] [<b>-G</b>] [<b>-C</b>] 
+   [<b>-f</b> <varname>free_space_percent</varname>] [<b>-b</b>] [<b>-h</b>] [<b>-H</b>] [<b>-j</b> | <b>-k</b>] [<b>-g</b>] [<b>-G</b>] [<b>-C</b>] 
    [<b>-d</b> <varname>master_data_directory</varname>] [<b>-B</b> <varname>parallel_processes</varname>] [<b>-a</b>] [<b>-q</b>]
    [<b>-y</b> <varname>reportfile</varname>] [<b>-l</b> <varname>logfile_directory</varname>]
    [<b>--email-file</b> <varname>path_to_file</varname>] [<b>-v</b>]
@@ -428,8 +428,14 @@
           <pt>-h (record dump details)</pt>
           <pd>Record details of database dump in database table
               <codeph>public.gpcrondump_history</codeph> in database supplied via
-              <codeph>-x</codeph> option. Utility will create table if it does not currently
-            exist.</pd>
+              <codeph>-x</codeph> option. Utility will create table if it does not currently exist.
+            This option will be deprecated in a future release.</pd>
+        </plentry>
+        <plentry>
+          <pt>-H (disable recording dump details)</pt>
+          <pd>Disable recording details of database dump in database table
+              <codeph>public.gpcrondump_history</codeph> in the database supplied via -x option. If
+            not specified, the utility will create/update the history table.</pd>
         </plentry>
         <plentry>
           <pt>--incremental (backup changes to append-optimized tables)</pt>
