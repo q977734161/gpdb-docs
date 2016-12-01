@@ -328,11 +328,10 @@
       </section>
       <section>
         <title>How Memory Limits Work</title>
-        <p>Setting <codeph>MEMORY_LIMIT</codeph> on a resource queue sets the maximum amount of
-          memory that all active queries submitted through the queue can consume on a segment host.
-          The amount of memory allotted to a query is the queue memory limit divided by the active
-          statement limit. (Memory limits should be used in conjunction with
-          statement-based queues rather than cost-based queues.) For example, if a queue has a
+          memory that all active queries submitted through the queue can consume for a segment
+          instance. The amount of memory allotted to a query is the queue memory limit divided by
+          the active statement limit. (Pivotal recommends that memory limits be used in conjunction
+          with statement-based queues rather than cost-based queues.) For example, if a queue has a
           memory limit of 2000MB and an active statement limit of 10, each query submitted through
           the queue is allotted 200MB of memory by default. The default memory allotment can be
           overridden on a per-query basis using the <codeph>statement_mem</codeph> server
