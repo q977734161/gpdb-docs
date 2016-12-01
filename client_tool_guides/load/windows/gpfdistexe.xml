@@ -72,7 +72,7 @@
           <pt>-t <varname>timeout</varname></pt>
           <pd>Sets the time allowed for Greenplum Database to establish a connection to a
               <codeph>gpfdist.exe</codeph> process. Default is 5 seconds. Allowed values are 2 to
-            600 seconds. May need to be increased on systems with a lot of network traffic.</pd>
+            7200 seconds. May need to be increased on systems with a lot of network traffic.</pd>
         </plentry>
         <plentry>
           <pt>-m <varname>max_length</varname></pt>
@@ -105,8 +105,8 @@
         <plentry>
           <pt>-w <varname>time</varname></pt>
           <pd>Sets the number of seconds that Greenplum Database delays before closing a target file
-            such as a named pipe. The default value is 0, no delay. The maximum value is 600
-            seconds, 10 minutes. </pd>
+            such as a named pipe. The default value is 0, no delay. The maximum value is 7200
+            seconds (2 hours). </pd>
           <pd>For a Greenplum Database with multiple segments, there might be a delay between
             segments when writing data from different segments to the file. You can specify a time
             to wait before Greenplum Database closes the file to ensure all the data is written to
