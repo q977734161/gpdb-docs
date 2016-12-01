@@ -116,9 +116,6 @@
             <xref href="gpseginstall.xml#topic1" type="topic" format="dita"/>
           </p>
           <p otherprops="gpdb">
-            <xref href="gpsnmpd.xml#topic1" type="topic" format="dita"/>
-          </p>
-          <p>
             <xref href="gpssh.xml#topic1" type="topic" format="dita"/>
           </p>
           <p>

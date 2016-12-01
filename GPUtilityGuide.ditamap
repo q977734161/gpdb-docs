@@ -99,7 +99,6 @@
         <topicref href="utility_guide/admin_utilities/gpreload.xml"/>
         <topicref href="utility_guide/admin_utilities/gpscp.xml"/>
         <topicref href="utility_guide/admin_utilities/gpseginstall.xml"/>
-        <topicref href="utility_guide/admin_utilities/gpsnmpd.xml"/>
         <topicref href="utility_guide/admin_utilities/gpssh.xml"/>
         <topicref href="utility_guide/admin_utilities/gpssh-exkeys.xml"/>
         <topicref href="utility_guide/admin_utilities/gpstart.xml"/>
