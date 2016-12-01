@@ -71,8 +71,8 @@
                <li>Configure the database to support the <codeph>s3</codeph> protocol.</li>
                <li>Create and install the <codeph>s3</codeph> protocol configuration file on all the
                   Greenplum Database segments.</li>
-            </ul></p><p><b>To configure a data database to support the <codeph>s3</codeph>
-               protocol</b></p><ol id="ol_ptx_bfs_55">
+            </ul></p><p><b>To configure a database to support the <codeph>s3</codeph>
+            protocol</b></p><ol id="ol_ptx_bfs_55">
             <li>Create a function to access the <codeph>s3</codeph> protocol library.<p>In each
                   Greenplum database that accesses an S3 bucket with the <codeph>s3</codeph>
                   protocol, create a function for the
@@ -93,11 +93,12 @@ LANGUAGE C STABLE;</codeblock></li>
                         <codeph><varname>gpseg_data_dir</varname>/<varname>gpseg_prefix</varname><varname>N</varname>/s3/s3.conf</codeph>.
                   If you can install the file in a different location, you must specify the location
                   with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
-                  URL. See <xref href="#amazon-emr/s3_config_param" format="dita"/></p></li>
+                  URL. See <xref href="#amazon-emr/s3_config_param" format="dita"/>.</p></li>
          </ol></section>
       <section id="s3_config_file"><title>s3 Protocol Configuration File</title>
-         <p>When using the <codeph>s3</codeph> protocol, the <codeph>s3</codeph> configuration file
-            is required on all Greenplum Database segments. The default location is
+         <p>When using the <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol
+            configuration file is required on all Greenplum Database segments. The default location
+            is
             <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p>
          <p>The <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
             directory, the <varname>gpseg-prefix</varname> is the segment prefix, and
@@ -111,7 +112,7 @@ LANGUAGE C STABLE;</codeblock></li>
          <codeblock>config=/home/gpadmin/s3/s3.conf</codeblock>
          <p>All segment instances on the hosts use the file
                <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p>
-         <p>The <codeph>s3</codeph> configuration file is a text file that consists of a
+         <p>The <codeph>s3</codeph> protocol configuration file is a text file that consists of a
                <codeph>[default]</codeph> section and parameters This is an example configuration
             file.<codeblock>[default]
 secret = "secret"

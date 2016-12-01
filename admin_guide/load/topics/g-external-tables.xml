@@ -12,42 +12,42 @@
       <p>Use one of the following protocols to access external table data sources. You cannot mix
          protocols in <codeph>CREATE EXTERNAL TABLE</codeph> statements:<ul id="ul_zj5_prj_kr">
             <li><codeph>file://</codeph> accesses external data files on segment host that the
-             superuser (<codeph>gpadmin</codeph>) can 
-             access. See <xref href="g-file-protocol.xml#topic_qbh_pwh_kr"/>.</li>
+               Greenplum Database superuser (<codeph>gpadmin</codeph>) can access. See <xref
+                  href="g-file-protocol.xml#topic_qbh_pwh_kr"/>.</li>
             <li><codeph>gpfdist://</codeph> points to a directory on the file host and serves
-               external data files to all Greenplum Database segments in parallel. See <xref href="g-gpfdist-protocol.xml#topic_sny_yph_kr"/>.</li>
+               external data files to all Greenplum Database segments in parallel. See <xref
+                  href="g-gpfdist-protocol.xml#topic_sny_yph_kr"/>.</li>
             <li><codeph>gpfdists://</codeph> is the secure version of <codeph>gpfdist</codeph>. See
                   <xref href="g-gpfdists-protocol.xml#topic_sny_yph_kr"/>.</li>
             <li><codeph>gphdfs://</codeph> accesses files on a Hadoop Distributed
                File System (HDFS). See <xref href="g-gphdfs-protocol.xml#topic_z5g_l5h_kr"/>.<p>The
                   files can be stored on an Amazon EMR instance HDFS. See <xref
                      href="g-hdfs-emr-config.xml#amazon-emr"/>.</p></li>
-         <li><codeph>s3://</codeph> accesses files in an Amazon S3 bucket. See <xref
+            <li><codeph>s3://</codeph> accesses files in an Amazon S3 bucket. See <xref
                   href="g-s3-protocol.xml#amazon-emr"/>.</li>
          </ul></p>
       <p>External tables access external files from within the database as if they are regular
          database tables. External tables defined with the
             <codeph>gpfdist</codeph>/<codeph>gpfdists</codeph>, <codeph>gphdfs</codeph>, and
             <codeph>s3</codeph> protocols utilize Greenplum parallelism by using the resources of
-         all Greenplum Database segments to load or unload data. The <codeph>gphdfs</codeph> protocol
-         leverages the parallel architecture of the Hadoop Distributed File System to access files
-         on that system. The <codeph>s3</codeph> protocol utilizes the Amazon Web Services (AWS)
-         capabilities. </p>
+         all Greenplum Database segments to load or unload data. The <codeph>gphdfs</codeph>
+         protocol leverages the parallel architecture of the Hadoop Distributed File System to
+         access files on that system. The <codeph>s3</codeph> protocol utilizes the Amazon Web
+         Services (AWS) capabilities. </p>
       <p>You can query external table data directly and in parallel using SQL commands such as
             <codeph>SELECT</codeph>, <codeph>JOIN</codeph>, or <codeph>SORT EXTERNAL TABLE
             DATA</codeph>, and you can create views for external tables. </p>
       <p>The steps for using external tables are:</p>
       <ol>
-         <li id="du215913">Define the external table. <p>To use the <codeph>s3</codeph> protocol, you
-               must also configure Greenplum Database and enable the protocol. See <xref
+         <li id="du215913">Define the external table. <p>To use the <codeph>s3</codeph> protocol,
+               you must also configure Greenplum Database and enable the protocol. See <xref
                   href="g-s3-protocol.xml#amazon-emr"/>.</p></li>
          <li id="du220314">Do one of the following:<ul id="ul_nd1_gd5_h4">
                <li id="du220318">Start the Greenplum Database file server(s) when using the
-                     <codeph>gpfdist</codeph> or <codeph>gpdists</codeph>
-                  protocols. </li>
+                     <codeph>gpfdist</codeph> or <codeph>gpdists</codeph> protocols. </li>
                <li id="du220319">Verify that you have already set up the required one-time
                   configuration for the <codeph>gphdfs</codeph> protocol.</li>
-            <li>Verify the Greenplum Database configuration for the <codeph>s3</codeph>
+               <li>Verify the Greenplum Database configuration for the <codeph>s3</codeph>
                   protocol.</li>
             </ul></li>
          <li id="du215986">Place the data files in the correct locations.</li>
