@@ -190,7 +190,10 @@
         <plentry>
           <pt>--batch-size=<varname>batch_size</varname></pt>
           <pd>Sets the maximum number of tables that <codeph>gptransfer</codeph> concurrently copies
-            to the destination database. If not specified, the default is 2. The maximum is 10.</pd>
+            to the destination database. If not specified, the default is 2. The maximum is
+              10.<note>If the order of the transfer is important, specify a value of 1. The tables
+              are transferred sequentially based on the order specified in the -t and -f
+              options.</note></pd>
         </plentry>
         <plentry>
           <pt>-d <varname>database</varname></pt>
@@ -313,7 +316,7 @@
                   <codeblock><varname>src_db</varname>.<varname>src_schema</varname>.<varname>src_table</varname>[, <varname>dest_db</varname>.<varname>dest_schema</varname>.<varname>dest_table</varname>]</codeblock>
                 </pd>
                 <pd>If the destination leaf child partition table is not specified,
-                    <codeph>gpransfer</codeph> copies the data to the same fully qualified table
+                    <codeph>gptransfer</codeph> copies the data to the same fully qualified table
                   name
                     (<varname>db_name</varname>.<varname>schema</varname>.<varname>table</varname>)
                   in the destination Greenplum Database system. If the source and destination
@@ -689,9 +692,7 @@ sdw4,192.0.2.4</codeblock>
     <section id="section8">
       <title>See Also</title>
       <p>
-        <codeph>
-          <xref href="gpfdist.xml#topic1">gpfdist</xref>
-        </codeph>
+        <codeph> - <xref href="gpfdist.xml#topic1">gpfdist</xref> - </codeph>
       </p>
       <p>For information about loading and unloading data, see the <i>Greenplum Database
           Administrator Guide</i>.</p>
