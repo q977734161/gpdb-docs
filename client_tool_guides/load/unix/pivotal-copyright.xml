@@ -4,6 +4,10 @@
 <topic xml:lang="en-us" id="about">
    <title>Copyright</title>
    <body outputclass="db.chapter">
+      <p>
+          <xref href="http://pivotal.io/privacy-policy" format="html" scope="external">Privacy
+            Policy</xref> | <xref href="http://pivotal.io/terms-of-use" format="html"
+            scope="external">Terms of Use</xref></p>
       <p>Copyright © 2016 Pivotal Software, Inc. All rights reserved.</p>
       <p>Pivotal Software, Inc. believes the information in this publication is accurate as of its
          publication date. The information is subject to change without notice. THE INFORMATION IN
