@@ -337,11 +337,12 @@
         </plentry>
         <plentry>
           <pt>-S <varname>schema_name</varname></pt>
-          <pd>Restore all the tables that are qualified by the specified schema from the backup. The
-              <codeph>-S</codeph> option can be specified multiple times. System catalog schemas are
-            not supported. The schema name must exist in the backup set of the database being
-            restored. To replace the data in the schema tables with the data from backup, you can
-            specify the <codeph>--truncate</codeph> option. The schema tables are truncated.</pd>
+          <pd>Restore all the tables, views, indexes, functions, and sequences qualified by the
+            specified schema from the backup. The <codeph>-S</codeph> option can be specified
+            multiple times. System catalog schemas are not supported. The schema name must exist in
+            the backup set of the database being restored. To replace the data in the schema tables
+            with the data from backup, you can specify the <codeph>--truncate</codeph> option. The
+            schema tables are truncated before the data is restored.</pd>
           <pd>The <codeph>-S</codeph> option cannot be specified with the
               <codeph>--change-schema</codeph> option.</pd>
         </plentry>
