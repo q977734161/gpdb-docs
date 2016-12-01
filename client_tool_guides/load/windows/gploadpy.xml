@@ -491,6 +491,13 @@
                         error information similar to this message.
                         <codeblock><varname>timestamp</varname>|WARN|1 bad row, please use GPDB built-in function gp_read_error_log('<parmname>table-name</parmname>')
    to access the detailed error row</codeblock></pd>
+                      <pd>If <codeph>LOG_ERRORS: true</codeph> is specified, <codeph>REUSE TABLES:
+                          true</codeph> must be specified to retain the formatting errors in
+                        Greenplum Database error logs. If <codeph>REUSE TABLES: true</codeph> is not
+                        specified, the error information is deleted after the
+                          <codeph>gpload</codeph> operation. You can delete the formatting errors
+                        from the error logs with the Greenplum Database function
+                          <codeph>gp_truncate_error_log()</codeph>.</pd>
                       <pd>Only <codeph>LOG_ERRORS</codeph> or <codeph>ERROR_TABLE</codeph> can be
                         specified. If both are specified, an error message is returned.</pd>
                       <pd otherprops="gpdb">For more information about handling load errors, see
@@ -624,6 +631,11 @@
                   table objects and staging table objects it creates. These objects will be reused
                   for future load operations that use the same load specifications. This improves
                   performance of trickle loads (ongoing small loads to the same target table).</pd>
+                <pd>If <codeph>LOG_ERRORS: true</codeph> is specified, <codeph>REUSE TABLES:
+                    true</codeph> must be specified to retain the formatting errors in Greenplum
+                  Database error logs. If <codeph>REUSE TABLES: true</codeph> is not specified,
+                  formatting error information is deleted after the <codeph>gpload</codeph>
+                  operation.</pd>
               </plentry>
             </parml></pd>
         </plentry>
