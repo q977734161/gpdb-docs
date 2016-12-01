@@ -28,7 +28,8 @@
         resynchronization. Once <codeph>gprecoverseg</codeph> completes this process, the system
         goes into <i>resyncronizing</i> mode until the recovered segment is brought up to date. The
         system is online and fully operational during resyncronization.</p>
-      <p>If <codeph>gprecoverseg</codeph> detects a segment instance with mirroring disabled in a
+      <p>During an incremental recovery (the <codeph>-F</codeph> option is not specified), if
+          <codeph>gprecoverseg</codeph> detects a segment instance with mirroring disabled in a
         system with mirrors enabled, the utility reports that mirroring is disabled for the segment,
         does not attempt to recover that segment instance, and continues the recovery process.</p>
       <p>A segment instance can fail for several reasons, such as a host failure, network failure,
