@@ -45,6 +45,7 @@
                type="topic"/>
             <topicref href="topics/g-mapreduce-sample-code.xml" type="topic"/>
          </topicref>
+         <topicref href="topics/g-gphdfs-jvm.xml"/>
          <topicref href="topics/g-hdfs-emr-config.xml"/>
          <topicref href="topics/g-hdfs-avro-format.xml"/>
          <topicref href="topics/g-hdfs-parquet-format.xml"/>
