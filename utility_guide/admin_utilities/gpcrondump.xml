@@ -426,17 +426,23 @@
         </plentry>
         <plentry>
           <pt>-h (record dump details)</pt>
-          <pd>Record details of database dump in database table
-              <codeph>public.gpcrondump_history</codeph> in database supplied via
-              <codeph>-x</codeph> option. Utility will create table if it does not currently exist.
-            This option will be deprecated in a future release.</pd>
+          <pd>Record details of the database dump in database table
+              <codeph>public.gpcrondump_history</codeph> in the database supplied via
+              <codeph>-x</codeph> option. The <codeph>gpcrondump</codeph> utility will create the
+            table if it does not currently exist. The <codeph>public</codeph> schema must exist in
+            the database. This option will be deprecated in a future release.</pd>
         </plentry>
         <plentry>
           <pt>-H (disable recording dump details)</pt>
           <pd>Disable recording details of database dump in database table
               <codeph>public.gpcrondump_history</codeph> in the database supplied via -x option. If
             not specified, the utility will create/update the history table. The <codeph>-H</codeph>
-          option cannot be selected with the <codeph>-h</codeph> option.</pd>
+            option cannot be selected with the <codeph>-h</codeph> option.<note>The
+                <codeph>gpcrondump</codeph> utility creates the
+                <codeph>public.gpcrondump_history</codeph> table by default. If the
+                <codeph>public</codeph> schema has been deleted from the database, you must specify
+              the <codeph>-H</codeph> option to prevent <codeph>gpcrondump</codeph> from returning
+              an error when it attempts to create the table.</note></pd>
         </plentry>
         <plentry>
           <pt>--incremental (backup changes to append-optimized tables)</pt>
@@ -538,9 +544,9 @@ gp_dump_20130514093000_regular_files</codeblock>
         </plentry>
         <plentry>
           <pt>--netbackup-keyword <varname>keyword</varname></pt>
-          <pd>Specify a <varname>keyword</varname> for the backup that is transferred to the
-            Veritas NetBackup server. NetBackup adds the keyword property and the specified keyword
-            value to the NetBackup .img files that are created for the backup.</pd>
+          <pd>Specify a <varname>keyword</varname> for the backup that is transferred to the Veritas
+            NetBackup server. NetBackup adds the keyword property and the specified keyword value to
+            the NetBackup .img files that are created for the backup.</pd>
           <pd>The minimum length is 1 character, and the maximum length is 100 characters.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
