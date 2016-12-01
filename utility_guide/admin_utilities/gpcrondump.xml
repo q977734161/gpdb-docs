@@ -431,8 +431,9 @@
               <codeph>-x</codeph> option. The <codeph>gpcrondump</codeph> utility will create the
             table if it does not currently exist. The <codeph>public</codeph> schema must exist in
             the database so that <codeph>gpcrondump</codeph> can create the
-              <codeph>public.gpcrondump_history</codeph> table. This option will be deprecated in a
-            future release.</pd>
+              <codeph>public.gpcrondump_history</codeph> table. The default is to record the
+            database dump details. </pd>
+          <pd>This option will be deprecated in a future release.</pd>
         </plentry>
         <plentry>
           <pt>-H (disable recording dump details)</pt>
