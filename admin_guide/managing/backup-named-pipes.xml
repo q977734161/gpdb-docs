@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic
   PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-
-
 <topic id="topic26" xml:lang="en">
   <title>Using Named Pipes</title>
   <body>
@@ -14,6 +12,10 @@
       such as storage on another host on the network or to a backup appliance. </p>
     <p>Backing up with named pipes is not supported if the <codeph>--ddboost</codeph> option is
       specified.</p>
+    <p>If database data was backed up with a <codeph>gpcrondump</codeph> command that used named
+      pipes, the <codeph>gpdbrestore</codeph> options that specify tables to be restored,
+        <codeph>-S</codeph>, <codeph>-T</codeph> and <codeph>--table-file</codeph>, are not
+      supported when restoring data from the backup.</p>
     <section id="kk180388">
       <p><b>To back up a Greenplum database using named pipes</b></p>
       <ol id="ol_alv_vgb_tt">
