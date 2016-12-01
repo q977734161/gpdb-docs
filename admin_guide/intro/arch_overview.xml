@@ -36,36 +36,28 @@
       It is the database instance to which clients connect and submit SQL statements. The master
       coordinates its work with the other database instances in the system, called <i>segments</i>,
       which store and process the data.</p>
-
     <fig id="iw157440">
       <title>High-Level Greenplum Database Architecture</title>
-
       <image height="316px" href="../../graphics/highlevel_arch.jpg" placement="break" width="397px"
       />
     </fig>
     <p>The following topics describe the components that make up a Greenplum Database system and how
-      they work together.
-      <!-- hack for HTML/PDF -->
+      they work together. <!-- hack for HTML/PDF -->
       <ul id="ul_cz4_xhy_dq" otherprops="op-help">
         <li><xref href="#arch_master" format="dita"/></li>
         <li><xref href="#arch_segments" format="dita"/></li>
         <li><xref href="#arch_interconnect" format="dita"/></li>
       </ul></p>
-
-
   </body>
   <topic id="arch_master" xml:lang="en">
     <title id="iw157474">About the Greenplum Master</title>
     <shortdesc>The Greenplum Database master is the entry to the Greenplum Database system,
       accepting client connections and SQL queries, and distributing work to the segment instances. </shortdesc>
-
     <body>
-
       <p>Greenplum Database end-users interact with Greenplum Database (through the master) as they
         would with a typical PostgreSQL database. They connect to the database using client programs
         such as <codeph>psql</codeph> or application programming interfaces (APIs) such as JDBC or
         ODBC.</p>
-
       <p>The master is where the <i>global system catalog</i> resides. The global system catalog is
         the set of system tables that contain metadata about the Greenplum Database system itself.
         The master does not contain any user data; data resides only on the <i>segments</i>. The
@@ -74,7 +66,6 @@
         final results to the client program.</p>
     </body>
   </topic>
-
   <topic id="arch_segments" xml:lang="en">
     <title id="iw157496">About the Greenplum Segments</title>
     <shortdesc>Greenplum Database segment instances are independent PostgreSQL databases that each
@@ -100,18 +91,14 @@
     <title id="iw157520">About the Greenplum Interconnect</title>
     <shortdesc>The interconect is the networking layer of the Greenplum Database
       architecture.</shortdesc>
-
     <body>
       <p>The <i>interconnect</i> refers to the inter-process communication between segments and the
         network infrastructure on which this communication relies. The Greenplum interconnect uses a
         standard 10-Gigabit Ethernet switching fabric.</p>
-
-      <p>By default, the interconnect uses User Datagram Protocol (UDP) to send messages over the
-        network. The Greenplum software performs packet verification beyond what is provided by UDP.
-        This means the reliability is equivalent to Transmission Control Protocol (TCP), and the
-        performance and scalability exceeds TCP. If the interconnect used TCP, Greenplum Database
-        would have a scalability limit of 1000 segment instances. With UDP as the current default
-        protocol for the interconnect, this limit is not applicable.</p>
+      <p>Greeplum Database interconnect uses UDP (User Datagram Protocol) to send messages over the
+        network. The Greenplum software does the additional packet verification and checking not
+        performed by UDP, so the reliability is equivalent to TCP (Transmission Control Protocol),
+        and the performance and scalability exceeds that of TCP.</p>
     </body>
   </topic>
 </topic>

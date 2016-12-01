@@ -16,11 +16,10 @@
                <p>
                   <codeph>gp_interconnect_queue_depth</codeph>
                </p>
-               <p>
-                  <codeph>gp_interconnect_snd_queue_depth</codeph>
-               </p>
             </stentry>
             <stentry>
+               <p>
+                  <codeph>gp_interconnect_snd_ queue_depth</codeph></p>
                <p>
                   <codeph>gp_interconnect_setup_ timeout</codeph>
                </p>
@@ -33,8 +32,21 @@
             </stentry>
          </strow>
       </simpletable>
-      <note>The Greenplum Database interconnect types TCP and UDP are deprecated. In
-         the next major release, only the UDPIFC interconnect type will be supported by Greenplum Database. The server configuration parameter
-            <codeph>gp_interconnect_type</codeph> controls the interconnect type.</note>
+      <p>This configuration parameter is deprecated and not used in Greenplum Database 4.3.9.0 and
+         later releases.</p>
+      <simpletable frame="none" id="simpletable_a4p_gks_wv">
+         <strow>
+            <stentry>
+               <p>
+                  <codeph>gp_interconnect_setup_timeout</codeph>
+               </p>
+            </stentry>
+            <stentry/>
+         </strow>
+      </simpletable>
+      <note>For Greenplum Database 4.3.9.0 and later, the interconnect types TCP and UDP have been
+         removed. Only the UDPIFC interconnect type is supported by Greenplum Database. See the
+         server configuration parameter <codeph>gp_interconnect_type</codeph> in the <cite>Greenplum
+            Database Reference Guide</cite>.</note>
    </body>
 </topic>
