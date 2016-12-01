@@ -37,11 +37,11 @@
             segment can download one file at a time from S3 location using several threads. To take
             advantage of the parallel processing performed by the Greenplum Database segments, the
             files in the S3 location should be similar in size and the number of files should allow
-            for multiple segments to download the data from the S3 location (with a maximum of 1000
-            files). For example, if the Greenplum Database system consists of 16 segments and there
-            was sufficient network bandwidth, creating 16 files in the S3 location allows each
-            segment to download a file from the S3 location. In contrast, if the location contained
-            only 1 or 2 files, only 1 or 2 segments download data.</p>
+            for multiple segments to download the data from the S3 location. For example, if the
+            Greenplum Database system consists of 16 segments and there was sufficient network
+            bandwidth, creating 16 files in the S3 location allows each segment to download a file
+            from the S3 location. In contrast, if the location contained only 1 or 2 files, only 1
+            or 2 segments download data.</p>
       </section>
       <section id="s3_config_param">
          <title>About the S3 Protocol config Parameter</title>
@@ -182,10 +182,6 @@ chunksize = 67108864</codeblock></p>
                         href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region"
                         format="html" scope="external"
                         >http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region</xref>.</p></li>
-               <li>The bucket location
-                     (<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/<varname>folder_location</varname>)
-                  can contain a maximum of 1000 files. If there are more than 1000 files, the
-                  protocol fetches only the first 1000 files. </li>
                <li>S3 encryption is not supported. The S3 file property <uicontrol>Server Side
                      Encryption</uicontrol> must be <codeph>None</codeph>.</li>
             </ul></p>
