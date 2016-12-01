@@ -430,7 +430,9 @@
               <codeph>public.gpcrondump_history</codeph> in the database supplied via
               <codeph>-x</codeph> option. The <codeph>gpcrondump</codeph> utility will create the
             table if it does not currently exist. The <codeph>public</codeph> schema must exist in
-            the database. This option will be deprecated in a future release.</pd>
+            the database so that <codeph>gpcrondump</codeph> can create the
+              <codeph>public.gpcrondump_history</codeph> table. This option will be deprecated in a
+            future release.</pd>
         </plentry>
         <plentry>
           <pt>-H (disable recording dump details)</pt>
@@ -547,24 +549,27 @@ gp_dump_20130514093000_regular_files</codeblock>
           <pd>Specify a <varname>keyword</varname> for the backup that is transferred to the Veritas
             NetBackup server. NetBackup adds the keyword property and the specified keyword value to
             the NetBackup .img files that are created for the backup.</pd>
-          <pd>The minimum length is 1 character, and the maximum length is 100 characters.</pd>
+          <pd>The minimum length is 1 character, and the maximum length is 127 characters.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-policy <varname>netbackup_policy</varname></pt>
           <pd>The name of the NetBackup policy created for backing up Greenplum Database.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
-        </plentry>
+          <pd>The maximum length of this parameter is 127 characters.</pd>
+      </plentry>
         <plentry>
           <pt>--netbackup-service-host <varname>netbackup_server</varname></pt>
           <pd>The NetBackup master server that Greenplum Database connects to when backing up to
             NetBackup.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
+          <pd>The maximum length of this parameter is 127 characters.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-schedule <varname>netbackup_schedule</varname></pt>
           <pd>The name of the NetBackup schedule created for backing up Greenplum Database.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified</pd>
+          <pd>The maximum length of this parameter is 127 characters.</pd>
         </plentry>
         <plentry>
           <pt>--no-owner</pt>
