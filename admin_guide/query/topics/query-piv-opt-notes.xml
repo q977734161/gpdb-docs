@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-
 <topic id="topic1">
   <title>Considerations when Using GPORCA</title>
   <abstract>
@@ -12,22 +11,25 @@
         <li>The table does not contain multi-column partition keys.</li>
         <li>The multi-level partitioned table is a uniform multi-level partitioned table. See <xref
             href="query-piv-uniform-part-tbl.xml#topic1"/>.</li>
-        <li>The query does not run against master only tables such as the system table
-            <i>pg_attribute</i>.</li>
+        <li>The server configuration parameter <codeph>optimizer_enable_master_only_queries</codeph>
+          is set to <codeph>on</codeph> when running against master only tables such as the system
+          table <i>pg_attribute</i>. For information about the parameter, see the <cite>Greenplum
+            Database Reference Guide</cite>.</li>
         <li>Statistics have been collected on the root partition of a partitioned table.</li>
       </ul></p>
     <p>If the partitioned table contains more than 20,000 partitions, consider a redesign of the
       table schema. </p>
     <p>GPORCA generates minidumps to describe the optimization context for a
-      given query. The minidump files are used by Pivotal support to analyze Greenplum Database issues. The information in the file is not in a format that can be
-      easily used by customers for debugging or troubleshooting. The minidump file is located under
-      the master data directory and uses the following naming format:</p>
+      given query. The minidump files are used by Pivotal support to analyze Greenplum Database
+      issues. The information in the file is not in a format that can be easily used by customers
+      for debugging or troubleshooting. The minidump file is located under the master data directory
+      and uses the following naming format:</p>
     <p>
       <codeph>Minidump_<varname>date</varname>_<varname>time</varname>.mdp</codeph>
     </p>
     <p>For information about the minidump file, see the server configuration parameter
         <codeph>optimizer_minidump</codeph> in the <cite>Greenplum Database Reference
-        Guide</cite>.</p>
+      Guide</cite>.</p>
     <p>When the <codeph>EXPLAIN ANALYZE</codeph> command uses GPORCA, the
         <codeph>EXPLAIN</codeph> plan shows only the number of partitions that are being eliminated.
       The scanned partitions are not shown. To show name of the scanned partitions in the segment
