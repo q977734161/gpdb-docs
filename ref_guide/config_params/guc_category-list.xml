@@ -326,9 +326,8 @@
     <topic id="topic57">
       <title>GPORCA Parameters</title>
       <body>
-        <p>These parameters control the usage of GPORCA by Greenplum Database.
-          For information about GPORCA, see "Querying Data" in the
-            <cite>Greenplum Database Administrator Guide</cite>. </p>
+        <p>These parameters control the usage of GPORCA by Greenplum Database. For information about
+          GPORCA, see "Querying Data" in the <cite>Greenplum Database Administrator Guide</cite>. </p>
         <simpletable frame="none" id="simpletable_nq5_z2c_kr">
           <strow>
             <stentry>
@@ -456,10 +455,10 @@
       <topic id="topic23" xml:lang="en">
         <title>Legacy Query Optimizer Costing Parameters</title>
         <body>
-          <note type="warning">You should not adjust these query costing
-            parameters. They are tuned to reflect Greenplum Database hardware configurations and
-            typical workloads. All of these parameters are related. Changing one without changing
-            the others can have adverse affects on performance.</note>
+          <note type="warning">You should not adjust these query costing parameters. They are tuned
+            to reflect Greenplum Database hardware configurations and typical workloads. All of
+            these parameters are related. Changing one without changing the others can have adverse
+            affects on performance.</note>
           <simpletable id="kh181234" frame="none">
             <strow>
               <stentry>
@@ -4173,11 +4172,11 @@
               command.</li>
             <li>If the legacy query optimizer creates the table, and the value of the parameter is
                 <codeph>on</codeph>, the table distribution policy is random.</li>
-            <li>If GPORCA creates the table, the table distribution policy is
-              random. The parameter value has no affect. </li>
+            <li>If GPORCA creates the table, the table distribution policy is random. The parameter
+              value has no affect. </li>
           </ul></p>
-        <p>For information about the legacy query optimizer and GPORCA, see
-          "Querying Data" in the <cite>Greenplum Database Administrator Guide</cite>. </p>
+        <p>For information about the legacy query optimizer and GPORCA, see "Querying Data" in the
+            <cite>Greenplum Database Administrator Guide</cite>. </p>
         <table id="table_hh5_kgp_kq">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -8270,16 +8269,15 @@
     <topic id="optimizer">
       <title>optimizer</title>
       <body>
-        <p>Enables GPORCA when running SQL queries. The default is
-            <codeph>off</codeph>, Greenplum Database uses only the legacy query optimizer. </p>
-        <p>GPORCA co-exists with the legacy query optimizer. When GPORCA
-          is enabled, Greenplum Database uses GPORCA to
-          generate an execution plan for a query when possible. If GPORCA
+        <p>Enables GPORCA when running SQL queries. The default is <codeph>off</codeph>, Greenplum
+          Database uses only the legacy query optimizer. </p>
+        <p>GPORCA co-exists with the legacy query optimizer. When GPORCA is enabled, Greenplum
+          Database uses GPORCA to generate an execution plan for a query when possible. If GPORCA
           cannot be used, the legacy query optimizer is used. </p>
         <p>The <cmdname>optimizer</cmdname> parameter can be set for a database system, an
           individual database, or a session or query.</p>
-        <p>For information about the legacy query optimizer and GPORCA, see
-          "Querying Data" in the <cite>Greenplum Database Administrator Guide</cite>.</p>
+        <p>For information about the legacy query optimizer and GPORCA, see "Querying Data" in the
+            <cite>Greenplum Database Administrator Guide</cite>.</p>
         <table id="optimizer_guc_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -8307,15 +8305,15 @@
       <title>optimizer_analyze_root_partition</title>
       <body>
         <p>For a partitioned table, collects statistics for the root partition when the
-            <cmdname>ANALYZE</cmdname> command is run on the table. GPORCA uses
-          the root partition statistics when generating a query plan. The legacy query optimizer
-          does not use these statistics. If you set the value of the server configuration parameter
-              <codeph><xref href="#optimizer" format="dita"/></codeph> to on, set the value of this
-          parameter to on and run the command <cmdname>ANALYZE</cmdname> or <cmdname>ANALYZE
+            <cmdname>ANALYZE</cmdname> command is run on the table. GPORCA uses the root partition
+          statistics when generating a query plan. The legacy query optimizer does not use these
+          statistics. If you set the value of the server configuration parameter <codeph><xref
+              href="#optimizer" format="dita"/></codeph> to on, set the value of this parameter to
+          on and run the command <cmdname>ANALYZE</cmdname> or <cmdname>ANALYZE
             ROOTPARTITION</cmdname> on partitioned tables to ensure the proper statistics have been
           collected. </p>
-        <p>For information about the legacy query optimizer and GPORCA, see
-          "Querying Data" in the <cite>Greenplum Database Administrator Guide</cite>.</p>
+        <p>For information about the legacy query optimizer and GPORCA, see "Querying Data" in the
+            <cite>Greenplum Database Administrator Guide</cite>.</p>
         <table id="table_gj5_k5l_vp">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -8375,11 +8373,11 @@
     <topic id="optimizer_minidump">
       <title>optimizer_minidump</title>
       <body>
-        <p>GPORCA generates minidump files to describe the optimization context
-          for a given query. The minidump files are used by Pivotal support to analyze Greenplum
-          Database issues. The information in the file is not in a format that can be easily used by
-          customers for debugging or troubleshooting. The minidump file is located under the master
-          data directory and uses the following naming format:</p>
+        <p>GPORCA generates minidump files to describe the optimization context for a given query.
+          The minidump files are used by Pivotal support to analyze Greenplum Database issues. The
+          information in the file is not in a format that can be easily used by customers for
+          debugging or troubleshooting. The minidump file is located under the master data directory
+          and uses the following naming format:</p>
         <p>
           <codeph>Minidump_<varname>date</varname>_<varname>time</varname>.mdp</codeph>
         </p>
@@ -8388,16 +8386,15 @@
               GPORCA</li>
             <li>An internal representation (DXL) of the query</li>
             <li>An internal representation (DXL) of the plan produced by GPORCA</li>
-            <li>System configuration information passed to GPORCA such as
-              server configuration parameters, cost and statistics configuration, and number of
-              segments</li>
+            <li>System configuration information passed to GPORCA such as server configuration
+              parameters, cost and statistics configuration, and number of segments</li>
             <li>A stack trace of errors generated while optimizing the query</li>
           </ul></p>
         <p>Setting this parameter to <codeph>ALWAYS</codeph> generates a minidump for all queries.
-          Set this parameter to <codeph>ONERROR</codeph> in production
-          environments to minimize total optimization time. </p>
-        <p>For information about GPORCA, see "Querying Data" in the
-            <cite>Greenplum Database Administrator Guide</cite>.</p>
+          Set this parameter to <codeph>ONERROR</codeph> in production environments to minimize
+          total optimization time. </p>
+        <p>For information about GPORCA, see "Querying Data" in the <cite>Greenplum Database
+            Administrator Guide</cite>.</p>
         <table id="optimizer_minidump">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -10102,10 +10099,9 @@ $ gpconfig -c pgcrypto.fips -v on --masteronly</codeblock></p>
       <title>writable_external_table_bufsize</title>
       <body>
         <p>Size of the buffer (in KB) that Greenplum Database uses for network communication, such
-          as the <codeph>gpfdist</codeph> utility and web external tables (that use http). <keyword
-            keyref="product_name"/> stores data in the buffer before writing the data out. For
-          information about <codeph>gpfdist</codeph>, see the <cite>Greenplum Database Utility
-            Guide</cite>.</p>
+          as the <codeph>gpfdist</codeph> utility and web external tables (that use http). Greenplum
+          Database stores data in the buffer before writing the data out. For information about
+            <codeph>gpfdist</codeph>, see the <cite>Greenplum Database Utility Guide</cite>.</p>
         <table id="table_writable_external_table_bufsize">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
