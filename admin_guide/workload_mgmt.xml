@@ -82,8 +82,8 @@
             id="ul_y5m_xzs_zp">
             <li>Add more RAM to the nodes to increase the physical memory.</li>
             <li>Allocate swap space to increase the size of virtual memory.</li>
-            <li>Set the kernel parameters <varname>vm_overcommit_memory</varname> and
-                <varname>vm_overcommit_ratio</varname> to configure how the operating system handles
+            <li>Set the kernel parameters <varname>vm.overcommit_memory</varname> and
+                <varname>vm.overcommit_ratio</varname> to configure how the operating system handles
               large memory allocation requests.</li>
           </ul></p>
         <p>The physical RAM and OS configuration are usually managed by the platform team and system
@@ -95,17 +95,25 @@
           much concurrency in Greenplum Database, increasing to 64GB of reserved memory may be
           required. The largest user of operating system memory is SLAB, which increases as
           Greenplum Database concurrency and the number of sockets used increases.</p>
-        <p>The <codeph>vm_overcommit_memory</codeph> kernel parameter should always be set to 2, the
+        <p>The <codeph>vm.overcommit_memory</codeph> kernel parameter should always be set to 2, the
           only safe value for Greenplum Database.</p>
-        <p>The <codeph>vm_overcommit_ratio</codeph>  kernel parameter sets the percentage of RAM
-          that is used for application processes, the remainder reserved for the operating system.
-          The default for Red Hat is 50 (50%). Setting this parameter too high may result in
-          insufficient memory reserved for the operating system, which can cuase segment host
+        <p>The <codeph>vm.overcommit_ratio</codeph> kernel parameter sets the percentage of RAM that
+          is used for application processes, the remainder reserved for the operating system. The
+          default for Red Hat is 50 (50%). Setting this parameter too high may result in
+          insufficient memory reserved for the operating system, which can cause segment host
           failure or database failure. Leaving the setting at the default of 50 is generally safe,
           but conservative. Setting the value too low reduces the amount of concurrency and query
           complexity that can be run at the same time by reducing the amount of memory available to
           Greenplum Database. When increasing <codeph>vm.overcommit_ratio</codeph> it is important
-          to remember to always reserve some memory for operating system activities. </p>
+          to remember to always reserve some memory for operating system activities.</p>
+        <p>To calculate a safe value for <codeph>vm.overcommit_ratio</codeph>, first determine the
+          total memory available to Greenplum Database processes, called <codeph>gp_vmem</codeph>,
+          with this
+          formula:<codeblock>gp_vmem = ((SWAP + RAM) – (7.5GB + 0.05 * RAM)) / 1.7</codeblock></p>
+        <p>where <codeph>SWAP</codeph> is the swap space on the host in GB, and <codeph>RAM</codeph>
+          is the number of GB of RAM installed on the host. </p>
+        <p>Calculate the <codeph>vm.overcommit_ratio</codeph> value with this
+          formula:<codeblock>vm.overcommit_ratio = (RAM - 0.026 * gp_vmem) / RAM</codeblock></p>
       </section>
       <section id="section_nfn_q5r_bs">
         <title>Configuring Greenplum Database Memory</title>
@@ -125,11 +133,21 @@
           the block to have a maximum of 11 active primaries, compared to 16 for the default
           grouping mirror configuration.</p>
         <p>The <varname>gp_vmem_protect_limit</varname> value is the amount of memory to allocate
-          each segment. It is calculated by subtracting the memory reserved for the OS from the
-          total available application memory and dividing by the maximum number of primary segments
-          during a failure. If <varname>gp_vmem_protect_limit</varname> is set too high, queries can
-          fail. Use the following formula to calculate a safe value for
-          <varname>gp_vmem_protect_limit</varname>:<codeblock>(<varname>SWAP</varname> + (<varname>RAM</varname> * vm.overcommit_ratio / 100)) / <varname>max_number_segments_per_server_with_mirror_failure</varname></codeblock></p>
+          each segment. It is estimated by calculating the memory available for all Greenplum
+          Database processes and dividing by the maximum number of primary segments during a
+          failure. If <varname>gp_vmem_protect_limit</varname> is set too high, queries can fail.
+          Use the following formulas to calculate a safe value for
+            <varname>gp_vmem_protect_limit</varname>.</p>
+        <p>Calculate <codeph>gp_vmem</codeph>, the memory available for all Greenplum Database
+          processes, using this
+          formula:<codeblock>gp_vmem = ((SWAP + RAM) – (7.5GB + 0.05 * RAM)) / 1.7</codeblock>where
+            <codeph>SWAP</codeph> is the host's swap space in GB and <codeph>RAM</codeph> is the RAM
+          installed on the host in GB.</p>
+        <p>Calculate <codeph>gp_vmem_protect_limit</codeph> using this
+          formula:<codeblock>gp_vmem_protect_limit = gp_vmem / max_acting_primary_segments</codeblock></p>
+        <p>where <codeph>max_acting_primary_segments</codeph> is the maximum number of primary
+          segments that could be running on a host when mirror segments are activated due to a host
+          or segment failure. </p>
         <p>Another important Greenplum Database server configuration parameter is
             <varname>statement_mem</varname>. This parameter sets the maximum amount of memory to
           allocate to execute a query. To determine a value for this parameter, divide the amount of
@@ -482,7 +500,7 @@
                   <codeph>max_statement_mem</codeph> is set by database superusers to prevent
                 regular database users from over-allocation.</li>
               <li id="iz169494"><codeph>gp_vmem_protect_limit</codeph> - Sets the upper boundary
-                that all query processes can consume that should not exceed the amount of physical
+                that all query processes can consume and should not exceed the amount of physical
                 memory of a segment host. When a segment host reaches this limit during query
                 execution, the queries that cause the limit to be exceeded will be cancelled. </li>
               <li id="iz169556"><codeph>gp_vmem_idle_resource_timeout</codeph> and
