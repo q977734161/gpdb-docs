@@ -28,6 +28,9 @@
         resynchronization. Once <codeph>gprecoverseg</codeph> completes this process, the system
         goes into <i>resyncronizing</i> mode until the recovered segment is brought up to date. The
         system is online and fully operational during resyncronization.</p>
+      <p>If <codeph>gprecoverseg</codeph> detects a segment instance with mirroring disabled in a
+        system with mirrors enabled, the utility reports that mirroring is disabled for the segment,
+        does not attempt to recover that segment instance, and continues the recovery process.</p>
       <p>A segment instance can fail for several reasons, such as a host failure, network failure,
         or disk failure. When a segment instance fails, its status is marked as <i>down</i> in the
         Greenplum Database system catalog, and its mirror is activated in <i>change tracking</i>
