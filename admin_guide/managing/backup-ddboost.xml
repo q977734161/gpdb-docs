@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic
   PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-
 <topic id="topic17" xml:lang="en">
   <title id="kk171433">Backing Up Databases with Data Domain Boost</title>
   <body>
@@ -33,8 +32,9 @@
     <p>Refer to Data Domain Boost documentation for detailed information.</p>
     <note type="important">For incremental back up sets, a full backup and the associated
       incremental backups must be on a single device. For example, a backup set must all be on a
-      file system. The backup set cannot have some backups on the local file system and others on a
-      Data Domain system. </note>
+      file system. The backup set cannot have some backups on the local file system and others on
+      single storage unit of a Data Domain system. For backups on a Data Domain system, the backup
+      set must be in a single storage unit.</note>
     <note>You can use a Data Domain server as an NFS file system (without Data Domain Boost) to
       perform incremental backups. </note>
   </body>
@@ -58,12 +58,14 @@
     <body>
       <p>There is a one-time process to set up credentials to use Data Domain Boost. Credential
         setup connects one Greenplum Database instance to one Data Domain instance. If you are using
-        the <codeph>gpcrondump --replicate</codeph> option or Data Domain Boost managed file
-        replication capabilities for disaster recovery purposes, you must set up credentials for
-        both the local and remote Data Domain systems. </p>
+        the <codeph>gpcrondump --replicate</codeph> option or DD Boost managed file replication
+        capabilities for disaster recovery purposes, you must set up credentials for both the local
+        and remote Data Domain systems. </p>
       <p>To set up credentials, run <codeph>gpcrondump</codeph> with the following options:</p>
       <codeblock>--ddboost-host <varname>ddboost_hostname</varname> --ddboost-user <varname>ddboost_user</varname> 
---ddboost-backupdir <varname>backup_directory</varname></codeblock>
+--ddboost-backupdir <varname>backup_directory</varname> --ddboost-storage-unit <varname>storage_unit_ID</varname></codeblock>
+      <p>The <codeph>--ddboost-storage-unit</codeph> is optional. If not specified, the storage unit
+        ID is <codeph>GPDB</codeph>.</p>
       <p>To remove credentials, run <codeph>gpcrondump</codeph> with the
           <codeph>--ddboost-config-remove</codeph> option.</p>
       <p>To manage credentials for the remote Data Domain system that is used for backup
@@ -84,6 +86,101 @@
 --ddboost-host <varname>ddboost_hostname2</varname> --ddboost-user <varname>ddboost_user</varname> 
 --ddboost-backupdir <varname>backup_directory</varname></codeblock>
     </body>
+    <topic id="topic_tsc_41c_yv">
+      <title>About DD Boost Credential Files</title>
+      <body>
+        <p>The <codeph>gpcrondump</codeph> utility is used to schedule DD Boost backup operations.
+          The utility is also used to set, change, or remove one-time credentials and a storage unit
+          ID for DD Boost. The <codeph>gpcrondump</codeph>, <codeph>gpdbrestore</codeph>, and
+            <codeph>gpmfr</codeph> utilities use the DD Boost credentials to access Data Domain
+          systems. DD Boost information is stored in these files.<ul id="ul_o1w_rpt_xv">
+            <li><codeph>DDBOOST_CONFIG</codeph> is used by <codeph>gpdbrestore</codeph> and
+                <codeph>gpcrondump</codeph> for backup and restore operations with the Data Domain
+              system. The <codeph>gpdbrestore</codeph> utility creates or updates the file when you
+              specify Data Domain information with the <codeph>--ddboost-host</codeph> option. </li>
+            <li><codeph>DDBOOST_MFR_CONFIG</codeph> is used by <codeph>gpmfr</codeph> for remote
+              replication operations with the remote Data Domain system. The
+                <codeph>gpdbrestore</codeph> utility creates or updates the file when you specify
+              Data Domain information with the <codeph>--ddboost-host</codeph> option and
+                <codeph>--ddboost-remote</codeph> option. </li>
+          </ul></p>
+        <p>The configuration files are created in the current user (<codeph>gpadmin</codeph>) home
+          directory on the Greenplum Database master and segment hosts. The path and file name
+          cannot be changed. Information in the configuration files includes:<ul id="ul_t3r_wnt_xv">
+            <li>Data Domain host name or IP address</li>
+            <li>DD Boost user name</li>
+            <li>DD Boost password</li>
+            <li>Default Data Domain backup directory (<codeph>DDBOOST_CONFIG</codeph> only)</li>
+            <li>Data Domain storage unit ID: default is <codeph>GPDB</codeph>
+                (<codeph>DDBOOST_CONFIG</codeph> only)</li>
+            <li>Data Domain default log level: default is <codeph>WARNING</codeph></li>
+            <li>Data Domain default log size: default is <codeph>50</codeph></li>
+          </ul></p>
+        <p>Use the <codeph>gpcrondump</codeph> option <codeph>--ddboost-show-config</codeph> to
+          display the current DD Boost configuration information from the Greenplum Database master
+          configuration file. Specify the <codeph>--remote</codeph> option to display the
+          configuration information for the remote Data Domain system.</p>
+      </body>
+    </topic>
+    <topic id="topic_e1w_pcc_yv">
+      <title>About Data Domain Storage Units</title>
+      <body>
+        <p>When you use a Data Domain system to perform a backup, restore, or remote replication
+          operation with the <codeph>gpcrondump</codeph>, <codeph>gpdbrestore</codeph>, or
+            <codeph>gpmfr</codeph> utility, the operation uses a storage unit on a Data Domain
+          system. You can specify the storage unit ID when you perform these operations:</p>
+        <ul id="ul_dvd_kg5_xv">
+          <li>When you set the DD Boost credentials with the <codeph>gpcrondump</codeph> utility
+              <codeph>--ddboost-host</codeph> option. <p>If you specify the
+                <codeph>--ddboost-storage-unit</codeph> option, the storage unit ID is written to
+              the Greenplum Database DD Boost configuration file <codeph>DDBOOST_CONFIG</codeph>. If
+              the storage unit ID is not specified, the default value is
+              <codeph>GPDB</codeph>.</p><p>If you specify the
+                <codeph>--ddboost-storage-unit</codeph> option and the
+                <codeph>--ddboost-remote</codeph> option to set DD Boost credentials for the remote
+              Data Domain server, the storage ID information is ignored. The storage unit ID in the
+                <codeph>DDBOOST_CONFIG</codeph> file is the default ID that is used for remote
+              replication operations.</p></li>
+          <li>When you perform a backup, restore, or remote replication operation with
+              <codeph>gpcrondump</codeph>, <codeph>gpdbrestore</codeph>, or <codeph>gpmfr</codeph>.
+              <p>When you specify the <codeph>--ddboost-storage-unit</codeph> option, the utility
+              uses the specified Data Domain storage unit for the operation. The value in the
+              configuration file is not changed.</p></li>
+        </ul>
+        <p>A Greenplum Database utility uses the storage unit ID based on this order of precedence
+          from highest to lowest:<ul id="ul_rns_jj5_xv">
+            <li>Storage unit ID specified with <codeph>--ddboost-storage-unit</codeph></li>
+            <li>Storage unit ID specified in the configuration file</li>
+            <li>Default storage unit ID <codeph>GPDB</codeph></li>
+          </ul></p>
+        <p>Greenplum Database master and segment instances use a single storage unit ID when
+          performing a backup, restore, or remote replication operation. </p>
+        <note type="important">The storage unit ID in the Greenplum Database master and segment host
+          configuration files must be the same. The Data Domain storage unit is created by the
+            <codeph>gpcrondump</codeph> utility from the Greenplum Database master host.<p>The
+            following occurs if storage unit IDs are different in the master and segment host
+            configuration files:<ul id="ul_hh2_ptj_yv">
+              <li>If all the storage units have not been created, the operation fails.</li>
+              <li>If all the storage units have been created, a backup operation completes. However,
+                the backup files are in different storage units and a restore operation fails
+                because a full set of backup files is not in a single storage unit.</li>
+            </ul></p></note>
+        <p>When performing a full backup operation (not an incremental backup), the storage unit is
+          created on the Data Domain system if it does not exist.</p>
+        <p>A storage unit is not created if these <codeph>gpcrondump</codeph> options are specified:
+            <codeph>--incremental</codeph>, <codeph>--list-backup-file</codeph>,
+            <codeph>--list-filter-tables</codeph>, <codeph>-o</codeph>, or
+            <codeph>--ddboost-config-remove</codeph>. </p>
+        <p>Greenplum Database replication operations use the same storage unit ID on both systems.
+          For example, if you specify the <codeph>--ddboost-storage-unit</codeph> option for
+            <codeph>--replicate</codeph> or <codeph>--recover</codeph> through
+            <codeph>gpmfr</codeph> or <codeph>--replicate</codeph> from <codeph>gpcrondump</codeph>,
+          the storage unit ID applies to both local and remote Data Domain systems. </p>
+        <p>When performing a replicate or recover operation with <codeph>gpmfr</codeph>, the storage
+          unit on the destination Data Domain system (where the backup is being copied) is created
+          if it does not exist.</p>
+      </body>
+    </topic>
   </topic>
   <topic id="topic20" xml:lang="en">
     <title>Configuring Data Domain Boost for Greenplum Database</title>
@@ -123,7 +220,7 @@
           group to provide load balancing and higher network throughput on your Data Domain system.
           When a Data Domain system on an interface group receives data from the media server
           clients, the data transfer is load balanced and distributed as separate jobs on the
-          private network. You can achieve optimal throughput with multiple 1 GbE connections. </p>
+          private network. You can achieve optimal throughput with multiple 10 GbE connections. </p>
         <note type="note">To ensure that interface groups function properly, use interface groups
           only when using multiple network connections on the same networking subnet.</note>
         <p>To create an interface group on the Data Domain system, create interfaces with the
@@ -193,8 +290,11 @@
     <title>Backup Options for Data Domain Boost</title>
     <body>
       <p>Specify the <codeph>gpcrondump</codeph> options to match the setup. </p>
-      <p>Data Domain Boost backs up files to the Data Domain system. Status and report files remain
-        on the local disk. </p>
+      <p>Data Domain Boost backs up files to a storage unit in the Data Domain system. Status and
+        report files remain on the local disk. If needed, specify the Data Domain system storage
+        unit with the <codeph>--ddboost-storage-unit</codeph> option. This DD Boost comand display
+        the names of all storage units on a Data Domain
+        system<codeblock>ddboost storage-unit show</codeblock></p>
       <p>To configure Data Domain Boost to remove old backup directories before starting a backup
         operation, specify a <codeph>gpcrondump</codeph> backup expiration option:</p>
       <ul>
@@ -219,7 +319,8 @@
           <li id="kk159968">Add the option <codeph>--ddboost</codeph> to the
               <codeph>gpcrondump</codeph> option:<p>
               <codeblock>gpcrondump -x mydatabase -z -v --ddboost </codeblock>
-            </p></li>
+            </p><p>If needed, specify the Data Domain system storage unit with the
+                <codeph>--ddboost-storage-unit</codeph> option.</p></li>
         </ol>
         <note type="important">Do not use compression with Data Domain Boost backups. The
             <codeph>-z</codeph> option turns backup compression off.<p>Some of the options available
@@ -236,7 +337,9 @@
         <li id="kk167029">Ensure the <xref href="backup-ddboost.xml#topic19"/> is complete.</li>
         <li id="kk167030">Add the option <codeph>--ddboost</codeph> to the
             <codeph>gpdbrestore</codeph>
-          command:<codeblock>$ gpdbrestore -t <i>backup_timestamp</i> -v -ddboost</codeblock></li>
+            command:<codeblock>$ gpdbrestore -t <i>backup_timestamp</i> -v -ddboost</codeblock><p>If
+            needed, specify the Data Domain system storage unit with the
+              <codeph>--ddboost-storage-unit</codeph> option.</p></li>
       </ol>
       <note type="note">Some of the <codeph>gpdbrestore</codeph> options available have different
         implications when using Data Domain. For details, see <codeph>gpdbrestore</codeph> in the
