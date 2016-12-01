@@ -125,24 +125,22 @@ LANGUAGE C STABLE;</codeblock></li>
                   with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
                   URL. See <xref href="#amazon-emr/s3_config_param" format="dita"/>.</p></li>
          </ol></section>
-      <section id="s3_config_file"><title>s3 Protocol Configuration File</title>
-         <p>When using the <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol
-            configuration file is required on all Greenplum Database segments. The default location
-            is
-            <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p>
-         <p>The <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
+      <section id="s3_config_file"><title>s3 Protocol Configuration File</title><p>When using the
+               <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol configuration file is
+            required on all Greenplum Database segments. The default location is
+            <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p><p>The
+               <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
             directory, the <varname>gpseg-prefix</varname> is the segment prefix, and
                <varname>N</varname> is the segment ID. The segment data directory, prefix, and ID
-            are set when you initialize a Greenplum Database system.</p>
-         <p>If you have multiple segment instances on segment hosts, you can simplify the
-            configuration by creating a single location on each segment host. Then you specify the
-            absolute path to the location with the <codeph>config</codeph> parameter in the
-               <codeph>s3</codeph> protocol <codeph>LOCATION</codeph> clause. This example specifies
-            a location in the <codeph>gpadmin</codeph> home directory. </p>
-         <codeblock>config=/home/gpadmin/s3/s3.conf</codeblock>
-         <p>All segment instances on the hosts use the file
-               <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p>
-         <p>The <codeph>s3</codeph> protocol configuration file is a text file that consists of a
+            are set when you initialize a Greenplum Database system.</p><p>If you have multiple
+            segment instances on segment hosts, you can simplify the configuration by creating a
+            single location on each segment host. Then you specify the absolute path to the location
+            with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
+               <codeph>LOCATION</codeph> clause. This example specifies a location in the
+               <codeph>gpadmin</codeph> home directory.
+            </p><codeblock>config=/home/gpadmin/s3/s3.conf</codeblock><p>All segment instances on
+            the hosts use the file <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p><p>The
+               <codeph>s3</codeph> protocol configuration file is a text file that consists of a
                <codeph>[default]</codeph> section and parameters This is an example configuration
             file.<codeblock>[default]
 secret = "secret"
@@ -217,8 +215,8 @@ chunksize = 67108864</codeblock></p><p>You
                      Encryption</uicontrol> must be <codeph>None</codeph>.</li>
             </ul></p>
       </section>
-      <section id="s3chkcfg_utility"><title>About the s3chkcfg Utility</title><p>The Greenplum
-            Database utility <codeph>s3chkcfg</codeph> helps users create an <codeph>s3</codeph>
+      <section id="s3chkcfg_utility"><title>About the gpcheckcloud Utility</title><p>The Greenplum
+            Database utility <codeph>gpcheckcloud</codeph> helps users create an <codeph>s3</codeph>
             protocol configuration file and test a configuration file. You can specify options to
             test the ability to access an S3 bucket with a configuration file, and optionally
             download data from files in the bucket.</p><p>If you run the utility without any
@@ -226,11 +224,11 @@ chunksize = 67108864</codeblock></p><p>You
             capture the output and create an <codeph>s3</codeph> configuration file to connect to
             Amazon S3. </p><p>The utility is installed in the Greenplum Database
                <codeph>$GPHOME/bin</codeph> directory.</p><b>Syntax</b>
-         <codeblock>s3chkcfg {<b>-c</b> | <b>-d</b>} "<b>s3://</b><varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>]] config==<varname>path_to_config_file</varname>"
+         <codeblock>gpcheckcloud {<b>-c</b> | <b>-d</b>} "<b>s3://</b><varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>]] config==<varname>path_to_config_file</varname>"
 
-s3chkcfg <b>-t</b>
+gpcheckcloud <b>-t</b>
 
-s3chkcfg <b>-h</b></codeblock>
+gpcheckcloud <b>-h</b></codeblock>
          <b>Options</b>
          <parml>
             <plentry>
@@ -263,11 +261,11 @@ s3chkcfg <b>-h</b></codeblock>
          </parml><p><b>Examples</b>
          </p><p>This example runs the utility without options to create a template
                <codeph>s3</codeph> configuration file <codeph>mytest_s3.config</codeph> in the
-            current directory.<codeblock>s3chkcfg -t > ./mytest_s3.config</codeblock></p><p>This
+            current directory.<codeblock>gpcheckcloud -t > ./mytest_s3.config</codeblock></p><p>This
             example attempts to connect to an S3 bucket location with the <codeph>s3</codeph>
             configuration file
-            <codeph>s3.mytestconf</codeph>.<codeblock>s3chkcfg -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
+            <codeph>s3.mytestconf</codeph>.<codeblock>gpcheckcloud -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
             all files from the S3 bucket location and send the output to <codeph>STDOUT</codeph>.
-            <codeblock>s3chkcfg -d "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p></section>
+            <codeblock>gpcheckcloud -d "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p></section>
    </body>
 </topic>
