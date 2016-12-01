@@ -98,7 +98,7 @@
       <p>To restore the <i>mytest</i> database with the incremental backup
           <codeph>20130114051246</codeph>, you need only the incremental backup and the full backup
           <codeph>20121114064330</codeph>. The restore command would be similar to this command.</p>
-      <codeblock>gpdbrestore –t 20130114051246 -u /backupdir</codeblock>
+      <codeblock>gpdbrestore -t 20130114051246 -u /backupdir</codeblock>
     </section>
     <section id="section_djm_lbb_tt">
       <title>Incremental Backup with Sets</title>
