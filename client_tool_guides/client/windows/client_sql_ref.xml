@@ -213,6 +213,11 @@
 		</section>
 		<p conref="../../../ref_guide/sql_commands/CREATE_OPERATOR_CLASS.xml#topic1/sql_command_desc"/>
 		<codeblock conref="../../../ref_guide/sql_commands/CREATE_OPERATOR_CLASS.xml#topic1/sql_command_synopsis"/>
+		<section>
+			<title>CREATE PROTOCOL</title>
+		</section>
+		<p conref="../../../ref_guide/sql_commands/CREATE_PROTOCOL.xml#topic1/sql_command_desc"/>
+		<codeblock conref="../../../ref_guide/sql_commands/CREATE_PROTOCOL.xml#topic1/sql_command_synopsis"/>
 		<section id="ae1904333">
 			<title>CREATE RESOURCE QUEUE</title>
 		</section>
@@ -353,6 +358,11 @@
 		</section>
 		<p conref="../../../ref_guide/sql_commands/DROP_OWNED.xml#topic1/sql_command_desc"/>
 		<codeblock conref="../../../ref_guide/sql_commands/DROP_OWNED.xml#topic1/sql_command_synopsis"/>
+		<section>
+						<title>DROP PROTOCOL</title>
+					</section>
+				<p conref="../../../ref_guide/sql_commands/DROP_PROTOCOL.xml#topic1/sql_command_desc"/>
+				<codeblock conref="../../../ref_guide/sql_commands/DROP_PROTOCOL.xml#topic1/sql_command_synopsis"/>
 		<section id="ae1904899">
 			<title>DROP RESOURCE QUEUE</title>
 		</section>
