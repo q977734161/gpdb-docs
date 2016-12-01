@@ -36,6 +36,8 @@
             <li>
                <codeph>gp_appendonly_compaction_threshold</codeph>
             </li>
+            <li>
+               <codeph>validate_previous_free_tid</codeph></li>
          </ul>
       </body>
    </topic>
