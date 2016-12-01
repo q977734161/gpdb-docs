@@ -128,8 +128,8 @@
         "Backing Up and Restoring Databases" in the <cite>Greenplum Database Administrator
           Guide</cite>.</p></section>
     <section><b>Using NetBackup</b>
-      <p>Symantec NetBackup integration is included with Pivotal Greenplum Database. Greenplum
-        Database must be configured to communicate with the Symantec NetBackup master server that is
+      <p>Veritas NetBackup integration is included with Pivotal Greenplum Database. Greenplum
+        Database must be configured to communicate with the Veritas NetBackup master server that is
         used to backup the database. See the <cite>Greenplum Database Administrator Guide</cite> for
         information on configuring Greenplum Database and NetBackup and backing up and restoring
         with NetBackup. </p></section>
@@ -532,14 +532,14 @@ gp_dump_20130514093000_regular_files</codeblock>
         </plentry>
         <plentry>
           <pt>--netbackup-block-size <varname>size</varname></pt>
-          <pd>Specify the block size, in bytes, of data being transferred to the Symantec NetBackup
+          <pd>Specify the block size, in bytes, of data being transferred to the Veritas NetBackup
             server. The default is 512 bytes.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>
         </plentry>
         <plentry>
           <pt>--netbackup-keyword <varname>keyword</varname></pt>
           <pd>Specify a <varname>keyword</varname> for the backup that is transferred to the
-            Symantec NetBackup server. NetBackup adds the keyword property and the specified keyword
+            Veritas NetBackup server. NetBackup adds the keyword property and the specified keyword
             value to the NetBackup .img files that are created for the backup.</pd>
           <pd>The minimum length is 1 character, and the maximum length is 100 characters.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified.</pd>

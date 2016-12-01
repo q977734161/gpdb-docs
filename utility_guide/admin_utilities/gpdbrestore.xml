@@ -101,7 +101,7 @@
         with DD Boost. Both NetBackup and DD Boost cannot be used in a single back up
       operation.</p></section>
     <section><b>Restoring a Database from NetBackup</b>
-      <p>Greenplum Database must be configured to communicate with the Symantec NetBackup master
+      <p>Greenplum Database must be configured to communicate with the Veritas NetBackup master
         server that is used to restore database data. See the <cite>Greenplum Database System
           Administrator Guide</cite> for information about configuring Greenplum Database and
         NetBackup.</p><p>When restoring from NetBackup server, you must specify the timestamp of the
@@ -238,7 +238,7 @@
         </plentry>
         <plentry>
           <pt>--netbackup-block-size <varname>size</varname></pt>
-          <pd>Specify the block size, in bytes, of data being transferred from the Symantec
+          <pd>Specify the block size, in bytes, of data being transferred from the Veritas
             NetBackup server. The default is 512 bytes.</pd>
           <pd>NetBackup options are not supported if DDBoost backup options are specified. </pd>
         </plentry>
