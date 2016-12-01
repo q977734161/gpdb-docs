@@ -91,7 +91,7 @@
       <p>You can use the <cmdname>SET</cmdname> command to set <cmdname>optimizer</cmdname> server
         configuration parameter for a session. For example, after you use the
           <cmdname>psql</cmdname> utility to connect to Greenplum Database, this
-          <cmdname>SET</cmdname> command enables GPORCA:<codeblock>> set optimizer on ;</codeblock></p>
+          <cmdname>SET</cmdname> command enables GPORCA:<codeblock>> set optimizer = on ;</codeblock></p>
       <p>To set the parameter for a specific query, include the <cmdname>SET</cmdname> command prior
         to running the query.</p>
     </body>
