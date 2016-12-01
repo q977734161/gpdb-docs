@@ -6,8 +6,8 @@
   <shortdesc otherprops="op-help">Information for installing the Greenplum Database drivers and C
     API software on a client system. </shortdesc>
   <body>
-    <p otherprops="op-print">Rev: A04</p>
-    <p otherprops="op-print">Updated: January, 2016</p>
+    <p otherprops="op-print">Rev: A05</p>
+    <p otherprops="op-print">Updated: December, 2016</p>
     <!--short description and rev information are tagged for help/pdf output.
 For PDF, the connectivity tools ditamap requires the pdf-note transform -->
   </body>
