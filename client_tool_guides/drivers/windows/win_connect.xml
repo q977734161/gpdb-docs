@@ -281,7 +281,7 @@ For PDF, the connectivity tools ditamap requires the pdf-note transform -->
               <codeph>kinit.exe</codeph>. The ticket cache file is in the Windows
               <codeph>gpadmin</codeph> user home directory.
             <codeblock>&gt; kinit -k -t gpdb-kerberos.keytab -c C:\Users\gpadmin\cache.txt
-   gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM</codeblock></li>
+   gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM</codeblock></li>
         </ol>
       </body>
     </topic>

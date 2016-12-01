@@ -362,7 +362,7 @@ drivers/odbc/psqlodbc-08.02.0500/unixodbc-2.2.14/ext/lib:</b>${LD_LIBRARY_PATH}<
               <codeph>gpdb-kerberos.keytab</codeph> is in the the current directory. The ticket
             cache file is in the <codeph>gpadmin</codeph> user home directory.
             <codeblock>&gt; kinit -k -t gpdb-kerberos.keytab -c /home/gpadmin/cache.txt
-   gpadmin/kerberos-gpdb@KRB.GREENPLUM.COM</codeblock></li>
+   gpadmin/kerberos-gpdb@KRB.EXAMPLE.COM</codeblock></li>
         </ol>
       </body>
     </topic>
