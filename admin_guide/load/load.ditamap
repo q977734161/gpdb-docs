@@ -10,6 +10,7 @@
          <topicref href="topics/g-gpfdist-protocol.xml"/>
          <topicref href="topics/g-gpfdists-protocol.xml"/>
          <topicref href="topics/g-gphdfs-protocol.xml"/>
+         <topicref href="topics/g-s3-protocol.xml"/>
          <topicref href="topics/g-accessing-ext-files-custom-protocol.xml"/>
          <topicref href="topics/g-handling-errors-ext-table-data.xml"/>
       </topicref>
