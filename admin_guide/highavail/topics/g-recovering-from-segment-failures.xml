@@ -4,16 +4,14 @@
 <topic id="topic14">
   <title>Recovering From Segment Failures</title>
   <body>
-    <p>Segment host failures usually cause multiple segment failures: all <ph
-        >primary or mirror </ph>segments on the host are marked as down and nonoperational. <ph
-       >If mirroring is not enabled and a segment goes down, the system
-        automatically becomes nonoperational.</ph></p>
+    <p>Segment host failures usually cause multiple segment failures: all primary or mirror segments
+      on the host are marked as down and nonoperational. If mirroring is not enabled and a segment
+      goes down, the system automatically becomes nonoperational.</p>
     <section id="ki155642">
       <title>To recover with mirroring enabled</title>
       <ol>
         <li id="ki155643">Ensure you can connect to the segment host from the master host. For
-          example:<codeblock>$ ping <i>failed_seg_host_address</i>
-               </codeblock>
+          example:<codeblock>$ ping <i>failed_seg_host_address</i></codeblock>
         </li>
         <li id="ki155645">Troubleshoot the problem that prevents the master host from connecting to
           the segment host. For example, the host machine may need to be restarted or replaced.</li>
@@ -60,15 +58,13 @@
         </li>
       </ol>
     </section>
-
-      <section id="sec-df">
+    <section id="sec-df" otherprops="gpdb">
       <title>To recover from a double fault</title>
       <p>In a double fault, both a primary segment and its mirror are down. This can occur if
         hardware failures on different segment hosts happen simultaneously. Greenplum Database is unavailable if a double fault occurs. To recover from a double
         fault:</p>
       <ol>
         <li id="ki165670">Restart Greenplum Database:<codeblock>$ gpstop -r</codeblock>
-        </li>
         <li id="ki165671">After the system restarts, run
           <codeph>gprecoverseg</codeph>:<codeblock>$ gprecoverseg</codeblock>
         </li>
@@ -84,7 +80,9 @@
           Greenplum Database system from backup files. See <xref
           href="../../managing/backup-main.xml"/>.</p>
     </section>
-    <section><title>To recover without mirroring enabled</title><ol id="ol_lb2_rkq_kr">
+    <section>
+      <title>To recover without mirroring enabled</title>
+      <ol id="ol_lb2_rkq_kr">
         <li id="ki155667">Ensure you can connect to the segment host from the master host. For
           example:<codeblock>$ ping <i>failed_seg_host_address</i></codeblock>
         </li>
@@ -97,6 +95,7 @@
         <li id="ki155681">Run the <codeph>gpstate</codeph> utility to verify that all segment
           instances are online:<codeblock>$ gpstate</codeblock>
         </li>
-      </ol></section>
+      </ol>
+    </section>
   </body>
 </topic>

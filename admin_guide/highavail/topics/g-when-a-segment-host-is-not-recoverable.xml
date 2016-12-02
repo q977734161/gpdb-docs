@@ -27,7 +27,7 @@
    FROM gp_segment_configuration, pg_filespace_entry 
    WHERE dbid=fsedbid 
    ORDER BY dbid;</codeblock>
-            <p>The new recovery segment host must be pre-installed with the Greenplum Database software and configured exactly as the existing
-                  segment hosts.</p>
+            <p>The new recovery segment host must be pre-installed with the Greenplum Database
+                  software and configured exactly as the existing segment hosts.</p>
       </body>
 </topic>

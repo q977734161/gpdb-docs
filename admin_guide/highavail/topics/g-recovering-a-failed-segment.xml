@@ -7,8 +7,8 @@
     <p>If the master cannot connect to a segment instance, it marks that segment as down in the
         Greenplum Database system catalog. The segment instance remains offline until
       an administrator takes steps to bring the segment back online. The process for recovering a
-      failed segment instance or host depends on the failure cause<ph> and whether
-        or not mirroring is enabled</ph>. A segment instance can be unavailable for many
+      failed segment instance or host depends on the failure cause and whether
+        or not mirroring is enabled. A segment instance can be unavailable for many
       reasons:</p>
     <ul>
       <li id="ki155624">A segment host is unavailable; for example, due to network or hardware
