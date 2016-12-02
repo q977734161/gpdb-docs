@@ -159,9 +159,13 @@ s3://domain/test1/abcdefff</codeblock>
             <li>Copy the file to the same location for all Greenplum Database segments on all
                   hosts.<p>The default location is
                         <codeph><varname>gpseg_data_dir</varname>/<varname>gpseg_prefix</varname><varname>N</varname>/s3/s3.conf</codeph>.
-                  If you can install the file in a different location, you must specify the location
-                  with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
-                  URL. See <xref href="#amazon-emr/s3_config_param" format="dita"/>.</p></li>
+                  The <varname>gpseg_data_dir</varname> is the path to the Greenplum Database
+                  segment data directory, the <varname>gpseg_prefix</varname> is the segment prefix,
+                  and <varname>N</varname> is the segment ID. The segment data directory, prefix,
+                  and ID are set when you initialize a Greenplum Database system. If you install the
+                  file in a different location, you must specify the location with the
+                     <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol URL. See
+                     <xref href="#amazon-emr/s3_config_param" format="dita"/>.</p></li>
          </ol></section>
       <section id="s3_config_file">
          <title>s3 Protocol Configuration File</title>
@@ -251,12 +255,11 @@ chunksize = 67108864</codeblock></p>
                accessing S3 files.</note>
          </sectiondiv>
       </section>
-      <section>
+      <section id="section_tsq_n3t_3x">
          <title>s3 Protocol Limitations</title>
-         <p>These are <codeph>s3</codeph> protocol limitations: <ul id="ul_xt5_4cz_55">
+         <p>These are <codeph>s3</codeph> protocol limitations: <ul id="ul_qqg_qcz_55">
                <li>Only the S3 path-style URL is
                   supported.<codeblock>s3://<varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>]</codeblock></li>
-            </ul><ul id="ul_qqg_qcz_55">
                <li>Only the S3 endpoint is supported. The protocol does not support virtual hosting
                   of S3 buckets (binding a domain name to an S3 bucket).</li>
                <li>AWS signature version 2 and version 4 signing process are supported. <p>For
@@ -269,6 +272,14 @@ chunksize = 67108864</codeblock></p>
                <li>For writeable S3 external tables, only the <codeph>INSERT</codeph> operation is
                   supported. <codeph>UPDATE</codeph>, <codeph>DELETE</codeph>, and
                      <codeph>TRUNCATE</codeph> operations are not supported.</li>
+               <li>To take advantage of the parallel processing performed by the Greenplum Database
+                  segment instances, the files in the S3 location for read-only S3 tables should be
+                  similar in size and the number of files should allow for multiple segments to
+                  download the data from the S3 location. For example, if the Greenplum Database
+                  system consists of 16 segments and there was sufficient network bandwidth,
+                  creating 16 files in the S3 location allows each segment to download a file from
+                  the S3 location. In contrast, if the location contained only 1 or 2 files, only 1
+                  or 2 segments download data.</li>
             </ul></p>
       </section>
       <section id="s3chkcfg_utility"><title>About the gpcheckcloud Utility</title><p>The Greenplum
