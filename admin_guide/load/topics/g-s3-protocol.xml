@@ -129,30 +129,34 @@ LANGUAGE C STABLE;</codeblock></li>
                   with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
                   URL. See <xref href="#amazon-emr/s3_config_param" format="dita"/>.</p></li>
          </ol></section>
-      <section id="s3_config_file"><title>s3 Protocol Configuration File</title><p>When using the
-               <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol configuration file is
-            required on all Greenplum Database segments. The default location is
-            <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p><p>The
-               <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
+      <section id="s3_config_file">
+         <title>s3 Protocol Configuration File</title>
+         <p>When using the <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol
+            configuration file is required on all Greenplum Database segments. The default location
+            is
+            <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p>
+         <p>The <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
             directory, the <varname>gpseg-prefix</varname> is the segment prefix, and
                <varname>N</varname> is the segment ID. The segment data directory, prefix, and ID
-            are set when you initialize a Greenplum Database system.</p><p>If you have multiple
-            segment instances on segment hosts, you can simplify the configuration by creating a
-            single location on each segment host. Then you specify the absolute path to the location
-            with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
-               <codeph>LOCATION</codeph> clause. This example specifies a location in the
-               <codeph>gpadmin</codeph> home directory.
-            </p><codeblock>config=/home/gpadmin/s3/s3.conf</codeblock><p>All segment instances on
-            the hosts use the file <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p><p>The
-               <codeph>s3</codeph> protocol configuration file is a text file that consists of a
+            are set when you initialize a Greenplum Database system.</p>
+         <p>If you have multiple segment instances on segment hosts, you can simplify the
+            configuration by creating a single location on each segment host. Then you specify the
+            absolute path to the location with the <codeph>config</codeph> parameter in the
+               <codeph>s3</codeph> protocol <codeph>LOCATION</codeph> clause. This example specifies
+            a location in the <codeph>gpadmin</codeph> home directory. </p>
+         <codeblock>config=/home/gpadmin/s3/s3.conf</codeblock>
+         <p>All segment instances on the hosts use the file
+               <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p>
+         <p>The <codeph>s3</codeph> protocol configuration file is a text file that consists of a
                <codeph>[default]</codeph> section and parameters This is an example configuration
             file.<codeblock>[default]
 secret = "secret"
 accessid = "user access id"
 connections = 3
-chunksize = 67108864</codeblock></p><p>You
-            can use the Greenplum Database <codeph>gpcheckcloud</codeph> utility to test the S3
-            configuration file. See <xref href="#amazon-emr/s3chkcfg_utility" format="dita"/>.</p><sectiondiv>
+chunksize = 67108864</codeblock></p>
+         <p>You can use the Greenplum Database <codeph>gpcheckcloud</codeph> utility to test the S3
+            configuration file. See <xref href="#amazon-emr/s3chkcfg_utility" format="dita"/>.</p>
+         <sectiondiv>
             <p><b>s3 Configuration File Parameters</b></p>
             <parml>
                <plentry>
@@ -209,7 +213,8 @@ chunksize = 67108864</codeblock></p><p>You
                hosts when the <codeph>s3</codeph> protocol to accesses the files. Greenplum Database
                allocates <codeph>connections * chunksize</codeph> memory on each segment host when
                accessing S3 files.</note>
-         </sectiondiv></section>
+         </sectiondiv>
+      </section>
       <section>
          <title>s3 Protocol Limitations</title>
          <p>These are <codeph>s3</codeph> protocol limitations: <ul id="ul_xt5_4cz_55">
@@ -299,8 +304,8 @@ gpcheckcloud <b>-h</b></codeblock>
                   having either the <codeph>.txt</codeph> or <filepath>.csv</filepath> extension,
                   depending on the value you provide in the <codeph>FORMAT</codeph> clause of
                      <codeph>CREATE EXTERNAL TABLE</codeph>.</li>
-               <li><filepath>.gz</filepath> is appended to the filename if compression is enabled for S3
-                  writeable tables (the default).</li>
+               <li><filepath>.gz</filepath> is appended to the filename if compression is enabled
+                  for S3 writeable tables (the default).</li>
             </ul></p><p>This example attempts to connect to an S3 bucket location with the
                <codeph>s3</codeph> configuration file
             <codeph>s3.mytestconf</codeph>.<codeblock>gpcheckcloud -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
