@@ -148,7 +148,7 @@ secret = "secret"
 accessid = "user access id"
 connections = 3
 chunksize = 67108864</codeblock></p><p>You
-            can use the Greenplum Database <codeph>s3chkcfg</codeph> utility to test the S3
+            can use the Greenplum Database <codeph>gpcheckcloud</codeph> utility to test the S3
             configuration file. See <xref href="#amazon-emr/s3chkcfg_utility" format="dita"/>.</p><sectiondiv>
             <p><b>s3 Configuration File Parameters</b></p>
             <parml>
@@ -257,7 +257,7 @@ gpcheckcloud <b>-h</b></codeblock>
             </plentry>
             <plentry>
                <pt>-h</pt>
-               <pd>Display <codeph>s3chkcfg</codeph> help.</pd>
+               <pd>Display <codeph>gpcheckcloud</codeph> help.</pd>
             </plentry>
          </parml><p><b>Examples</b>
          </p><p>This example runs the utility without options to create a template
