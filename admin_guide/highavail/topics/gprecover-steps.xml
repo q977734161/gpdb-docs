@@ -145,8 +145,7 @@
         <li dir="ltr">Data copy (full and incremental recovery): <p>After the file system objects
             are created, data copy is initiated for the affected segments. The ResyncManager process
             scans the persistent table system catalogs to find the file objects to be synchronized.
-            ResyncWorker processes sync the file objects from the primary to the mirror, in batches
-            of four.</p></li>
+            ResyncWorker processes sync the file objects from the primary to the mirror.</p></li>
         <li dir="ltr">Any changes or new data created with database transactions during the data
           copy are mirrored directly to the mirror.</li>
         <li dir="ltr">Once data copy has finished synchronizing persistent data files, file

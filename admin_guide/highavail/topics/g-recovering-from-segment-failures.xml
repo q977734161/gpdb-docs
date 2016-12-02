@@ -61,7 +61,8 @@
     <section id="sec-df" otherprops="gpdb">
       <title>To recover from a double fault</title>
       <p>In a double fault, both a primary segment and its mirror are down. This can occur if
-        hardware failures on different segment hosts happen simultaneously. Greenplum Database is unavailable if a double fault occurs. To recover from a double
+        hardware failures on different segment hosts happen simultaneously. Greenplum Database is
+        unavailable if a double fault occurs. To recover from a double fault:</p>
         fault:</p>
       <ol>
         <li id="ki165670">Restart Greenplum Database:<codeblock>$ gpstop -r</codeblock>
@@ -77,8 +78,8 @@
         </li>
       </ol>
       <p>If a segment host is not recoverable and you have lost one or more segments, recreate your
-          Greenplum Database system from backup files. See <xref
-          href="../../managing/backup-main.xml"/>.</p>
+        Greenplum Database system from backup files. See <xref href="../../managing/backup-main.xml"
+        />.</p>
     </section>
     <section>
       <title>To recover without mirroring enabled</title>
@@ -90,7 +91,7 @@
           connecting to the segment host. For example, the host machine may need to be
           restarted.</li>
         <li id="ki155670">After the host is online, verify that you can connect to it and restart
-            Greenplum Database. For example:<codeblock>$ gpstop -r</codeblock>
+          Greenplum Database. For example:<codeblock>$ gpstop -r</codeblock>
         </li>
         <li id="ki155681">Run the <codeph>gpstate</codeph> utility to verify that all segment
           instances are online:<codeblock>$ gpstate</codeblock>
