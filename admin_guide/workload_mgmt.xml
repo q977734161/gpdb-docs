@@ -282,6 +282,8 @@
         are evaluated. If the server configuration parameter <codeph>resource_select_only</codeph>
         is set to <i>off</i>, then <codeph>INSERT</codeph><ph>, <codeph>UPDATE</codeph>, and
             <codeph>DELETE</codeph></ph> statements will be evaluated as well.</p>
+      <p>Also, an SQL statement that is run during the execution of an <codeph>EXPLAIN
+          ANALYZE</codeph> command is excluded from resource queues.</p>
       <section>
         <title>Resource Queue Example</title>
         <p>The default resource queue, <codeph>pg_default</codeph>, allows a maximum of 20 active
