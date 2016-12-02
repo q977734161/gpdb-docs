@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic
   PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-
 <topic id="automate-gpchrondump" xml:lang="en">
   <title id="kk155437">Backing Up with gpcrondump</title>
   <body>
@@ -53,5 +52,10 @@
       to the <i>Greenplum Utility Reference Guide</i> for information about all of the available
       options. See <xref href="backup-ddboost.xml#topic17"/> for details of backing up with Data
       Domain Boost. </p>
+    <note type="warning">Backing up a database with <codeph>gpcrondump</codeph> while simultaneously
+      running <codeph>ALTER TABLE</codeph> might cause <codeph>gpcrondump</codeph> to
+        fail.<p>Backing up a database with <codeph>gpcrondump</codeph> while simultaneously running
+        DDL commands might cause issues with locks. You might see either the DDL command or
+          <codeph>gpcrondump</codeph> waiting to acquire locks.</p></note>
   </body>
 </topic>
