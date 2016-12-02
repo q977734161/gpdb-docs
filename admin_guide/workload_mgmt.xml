@@ -242,12 +242,7 @@
             <pd>
               <note> Pivotal recommends that you use <codeph>MEMORY_LIMIT</codeph> and
                   <codeph>ACTIVE_STATEMENTS</codeph> to set limits for resource queues rather than
-                  <codeph>MAX_COST</codeph>. <p>The query plan cost thresholds
-                    <codeph>MAX_COST</codeph> and <codeph>MIN_COST</codeph> are deprecated and will
-                  be removed in a future release. The Greenplum Database server configuration
-                  parameter <codeph>resource_usecost</codeph> controls whether Greenplum Database
-                  ignores the <codeph>MIN_COST</codeph> and <codeph>MAX_COST</codeph> values that
-                  are specified in a resource queue definition.</p></note>
+                  <codeph>MAX_COST</codeph>. </note>
             </pd>
           </plentry>
         </parml></p>
@@ -619,8 +614,6 @@
             <codeph>MEMORY_LIMIT * (query_cost <codeph>/ </codeph>MAX_COST)</codeph>. You should use
           <codeph>MEMORY_LIMIT</codeph> in conjunction with
             <codeph>ACTIVE_STATEMENTS</codeph> rather than with <codeph>MAX_COST</codeph>.</p>
-        <note> The query plan cost thresholds <codeph>MAX_COST</codeph> and
-            <codeph>MIN_COST</codeph> are deprecated and will be removed in a future release.</note>
         <p>For example, to create a resource queue with an active query limit of 10 and a total
           memory limit of 2000MB (each query will be allocated 200MB of segment host memory at
           execution time): </p>
