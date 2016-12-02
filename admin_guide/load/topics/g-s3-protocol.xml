@@ -236,7 +236,9 @@ chunksize = 67108864</codeblock></p><p>You
             capture the output and create an <codeph>s3</codeph> configuration file to connect to
             Amazon S3. </p><p>The utility is installed in the Greenplum Database
                <codeph>$GPHOME/bin</codeph> directory.</p><b>Syntax</b>
-         <codeblock>gpcheckcloud {<b>-c</b> | <b>-d</b>} "<b>s3://</b><varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>]] config==<varname>path_to_config_file</varname>"
+         <codeblock>gpcheckcloud {<b>-c</b> | <b>-d</b>} "<b>s3://</b><varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>] [config==<varname>path_to_config_file</varname>]"
+         
+gpcheckcloud <b>-u</b> &lt;file_to_upload> "<b>s3://</b><varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>] [config==<varname>path_to_config_file</varname>]"
 
 gpcheckcloud <b>-t</b>
 
@@ -261,6 +263,12 @@ gpcheckcloud <b>-h</b></codeblock>
                      <codeph>STDOUT</codeph>.</pd>
             </plentry>
             <plentry>
+               <pt>-u</pt>
+               <pd>Upload a file to the S3 bucket specified in the <codeph>s3</codeph> protocol URL
+                  using the specified configuration file if available. Use this option to test
+                  compression and chunksize setting for your configuration.</pd>
+            </plentry>
+            <plentry>
                <pt>-t</pt>
                <pd>Sends a template configuration file to <codeph>STDOUT</codeph>. You can capture
                   the output and create an <codeph>s3</codeph> configuration file to connect to
@@ -274,8 +282,27 @@ gpcheckcloud <b>-h</b></codeblock>
          </p><p>This example runs the utility without options to create a template
                <codeph>s3</codeph> configuration file <codeph>mytest_s3.config</codeph> in the
             current directory.<codeblock>gpcheckcloud -t > ./mytest_s3.config</codeblock></p><p>This
-            example attempts to connect to an S3 bucket location with the <codeph>s3</codeph>
-            configuration file
+            example attempts to upload a local file, <filepath>test-data.csv</filepath> to an S3
+            bucket location using the <codeph>s3</codeph> configuration file
+               <codeph>s3.mytestconf</codeph>:<codeblock>gpcheckcloud -u ./test-data.csv "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>A
+            successful upload will result in one or more files placed in the S3 bucket using the
+            filename format<codeph> &lt;prefix>&lt;sha>&lt;segment_id>.&lt;extension>[.gz]</codeph>
+               where:<ul id="ol_akq_hwx_hx">
+               <li><codeph>&lt;prefix></codeph> is the prefix specified in the S3 URL
+                     (<codeph>abc</codeph> in the example above).</li>
+               <li><codeph>&lt;sha></codeph> is a SHA256 digest that is used to ensure a unique
+                  filename.</li>
+               <li><codeph>&lt;segment_id></codeph> is the Greenplum Database segment ID.</li>
+               <li><codeph>&lt;extension></codeph> describes the file type.
+                     <codeph>gpcheckcloud</codeph> always uses the extension
+                     <filepath>.data</filepath>. However, actual S3 writeable tables create files
+                  having either the <codeph>.txt</codeph> or <filepath>.csv</filepath> extension,
+                  depending on the value you provide in the <codeph>FORMAT</codeph> clause of
+                     <codeph>CREATE EXTERNAL TABLE</codeph>.</li>
+               <li><filepath>.gz</filepath> is appended to the filename if compression is enabled for S3
+                  writeable tables (the default).</li>
+            </ul></p><p>This example attempts to connect to an S3 bucket location with the
+               <codeph>s3</codeph> configuration file
             <codeph>s3.mytestconf</codeph>.<codeblock>gpcheckcloud -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
             all files from the S3 bucket location and send the output to <codeph>STDOUT</codeph>.
             <codeblock>gpcheckcloud -d "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p></section>
