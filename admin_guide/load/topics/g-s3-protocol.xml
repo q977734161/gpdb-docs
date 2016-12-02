@@ -14,8 +14,8 @@
          configuration file in the <codeph>LOCATION</codeph> clause of the <codeph>CREATE EXTERNAL
             TABLE</codeph> command. This is the syntax.</p>
       <codeblock>'s3://<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/[<varname>S3_prefix</varname>] [config=<varname>config_file_location</varname>]'</codeblock>
-      <p>The <codeph>s3</codeph> protocol URL specifies the AWS S3 endpoint, S3 bucket name, and
-         optional S3 file prefix. </p>
+      <p>The <codeph>s3</codeph> protocol URL specifies the AWS S3 endpoint and S3 bucket name. For
+         a S3 read-only table you can also include an optional S3 file prefix in the URL. </p>
       <p>For information about the AWS S3 endpoints see <xref
             href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region" format="html"
             scope="external"
@@ -23,11 +23,14 @@
          information about S3 buckets and folders, see the Amazon S3 documentation <xref
             href="http://aws.amazon.com/documentation/s3/" format="html" scope="external"
             >http://aws.amazon.com/documentation/s3/</xref>.</p>
-      <p>If you specify an <varname>S3_prefix</varname>, the <codeph>s3</codeph> protocol selects
-         the files that have the specified S3 file prefix. The <codeph>s3</codeph> protocol does not
-         use the slash character (<codeph>/</codeph>) as delimiter. For example, these files have
-            <codeph>domain</codeph> as the <varname>S3_endpoint</varname>, and
-            <codeph>test1</codeph> as the <varname>bucket_name</varname>.</p>
+      <p>For writeable S3 tables, the <codeph>s3</codeph> protocol URL specifies the endpoint and
+         bucket name where data files are uploaded for the table. </p>
+      <p>If you specify an <varname>S3_prefix</varname> for read-only s3 tables, the
+            <codeph>s3</codeph> protocol selects those files that have the specified S3 file prefix.
+         The <codeph>s3</codeph> protocol does not use the slash character (<codeph>/</codeph>) as
+         delimiter. For example, these files have <codeph>domain</codeph> as the
+            <varname>S3_endpoint</varname>, and <codeph>test1</codeph> as the
+            <varname>bucket_name</varname>.</p>
       <codeblock>s3://domain/test1/abc
 s3://domain/test1/abc/
 s3://domain/test1/abc/xx
@@ -161,9 +164,17 @@ chunksize = 67108864</codeblock></p><p>You
                   <pd>Required. AWS S3 passcode for the S3 ID to access the S3 bucket.</pd>
                </plentry>
                <plentry>
+                  <pt>autocompress</pt>
+                  <pd>For writeable S3 external tables, this parameter specifies whether to compress
+                     files (using gzip) before uploading to S3. Files are compressed by default if
+                     you do not specify this parameter.</pd>
+               </plentry>
+               <plentry>
                   <pt>chunksize</pt>
-                  <pd>The buffer size for each segment thread. The default is 64 MB. The minimum is
-                     8MB and the maximum is 128MB.</pd>
+                  <pd>The buffer size that each segment thread uses for reading from or writing to
+                     the S3 server. The default is 64 MB. The minimum is 8MB and the maximum
+                     is128MB. When writing a large file to S3, the protocol first breaks the file
+                     into multiple chunks for concurrent multipart upload to S3.</pd>
                </plentry>
                <plentry>
                   <pt>threadnum</pt>
