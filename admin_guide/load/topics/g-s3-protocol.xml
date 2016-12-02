@@ -27,24 +27,25 @@
          the files that have the specified S3 file prefix. The <codeph>s3</codeph> protocol does not
          use the slash character (<codeph>/</codeph>) as delimiter. For example, these files have
             <codeph>domain</codeph> as the <varname>S3_endpoint</varname>, and
-            <codeph>test1</codeph> as the <varname>bucket_name</varname>.<sl>
-            <sli><codeph>s3://domain/test1/abc</codeph></sli>
-            <sli><codeph>s3://domain/test1/abc/</codeph></sli>
-            <sli><codeph>s3://domain/test1/abc/xx</codeph></sli>
-            <sli><codeph>s3://domain/test1/abcdef</codeph></sli>
-            <sli><codeph>s3://domain/test1/abcdefff</codeph></sli>
-         </sl><ul id="ul_yll_xjm_qv">
-            <li>If the file location is <codeph>s3://domain/test1/abc</codeph>, the
-                  <codeph>s3</codeph> protocol selects all 5 files.</li>
-            <li>If the file location is <codeph>s3://domain/test1/abc/</codeph>, the
-                  <codeph>s3</codeph> protocol selects the files
-                  <codeph>s3://domain/test1/abc/</codeph> and
-                  <codeph>s3://domain/test1/abc/xx</codeph>.</li>
-            <li>If the file location is <codeph>s3://domain/test1/abcd</codeph>, the
-                  <codeph>s3</codeph> protocol selects the files
-                  <codeph>s3://domain/test1/abcdef</codeph> and
-                  <codeph>s3://domain/test1/abcdefff</codeph></li>
-         </ul></p>
+            <codeph>test1</codeph> as the <varname>bucket_name</varname>.</p>
+      <codeblock>s3://domain/test1/abc
+s3://domain/test1/abc/
+s3://domain/test1/abc/xx
+s3://domain/test1/abcdef
+s3://domain/test1/abcdefff</codeblock>
+      <ul id="ul_yll_xjm_qv">
+         <li>If the file location is <codeph>s3://domain/test1/abc</codeph>, the <codeph>s3</codeph>
+            protocol selects all 5 files.</li>
+         <li>If the file location is <codeph>s3://domain/test1/abc/</codeph>, the
+               <codeph>s3</codeph> protocol selects the files
+               <codeph>s3://domain/test1/abc/</codeph> and
+            <codeph>s3://domain/test1/abc/xx</codeph>.</li>
+         <li>If the file location is <codeph>s3://domain/test1/abcd</codeph>, the
+               <codeph>s3</codeph> protocol selects the files
+               <codeph>s3://domain/test1/abcdef</codeph> and
+               <codeph>s3://domain/test1/abcdefff</codeph></li>
+      </ul>
+      <p>Wildcard characters are not supported in a <varname>S3_prefix</varname>. </p>
       <p>For information about the S3 prefix, see the Amazon S3 documentation <xref
             href="http://docs.aws.amazon.com/AmazonS3/latest/dev/ListingKeysHierarchy.html"
             format="html" scope="external">Listing Keys Hierarchically Using a Prefix and
@@ -91,7 +92,7 @@
             absolute path to the location with the <codeph>config</codeph> parameter in the
                <codeph>s3</codeph> protocol <codeph>LOCATION</codeph> clause. This example specifies
             a location in the <codeph>gpadmin</codeph> home directory. </p>
-         <codeblock>config=/home/gpadmin/s3/s3.conf</codeblock>
+         <codeblock>LOCATION ('s3://s3.amazonaws.com/test/my_data config=/home/gpadmin/s3.conf')</codeblock>
          <p>All segment instances on the hosts use the file
                <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p>
       </section>
