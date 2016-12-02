@@ -13,9 +13,10 @@
       connections to the database from the <codeph>gpadmin</codeph> role. To allow any other roles
       to connect, or to allow connections from remote hosts, you configure Greenplum Database to
       allow such connections. </p>
-    <note type="note">The PgBouncer connection pooler is bundled with Greenplum Database and can be
-      configured to manage multiple client connections to Greenplum Database. See <xref
-        href="access_db/topics/pgbouncer.xml#topic_fstrm"/>. </note>
+    <note>The PgBouncer connection pooler is bundled with Greenplum Database. PgBouncer can be
+      configured to support LDAP or Active Directory authentication for users connecting to
+      Greenplum Database through the connection pooler client connections to Greenplum Database. See
+        <xref href="access_db/topics/pgbouncer.xml#topic_fstrm"/>. </note>
   </body>
   <topic id="topic2" xml:lang="en">
     <title id="ip142171">Allowing Connections to Greenplum Database</title>
@@ -23,10 +24,10 @@
       <p>Client access and authentication is controlled by the standard PostgreSQL host-based
         authentication file, <filepath>pg_hba.conf</filepath>. In Greenplum Database, the
           <filepath>pg_hba.conf</filepath> file of the master instance controls client access and
-        authentication to your Greenplum Database system. <keyword keyref="product_name_short"/>
-        segments have <filepath>pg_hba.conf</filepath> files that are configured to allow only
-        client connections from the master host and never accept client connections. Do not alter
-        the <filepath>pg_hba.conf</filepath> file on your segments.</p>
+        authentication to your Greenplum Database system. Greenplum Database segments have
+          <filepath>pg_hba.conf</filepath> files that are configured to allow only client
+        connections from the master host and never accept client connections. Do not alter the
+          <filepath>pg_hba.conf</filepath> file on your segments.</p>
       <p>See <xref href="http://www.postgresql.org/docs/9.0/interactive/auth-pg-hba-conf.html"
           scope="external" format="html"><ph>The pg_hba.conf File</ph></xref> in the PostgreSQL
         documentation for more information. </p>
