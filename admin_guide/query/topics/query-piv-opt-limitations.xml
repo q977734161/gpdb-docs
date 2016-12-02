@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-
 <topic id="topic1">
   <title>GPORCA Limitations</title>
   <abstract>
@@ -21,7 +20,8 @@
     <body>
       <p>These are unsupported features when GPORCA is enabled: <ul
           id="ul_ndm_gyl_vp">
-          <li>Indexed expressions</li>
+          <li>Indexed expressions (an index defined as expression based on one or more columns of
+            the table)</li>
           <li><cmdname>PERCENTILE</cmdname> window function</li>
           <li>External parameters</li>
           <li>These types of partitioned tables:<ul id="ul_v2m_mmc_bt">
