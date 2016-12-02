@@ -5,7 +5,9 @@
     <topicref href="intro/partI.xml" id="partI" format="dita">
       <topicref href="intro/arch_overview.xml" id="arch_overview"/>
       <topicref href="intro/about_utilities.xml" id="about_utilities"/>
-      <topicref href="intro/about_mvcc.xml" id="about_mvcc"/>
+      <topicref href="intro/about_mvcc.xml" id="about_mvcc">
+        <topicref href="intro/mvcc_example.xml" id="mvcc_example"/>
+      </topicref>
       <topicref href="intro/about_loading.xml" id="about_loading"/>
       <topicref href="intro/about_ha.xml" id="about_ha"/>
       <topicref href="intro/about_statistics.xml"/>
