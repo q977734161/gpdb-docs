@@ -78,24 +78,23 @@
         are completed. </p>
       <ol id="ol_zx4_1nr_bx">
         <li dir="ltr">The down segments are identified.</li>
-        <li dir="ltr">The mirror segment processes are started in special mode.</li>
+        <li dir="ltr">The mirror segment processes are initialized.</li>
         <li dir="ltr">For full recovery (<codeph>-aF</codeph>):<ul id="ul_fst_cnr_bx">
             <li>The data directories of the down segments are deleted.</li>
             <li>A new data directory structure is created. </li>
           </ul></li>
         <li>The segment mode in the <codeph>gp_segment_configuration</codeph> system table is
           updated to 'r' (resynchronization mode).</li>
-        <li dir="ltr">Begin IOSUSPEND—connections to the master are allowed, but reads and writes
-          are not allowed. During IOSUSPEND, the backend performs the following:<ul
-            id="ul_ttj_bpt_bx">
-            <li dir="ltr">Scans persistence tables on the primary segment. <p>For each persistent
-                file object (<codeph>relfilenode</codeph> in the <codeph>pg_class</codeph> system
-                table), a data file is created on the mirror. The greater the number of data files,
-                the longer the system will remain in the IOSUSPEND state. </p><p>For incremental
-                recovery, the IOSUSPEND is shorter because only file system objects added (or
-                dropped) on the primary after the mirror was marked down need to be created (or
-                deleted) on the mirror.</p></li>
-          </ul></li>
+        <li dir="ltr">The backend performs the following:<ul id="ul_ttj_bpt_bx">
+            <li>Suspends IO—connections to the master are allowed, but reads and writes from the
+              segment being recovered are not allowed.</li>
+            <li dir="ltr">Scans persistent tables on the primary segment. </li>
+            <li dir="ltr">For each persistent file object (<codeph>relfilenode</codeph> in the
+                <codeph>pg_class</codeph> system table), creates a data file on the mirror. </li>
+          </ul><p>The greater the number of data files, the longer IO is suspended. </p><p>For
+            incremental recovery, the IO is suspended for a shorter period because only file system
+            objects added (or dropped) on the primary after the mirror was marked down need to be
+            created (or deleted) on the mirror.</p></li>
         <li dir="ltr">The <codeph>gprecoverseg</codeph> script completes.</li>
       </ol>
       <p>Once <codeph>gprecoverseg</codeph> has completed, the segments are in the states shown in
