@@ -9,16 +9,15 @@
          four billion. The XID values restart at 0 after the maximum is reached. Greenplum Database
          handles the limit of XID values with two features:<ul id="ul_nlb_ks5_vv">
             <li>Calculations on XID values using modulo-2<sup>32</sup> arithmetic that allow
-               Greenplum Database to reuse XID values. The modulo calculations determine the
-               relative direction and distance between transactions regardless of XID value. The
-               modulo calculations determine the order of transactions, whether one transaction has
-               occurred before or after another, based on the XID. <p>Using the Greenplum Database
-                  modulo calculations, as long as two XIDs are within 2<sup>31</sup> transactions of
-                  each other, comparing them yields the correct result.</p><p>Every XID value can
-                  have up to two billion (2<sup>31</sup>) XID values that are considered previous
-                  transactions and two billion (2<sup>31</sup> -1 ) XID values that are considered
-                  newer transactions. The XID values can be considered a circular set of values with
-                  no endpoint similar to a 24 hour clock.</p></li>
+               Greenplum Database to reuse XID values. The modulo calculations determine the order
+               of transactions, whether one transaction has occurred before or after another, based
+               on the XID. <p>Every XID value can have up to two billion (2<sup>31</sup>) XID values
+                  that are considered previous transactions and two billion (2<sup>31</sup> -1 ) XID
+                  values that are considered newer transactions. The XID values can be considered a
+                  circular set of values with no endpoint similar to a 24 hour clock.</p><p>Using
+                  the Greenplum Database modulo calculations, as long as two XIDs are within
+                     2<sup>31</sup> transactions of each other, comparing them yields the correct
+                  result.</p></li>
             <li>A frozen XID value that Greenplum Database uses as the XID for current (visible)
                data rows. Setting a row's XID to the frozen XID performs two functions. <ul
                   id="ul_osq_cgj_wv">
