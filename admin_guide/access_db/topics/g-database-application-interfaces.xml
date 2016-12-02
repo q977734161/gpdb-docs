@@ -4,15 +4,12 @@
 <topic id="topic12">
    <title>Database Application Interfaces</title>
    <body>
-      <p>You may want to develop your own client applications that interface with Greenplum
-         Database. PostgreSQL provides database drivers for the most commonly used database
+      <p>You may want to develop your own client applications that interface to Greenplum Database.
+         PostgreSQL provides a number of database drivers for the most commonly used database
          application programming interfaces (APIs), which can also be used with Greenplum Database.
-         Each driver is an independent PostgreSQL development project and must be installed and
-         configured to connect to Greenplum Database. The drivers can be built from source or
-         downloaded from their websites. Pivotal Greenplum Database customers can download an
-         installer with supported client APIs from <xref href="https://network.pivotal.io"
-            format="html" scope="external">Pivotal Network</xref>. The following drivers are
-         available:</p>
+         These drivers are available as a separate download. Each driver is an independent
+         PostgreSQL development project and must be downloaded, installed and configured to connect
+         to Greenplum Database. The following drivers are available:</p>
       <table id="io140349">
          <title>Greenplum Database Interfaces</title>
          <tgroup cols="3">
@@ -30,9 +27,10 @@
                <row>
                   <entry colname="col1">ODBC</entry>
                   <entry colname="col2">psqlODBC</entry>
-                  <entry colname="col3"><xref href="http://www.postgresql.org/ftp/odbc/"
-                        format="html" scope="external">http://www.postgresql.org/ftp/odbc/</xref>.
-                     Also available in the Pivotal Greenplum Database Connectivity package.</entry>
+                  <entry colname="col3">Available in the <i>Greenplum Database Connectivity</i>
+                     package, which can be downloaded from <xref
+                        href="https://network.pivotal.io/products" scope="external" format="html"
+                     />.</entry>
                </row>
                <row>
                   <entry colname="col1">JDBC</entry>
@@ -45,14 +43,15 @@
                   <entry colname="col1">Perl DBI</entry>
                   <entry colname="col2">pgperl</entry>
                   <entry colname="col3">
-                     <xref href="http://search.cpan.org/dist/DBD-Pg/" format="html"/>
+                     <xref href="http://search.cpan.org/dist/DBD-Pg/" scope="external" format="html"
+                     />
                   </entry>
                </row>
                <row>
                   <entry colname="col1">Python DBI</entry>
                   <entry colname="col2">pygresql</entry>
                   <entry colname="col3">
-                     <xref href="http://www.pygresql.org/" format="html"/>
+                     <xref href="http://www.pygresql.org/" scope="external" format="html"/>
                   </entry>
                </row>
             </tbody>
@@ -65,10 +64,13 @@
             from Oracle.</li>
          <li id="io140288">Write your client application according to the API specifications. When
             programming your application, be aware of the SQL support in Greenplum Database so you
-            do not include any unsupported SQL syntax. <p>See the <i>Greenplum Database Reference
-                  Guide</i> for more information.</p></li>
+            do not include any unsupported SQL syntax. <p otherprops="gpdb">See the <i>Greenplum
+                  Database Reference Guide</i> for more information.</p></li>
       </ol>
-      <p>Download the appropriate PostgreSQL driver and configure connectivity to your Greenplum
-         Database master instance. </p>
+      <p>Download the appropriate PostgreSQL driver and configure connectivity to 
+         your Greenplum Database master instance. Greenplum Database provides a client tools package
+         that contains the supported database drivers for Greenplum Database. Download the client
+         tools package from <xref href="https://network.pivotal.io/products" scope="external"
+            format="html">Pivotal Network</xref>. </p>
    </body>
 </topic>
