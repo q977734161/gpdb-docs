@@ -55,10 +55,11 @@ s3://domain/test1/abcdefff</codeblock>
             Delimiter</xref>.</p>
       <section>
          <title>About S3 Data Files</title>
-         <p>All the files specified by the S3 file location
+         <p>Each Greenplum Database segment instance must have access to the S3 location. </p>
+         <p>For read-only S3 tables, all of the files specified by the S3 file location
                (<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/<varname>S3_prefix</varname>)
-            are used as the source for the external table and must have the same format and each
-            file must contain complete data rows. A data row cannot be split between files. Only the
+            are used as the source for the external table and must have the same format. Each file
+            must also contain complete data rows. A data row cannot be split between files. Only the
                <codeph>TEXT</codeph> and <codeph>CSV</codeph> formats are supported. The files can
             be in gzip compressed format. The <codeph>s3</codeph> protocol recognizes the gzip
             format and uncompress the files. Only the gzip compression format is supported. </p>
@@ -67,15 +68,14 @@ s3://domain/test1/abcdefff</codeblock>
          <p>The <codeph>config</codeph> parameter specifies the location of the required
                <codeph>s3</codeph> protocol configuration file that contains AWS connection
             credentials and communication parameters. </p>
-         <p>Each Greenplum Database segment instance must have access to the S3 location. Each
-            segment can download one file at a time from S3 location using several threads. To take
-            advantage of the parallel processing performed by the Greenplum Database segments, the
-            files in the S3 location should be similar in size and the number of files should allow
-            for multiple segments to download the data from the S3 location. For example, if the
-            Greenplum Database system consists of 16 segments and there was sufficient network
-            bandwidth, creating 16 files in the S3 location allows each segment to download a file
-            from the S3 location. In contrast, if the location contained only 1 or 2 files, only 1
-            or 2 segments download data.</p>
+         <p>For read-only S3 tables, each segment can download one file at a time from S3 location
+            using several threads. To take advantage of the parallel processing performed by the
+            Greenplum Database segments, the files in the S3 location should be similar in size and
+            the number of files should allow for multiple segments to download the data from the S3
+            location. For example, if the Greenplum Database system consists of 16 segments and
+            there was sufficient network bandwidth, creating 16 files in the S3 location allows each
+            segment to download a file from the S3 location. In contrast, if the location contained
+            only 1 or 2 files, only 1 or 2 segments download data.</p>
       </section>
       <section id="s3_config_param">
          <title>About the S3 Protocol config Parameter</title>
@@ -176,9 +176,11 @@ chunksize = 67108864</codeblock></p>
                <plentry>
                   <pt>chunksize</pt>
                   <pd>The buffer size that each segment thread uses for reading from or writing to
-                     the S3 server. The default is 64 MB. The minimum is 8MB and the maximum
-                     is128MB. When writing a large file to S3, the protocol first breaks the file
-                     into multiple chunks for concurrent multipart upload to S3.</pd>
+                     the S3 server. The default is 64 MB. The minimum is 8MB and the maximum is
+                     128MB. When inserting data to an S3 table, each Greenplum Database segment
+                     writes the data into its buffer until it is full, after which it writes the
+                     buffer to a file in the S3 bucket. This process is then repeated as necessary
+                     on each segment until the insert operation completes.</pd>
                </plentry>
                <plentry>
                   <pt>threadnum</pt>
