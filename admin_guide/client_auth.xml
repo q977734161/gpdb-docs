@@ -3,33 +3,38 @@
   PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
 <topic id="topic1" xml:lang="en">
   <title id="ip141161">Configuring Client Authentication</title>
-  <shortdesc>This topic explains how to configure client connections and authentication for Greenplum Database.</shortdesc>
+  <shortdesc>This topic explains how to configure client connections and authentication for
+    Greenplum Database.</shortdesc>
   <body>
-    <p>When a Greenplum Database system is first initialized, the system contains one
-      predefined <i>superuser</i> role. This role will have the same name as the operating system
-      user who initialized the Greenplum Database system. This role is referred to as
+    <p>When a Greenplum Database system is first initialized, the system contains one predefined
+        <i>superuser</i> role. This role will have the same name as the operating system user who
+      initialized the Greenplum Database system. This role is referred to as
         <codeph>gpadmin</codeph>. By default, the system is configured to only allow local
       connections to the database from the <codeph>gpadmin</codeph> role. To allow any other roles
-      to connect, or to allow connections from remote hosts, you configure Greenplum Database to allow such connections. </p>
+      to connect, or to allow connections from remote hosts, you configure Greenplum Database to
+      allow such connections. </p>
+    <note type="note">The PgBouncer connection pooler is bundled with Greenplum Database and can be
+      configured to manage multiple client connections to Greenplum Database. See <xref
+        href="access_db/topics/pgbouncer.xml#topic_fstrm"/>. </note>
   </body>
   <topic id="topic2" xml:lang="en">
     <title id="ip142171">Allowing Connections to Greenplum Database</title>
     <body>
       <p>Client access and authentication is controlled by the standard PostgreSQL host-based
-        authentication file, <filepath>pg_hba.conf</filepath>. In Greenplum Database,
-        the <filepath>pg_hba.conf</filepath> file of the master instance controls client access and
-        authentication to your Greenplum system. Greenplum segments have <filepath>pg_hba.conf</filepath> files that
-        are configured to allow only client connections from the master host and never accept client
-        connections. Do not alter the <filepath>pg_hba.conf</filepath> file on your segments.</p>
+        authentication file, <filepath>pg_hba.conf</filepath>. In Greenplum Database, the
+          <filepath>pg_hba.conf</filepath> file of the master instance controls client access and
+        authentication to your Greenplum Database system. <keyword keyref="product_name_short"/>
+        segments have <filepath>pg_hba.conf</filepath> files that are configured to allow only
+        client connections from the master host and never accept client connections. Do not alter
+        the <filepath>pg_hba.conf</filepath> file on your segments.</p>
       <p>See <xref href="http://www.postgresql.org/docs/9.0/interactive/auth-pg-hba-conf.html"
           scope="external" format="html"><ph>The pg_hba.conf File</ph></xref> in the PostgreSQL
         documentation for more information. </p>
       <p>The general format of the <filepath>pg_hba.conf</filepath> file is a set of records, one
-        per line. Greenplum ignores blank lines and any text after the
-          <codeph>#</codeph> comment character. A record consists of a number of fields that are
-        separated by spaces and/or tabs. Fields can contain white space if the field value is
-        quoted. Records cannot be continued across lines. Each remote client access record has the
-        following format:</p>
+        per line. Greenplum Database ignores blank lines and any text after the <codeph>#</codeph>
+        comment character. A record consists of a number of fields that are separated by spaces
+        and/or tabs. Fields can contain white space if the field value is quoted. Records cannot be
+        continued across lines. Each remote client access record has the following format:</p>
       <codeblock><i>host</i>   <i>database</i>   <i>role</i>   <i>CIDR-address</i>   <i>authentication-method</i></codeblock>
       <p>Each UNIX-domain socket access record has the following format:</p>
       <codeblock><i>local</i>   <i>database</i>   <i>role</i>   <i>authentication-method</i></codeblock>
@@ -171,12 +176,12 @@ ldapsuffix=",ou=People,dc=company,dc=com"</codeblock></li>
   </topic>
   <topic id="topic4" xml:lang="en">
     <title id="ip145021">Limiting Concurrent Connections</title>
-    <shortdesc>Greenplum allocates some resources on a per-connection
-      basis, so setting the maximum number of connections allowed is recommended.</shortdesc>
+    <shortdesc>Greenplum Database allocates some resources on a per-connection basis, so setting the
+      maximum number of connections allowed is recommended.</shortdesc>
     <body>
-      <p>To limit the number of active concurrent sessions to your Greenplum Database
-        system, you can configure the <codeph>max_connections</codeph> server configuration
-        parameter. This is a <i>local</i> parameter, meaning that you must set it in the
+      <p>To limit the number of active concurrent sessions to your Greenplum Database system, you
+        can configure the <codeph>max_connections</codeph> server configuration parameter. This is a
+          <i>local</i> parameter, meaning that you must set it in the
           <codeph>postgresql.conf</codeph> file of the master, the standby master, and each segment
         instance (primary and mirror). The recommended value of
           <codeph>max_connections</codeph> on segments is 5-10 times the value on the master.</p>
@@ -205,16 +210,15 @@ max_prepared_transactions=100
           </p>
         </li>
       </ul>
-      <p>The following steps set the parameter values with the Greenplum Database
-        utility <codeph>gpconfig</codeph>. </p>
+      <p>The following steps set the parameter values with the Greenplum Database utility
+          <codeph>gpconfig</codeph>. </p>
       <p>For information about <codeph>gpconfig</codeph>, see the <i>Greenplum
           Database Utility Guide</i>.</p>
       <section id="ip142411">
         <title>To change the number of allowed connections</title>
         <ol id="ol_sty_r15_jp">
-          <li id="ip146498">Log into the Greenplum Database master host as the
-              Greenplum Database administrator and source the file
-              <codeph>$GPHOME/greenplum_path.sh</codeph>. </li>
+          <li id="ip146498">Log into the Greenplum Database master host as the Greenplum Database
+            administrator and source the file <codeph>$GPHOME/greenplum_path.sh</codeph>. </li>
           <li id="ip146499">Set the value of the <codeph>max_connections</codeph> parameter. This
               <codeph>gpconfig</codeph> command sets the value on the segments to 1000 and the value
             on the master to 200.<p>
@@ -242,31 +246,29 @@ max_prepared_transactions=100
             </p></li>
         </ol>
         <note type="note">
-          <p>Raising the values of these parameters may cause Greenplum Database to
-            request more shared memory. To mitigate this effect, consider decreasing other
-            memory-related parameters such as <codeph>gp_cached_segworkers_threshold</codeph>. </p>
+          <p>Raising the values of these parameters may cause Greenplum Database to request more
+            shared memory. To mitigate this effect, consider decreasing other memory-related
+            parameters such as <codeph>gp_cached_segworkers_threshold</codeph>. </p>
         </note>
       </section>
     </body>
   </topic>
   <topic id="topic5" xml:lang="en">
     <title id="ip142639">Encrypting Client/Server Connections</title>
-    <shortdesc>Enable SSL for client connections to Greenplum Database to encrypt the
-      data passed over the network between the client and the database.</shortdesc>
+    <shortdesc>Enable SSL for client connections to Greenplum Database to encrypt the data passed
+      over the network between the client and the database.</shortdesc>
     <body>
-      <p>Greenplum Database has native support for SSL connections between the client
-        and the master server. SSL connections prevent third parties from snooping on the packets,
-        and also prevent man-in-the-middle attacks. SSL should be used whenever the client
-        connection goes through an insecure link, and must be used whenever client certificate
-        authentication is used.</p>
+      <p>Greenplum Database has native support for SSL connections between the client and the master
+        server. SSL connections prevent third parties from snooping on the packets, and also prevent
+        man-in-the-middle attacks. SSL should be used whenever the client connection goes through an
+        insecure link, and must be used whenever client certificate authentication is used.</p>
       <p>To enable SSL requires that OpenSSL be installed on both the client and the master server
-        systems. Greenplum can be started with SSL enabled by setting
-        the server configuration parameter <codeph>ssl=on</codeph> in the master
+        systems. Greenplum Database can be started with SSL enabled by setting the server
+        configuration parameter <codeph>ssl=on</codeph> in the master
           <codeph>postgresql.conf</codeph>. When starting in SSL mode, the server will look for the
         files <filepath>server.key</filepath> (server private key) and
           <filepath>server.crt</filepath> (server certificate) in the master data directory. These
-        files must be set up correctly before an SSL-enabled Greenplum
-        system can start. </p>
+        files must be set up correctly before an SSL-enabled Greenplum Database system can start. </p>
       <note type="important"> Do not protect the private key with a passphrase. The server does not
         prompt for a passphrase for the private key, and the database startup fails with an error if
         one is required.</note>
@@ -288,8 +290,8 @@ max_prepared_transactions=100
             <i>Common Name</i>. The challenge password can be left blank.</p>
         <p>The program will generate a key that is passphrase protected, and does not accept a
           passphrase that is less than four characters long. </p>
-        <p>To use this certificate with Greenplum Database, remove the passphrase with
-          the following commands:</p>
+        <p>To use this certificate with Greenplum Database, remove the passphrase with the following
+          commands:</p>
         <p>
           <codeblock># openssl rsa -in privkey.pem -out server.key
 # rm privkey.pem</codeblock>
