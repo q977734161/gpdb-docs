@@ -346,7 +346,7 @@ gp_email_to='test_account@example.com'
           database server to shut down.</p>
         <p>You can use the <codeph>gp_disk_free</codeph> external table in the
             <codeph>gp_toolkit</codeph> administrative schema to check for remaining free space (in
-          bytes) on the segment host file systems. For example:</p>
+          kilobytes) on the segment host file systems. For example:</p>
         <p>
           <codeblock>=# SELECT * FROM gp_toolkit.gp_disk_free
    ORDER BY dfsegment;
