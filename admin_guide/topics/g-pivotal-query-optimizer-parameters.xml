@@ -9,6 +9,9 @@
             <codeph>optimizer</codeph>
          </li>
          <li>
+            <codeph>optimizer_array_expansion_threshold</codeph>
+         </li>
+         <li>
             <codeph>optimizer_analyze_root_partition</codeph>
          </li>
          <li>
