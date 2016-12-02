@@ -37,15 +37,8 @@
       <title>Simple MVCC Example</title>
       <body>
          <p>This is a simple example of the concepts of a MVCC database and how it manages data and
-            transactions with transaction IDs. The example shows these concepts.<ul
-               id="ul_atw_yck_wv">
-               <li>How transaction IDs are used to manage multiple, simultaneous transactions on a
-                  table.</li>
-               <li>How transaction IDs are managed with the frozen XID</li>
-               <li>How the modulo calculation determines the order of transactions based on
-                  transaction IDs</li>
-            </ul></p>
-         <p>This simple MVCC database example consists of a single table:<ul id="ul_btw_yck_wv">
+            transactions with transaction IDs. This simple MVCC database example consists of a
+            single table:<ul id="ul_btw_yck_wv">
                <li>The table is a simple table with 2 columns and 4 rows of data.</li>
                <li>The valid transaction ID (XID) values are from 0 up to 9, after 9 the XID
                   restarts at 0.</li>
@@ -57,7 +50,16 @@
                   rows.</li>
             </ul></p>
          <p>The example only updates the amount values. No other changes to the table. </p>
-         <section>
+         <p>The example shows these concepts.<ul id="ul_tt1_tj1_cw">
+               <li><xref href="#topic_zsw_yck_wv/transactions" format="dita">How transaction IDs are
+                     used to manage multiple, simultaneous transactions on a table.</xref></li>
+               <li><xref href="#topic_zsw_yck_wv/managin_xid" format="dita">How transaction IDs are
+                     managed with the frozen XID</xref></li>
+               <li><xref href="#topic_zsw_yck_wv/table_itw_yck_wv" format="dita">How the modulo
+                     calculation determines the order of transactions based on transaction
+                     IDs</xref></li>
+            </ul></p>
+         <section id="transactions">
             <title>Managing Simultaneous Transactions</title>
             <p>This table is the initial table data on disk with no updates. The table contains two
                database columns for transaction IDs, <codeph>xmin</codeph> (transaction that created
@@ -192,8 +194,8 @@
                sprocket <codeph>300</codeph>, until the <codeph>UPDATE</codeph> transaction
                completes. </p>
          </section>
-         <section>
-            <title>Managing XIDs</title>
+         <section id="managin_xid">
+            <title>Managing XIDs and the Frozen XID</title>
             <p>For this simple example, the database is close to running out of available XID
                values. When Greenplum Database is close to running out of available XID values,
                Greenplum Database takes these actions.<ul id="ul_ftw_yck_wv">
@@ -297,7 +299,7 @@
                   <codeph>VACUUM</codeph> command, with <codeph>FULL</codeph> option, does more
                extensive processing to reclaim disk space.</p>
          </section>
-         <section>
+         <section id="modulo_calc">
             <title>Example of XID Modulo Calculations</title>
             <p>The next table shows the table data on disk after more <codeph>UPDATE</codeph>
                transactions. The XID values have rolled over and start over at <codeph>0</codeph>.
