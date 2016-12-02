@@ -163,7 +163,7 @@ chunksize = 67108864</codeblock></p><p>You
                <plentry>
                   <pt>chunksize</pt>
                   <pd>The buffer size for each segment thread. The default is 64 MB. The minimum is
-                     2MB and the maximum is128MB.</pd>
+                     8MB and the maximum is 128MB.</pd>
                </plentry>
                <plentry>
                   <pt>threadnum</pt>
