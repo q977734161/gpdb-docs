@@ -19,6 +19,10 @@
       clear text connection.</p>
     <p>To use LDAP authentication, the Greenplum Database master host must be configured as an LDAP
       client. See your LDAP documentation for information about configuring LDAP clients.</p>
+    <note type="note">The PgBouncer connection pooler bundled with Greenplum Database is modified to
+      support LDAP or Active Directory authentication for users connecting to Greenplum Database
+      through the connection pooler. See <xref
+        href="access_db/topics/pgbouncer.xml#topic_m2h_5dj_5s"/> for instructions. </note>
     <section>
       <title>Enabing LDAP Authentication with STARTTLS and TLS</title>
       <p>To enable STARTTLS with the TLS protocol, specify the <codeph>ldaptls</codeph> parameter
@@ -32,9 +36,10 @@
     </section>
     <section>
       <title>Enabing LDAP Authentication with a Secure Connection and TLS/SSL </title>
-      <p>To enable a secure connection with TLS/SSL, add <codeph>ldaps://</codeph> as the prefix to
-        the LDAP server name specified in the <codeph>ldapserver</codeph> parameter. The default
-        port is 636.</p>
+      <p>To enable STARTTLS with the TLS protocol, in the pg_hba.conf file, add an
+          <codeph>ldap</codeph> line and specify the <codeph>ldaptls</codeph> parameter with the
+        value 1. The default port is 389. In this example, the authentication method parameters
+        include the <codeph>ldaptls</codeph> parameter.
       <p>This example <codeph>ldapserver</codeph> parameter specifies a secure connection and the
         TLS/SSL protocol for the LDAP server <codeph>myldap.com</codeph>.</p>
       <codeblock>ldapserver=ldaps://myldap.com</codeblock>
@@ -50,7 +55,7 @@
         message:<codeblock>could not start LDAP TLS session: error code '-11'</codeblock></p>
       <p>To use an existing OpenLDAP system for authentication, Greenplum Database must be set up to
         use the LDAP server's CA certificate to validate user certificates. Follow these steps on
-        both the master and standby hosts to configure HAWQ:<ol id="ol_k5c_s3h_4v">
+        both the master and standby hosts to configure Greenplum Database:<ol id="ol_k5c_s3h_4v">
           <li>Copy the base64-encoded root CA chain file from the Active Directory or LDAP server to
             the Greenplum Database master and standby master hosts. This example uses the directory
               <codeph>/etc/pki/tls/certs</codeph>.</li>
@@ -70,8 +75,9 @@
               certificate validation to succeed, the hostname in the certificate must match a
               hostname in the URI property. Otherwise, you must also add <codeph>TLS_REQCERT
                 allow</codeph> to the file.</note></li>
-          <li>As the gpadmin user, edit <codeph>/usr/local/hawq/greenplum_path.sh</codeph> and add
-            the following line.<codeblock>export LDAPCONF=/etc/openldap/ldap.conf</codeblock></li>
+          <li>As the gpadmin user, edit <codeph>/usr/local/greenplum-db/greenplum_path.sh</codeph>
+            and add the following
+            line.<codeblock>export LDAPCONF=/etc/openldap/ldap.conf</codeblock></li>
         </ol></p>
     </section>
     <section>
