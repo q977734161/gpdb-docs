@@ -9,7 +9,7 @@
          mirror. Use the <codeph>gpconfig</codeph> utility to set a parameter in all Greenplum
             <codeph>postgresql.conf</codeph> files. For example:</p>
       <p>
-         <codeblock>$ gpconfig -c gp_vmem_protect_limit -v 4096MB</codeblock>
+         <codeblock>$ gpconfig -c gp_vmem_protect_limit -v 4096</codeblock>
       </p>
       <p>Restart Greenplum Database to make the configuration changes
          effective:</p>
