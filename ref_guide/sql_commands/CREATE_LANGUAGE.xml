@@ -78,7 +78,7 @@ CREATE [TRUSTED] [PROCEDURAL] LANGUAGE <varname>name</varname>
                         Built-in support is included for <codeph>plpgsql</codeph>,
                             <codeph>plperl</codeph>, <codeph>plpython</codeph>,
                             <codeph>plpythonu</codeph>, and <codeph>plr</codeph>. The languages
-                             <codeph>plpgsql</codeph> (PL/pgSQL)  and <codeph>plpythonu</codeph>
+                             <codeph>plpgsql</codeph> (PL/pgSQL) and <codeph>plpythonu</codeph>
                         (PL/Python) are installed by default in Greenplum Database.</pd>
                 </plentry>
                 <plentry>
@@ -121,9 +121,7 @@ CREATE [TRUSTED] [PROCEDURAL] LANGUAGE <varname>name</varname>
                     <codeph>USAGE</codeph> privilege for the language. By default,
                     <codeph>USAGE</codeph> is granted to <codeph>PUBLIC</codeph> (everyone) for
                 trusted languages. This may be revoked if desired. </p>
-            <p>Procedural languages are local to individual databases. However, a language can be
-                installed into the <codeph>template1</codeph> database, which will cause it to be
-                available automatically in all subsequently-created databases. </p>
+            <p>Procedural languages are local to individual databases. You create and drop languages for individual databases.</p>
             <p>The call handler function and the validator function (if any) must already exist if
                 the server does not have an entry for the language in
                 <codeph>pg_pltemplate</codeph>. But when there is an entry, the functions need not

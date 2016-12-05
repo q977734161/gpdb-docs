@@ -560,6 +560,10 @@
             chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#optimizer_control" navtitle="optimizer_control"
             copy-to="guc_config-optimizer_control.xml" chunk="to-content select-topic"/>
+        <topicref href="guc_category-list.xml#optimizer_enable_master_only_queries"
+            navtitle="optimizer_enable_master_only_queries"
+            copy-to="guc_config-optimizer_enable_master_only_queries.xml"
+            chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#optimizer_minidump" navtitle="optimizer_minidump"
             copy-to="guc_config-optimizer_minidump.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#password_encryption" navtitle="password_encryption"

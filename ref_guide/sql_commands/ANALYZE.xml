@@ -94,8 +94,10 @@
         most appropriate query plan, and thereby improve the speed of query processing. A common
         strategy is to run <codeph><xref href="./VACUUM.xml#topic1" type="topic" format="dita"
           /></codeph> and <codeph>ANALYZE</codeph> once a day during a low-usage time of day.</p>
-      <p><codeph>ANALYZE</codeph> requires only a read lock on the target table, so it can run in
-        parallel with other activity on the table.</p>
+            <p><codeph>ANALYZE</codeph> requires <codeph>SHARE UPDATE EXCLUSIVE</codeph> lock on the
+                target table. This lock conflicts with these locks: <codeph>SHARE UPDATE EXCLUSIVE</codeph>,
+                  <codeph>SHARE</codeph>, <codeph>SHARE ROW EXCLUSIVE</codeph>, <codeph>EXCLUSIVE</codeph>,
+                  <codeph>ACCESS EXCLUSIVE</codeph>.</p>
       <p>For a partitioned table, specifying which portion of the table to analyze, the root
         partition or subpartitions (leaf child tables) can be useful if the partitioned table has
         large number of partitions that have been analyzed and only a few leaf child tables have

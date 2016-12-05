@@ -9,9 +9,6 @@
       <li id="pv161174">
         <xref href="#topic2" type="topic" format="dita"/>
       </li>
-      <li id="pv161189">
-        <xref href="#topic3" type="topic" format="dita"/>
-      </li>
       <li id="pv161280">
         <xref href="#topic4" type="topic" format="dita"/>
       </li>
@@ -52,66 +49,55 @@
     <body>
       <p>With Greenplum Database PL/Java extension, you can write Java methods using your favorite
         Java IDE and install the JAR files that contain the methods into Greenplum Database. </p>
-      <p>The PL/Java 1.4.0 release of PL/Java provides the following features.</p>
+            <p>Greenplum Database PL/Java package is based on the open source PL/Java 1.4.0. Greenplum
+                Database PL/Java provides the following features.</p>
       <ul>
-        <li id="pv161029">Ability to write functions using Java 1.6 or higher.</li>
+        <li id="pv161029">Ability to execute PL/JAVA functions with Java 1.6 or higher.</li>
         <li id="pv161030">Standardized utilities (modeled after the SQL 2003 proposal) to install
           and maintain Java code in the database.</li>
         <li id="pv161031">Standardized mappings of parameters and result. Complex types as well as
           sets are supported.</li>
         <li id="pv161032">An embedded, high performance, JDBC driver utilizing the internal
-          PostgreSQL SPI routines.</li>
+          Greenplum Database SPI routines.</li>
         <li id="pv161033">Metadata support for the JDBC driver. Both
             <codeph>DatabaseMetaData</codeph> and <codeph>ResultSetMetaData</codeph> are
           included.</li>
         <li id="pv161034">The ability to return a ResultSet from a query as an alternative to
-          building a ResultSet row by row</li>
+          building a ResultSet row by row.</li>
         <li id="pv161035">Full support for savepoints and exception handling.</li>
         <li id="pv161036">The ability to use IN, INOUT, and OUT parameters. </li>
-        <li id="pv161037">Two language handlers, one TRUSTED (the default) and one that is not
-          TRUSTED (language tag is <codeph>javau</codeph> to conform with the de-facto standard). </li>
+                <li id="pv161037">Two separate Greenplum Database languages:<ul id="ul_rl4_vc5_lv">
+                      <li>pljava, TRUSTED PL/Java language</li>
+                      <li>pljavau, UNTRUSTED PL/Java language</li>
+                    </ul></li>
         <li id="pv161038">Transaction and Savepoint listeners enabling code execution when a
           transaction or savepoint is committed or rolled back.</li>
         <li id="pv161039">Integration with GNU GCJ on selected platforms.</li>
       </ul>
+            <p>The Greenplum Database PL/Java extension package ships with embedded Java Runtime 6u32 that
+                is installed in the directory <codeph>$GPHOME/ext/jre-1.6.0_32</codeph> on each of the
+                Greenplum Database hosts.</p>
       <p>A function in SQL will appoint a static method in a Java class. In order for the function
-        to execute, the appointed class must be installed in the database. The PL/Java extension
-        adds a set of functions that helps installing and maintaining the java classes. Classes are
-        stored in normal Java archives, JAR files. A JAR file may optionally contain a deployment
-        descriptor that in turn contains SQL commands to be executed when the JAR is deployed or
-        undeployed. The functions are modeled after the standards proposed for SQL 2003.</p>
+                to execute, the appointed class must available on the class path specified by the Greenplum
+                Database sever configuration parameter <codeph>pljava_classpath</codeph>. The PL/Java
+                extension adds a set of functions that helps installing and maintaining the java classes.
+                Classes are stored in normal Java archives, JAR files. A JAR file can optionally contain a
+                deployment descriptor that in turn contains SQL commands to be executed when the JAR is
+                deployed or undeployed. The functions are modeled after the standards proposed for SQL
+                2003.</p>
       <p>PL/Java implements a standardized way of passing parameters and return values. Complex
         types and sets are passed using the standard JDBC ResultSet class. </p>
-      <p>A JDBC driver is included in PL/Java. This driver is written with PostgreSQL internal SPI
-        routines. The driver is essential since it is common for functions to reuse the database.
-        When they do, they must use the same transactional boundaries that where used by the
-        caller.</p>
+            <p>A JDBC driver is included in PL/Java. This driver calls Greenplum Database internal SPI
+                routines. The driver is essential since it is common for functions to make calls back to the
+                database to fetch data. When PL/Java functions fetch data, they must use the same
+                transactional boundaries that are used by the main function that entered PL/Java execution
+                context.</p>
       <p>PL/Java is optimized for performance. The Java virtual machine executes within the same
         process as the backend to minimize call overhead. PL/Java is designed with the objective to
         enable the power of Java to the database itself so that database intensive business logic
         can execute as close to the actual data as possible.</p>
       <p>The standard Java Native Interface (JNI) is used when bridging calls between the backend
         and the Java VM.</p>
-    </body>
-  </topic>
-  <topic id="topic3" xml:lang="en">
-    <title id="pv159763">Prerequisties for PL/Java</title>
-    <body>
-      <p>To use PL/Java you must have a JDK 1.6 installation on all Greenplum Database hosts.</p>
-      <p>Ensure the following Java configuration on all Greenplum Database hosts.</p>
-      <ul>
-        <li id="pv158855">Java must be accessible to the system user of the Greenplum Database
-          administrator (<codeph>gpadmin</codeph>).</li>
-        <li id="pv161490">Make sure the <codeph>JAVA_HOME</codeph> environment variable is set in
-          the environment of the Greenplum Database administrator. </li>
-        <li id="pv159310">The Java runtime libraries must be available to the runtime linker. <p>On
-            Linux, this involves adding a configuration file for jdk-1.6.0 in
-              <codeph>/etc/ld.so.conf.d</codeph> and then running <codeph>ldconfig</codeph>. For
-            example, you run a command similar to this as
-          root:</p><codeblock># echo "$JAVA_HOME/jre/lib/amd64/server" &gt;
-/etc/ld.so.conf.d/libjdk-1.6.0_21.conf
-# /sbin/ldconfig</codeblock></li>
-      </ul>
     </body>
   </topic>
   <topic id="topic4" xml:lang="en">
@@ -129,9 +115,11 @@
       <p>To install and use PL/Java:</p>
       <ol>
         <li id="pv158542">Install the Greenplum Database PL/Java extension. </li>
-        <li id="pv158366">Enable the language for each database.</li>
-        <li id="pv158382">Install user-created JAR files containing Java methods on all Greenplum
-          Database hosts.</li>
+                <li><i>Optional</i>. Change the Java version used by PL/Java.</li>
+                <li id="pv158366">Enable the language for each database where you intend to use
+                    PL/Java.</li>
+                <li id="pv158382">Install user-created JAR files containing Java methods into the same
+                    directory on all Greenplum Database hosts.</li>
         <li id="pv158391">Add the name of the JAR file to the Greenplum Database server
           configuration parameter <codeph>pljava_classpath</codeph>. The parameter lists the
           installed JAR files. For information about the parameter, see the <cite>Greenplum Database
@@ -152,8 +140,51 @@
               <codeph>gppkg</codeph> command. This example installs the PL/Java extension package on
             a Linux
             system:<codeblock>$ gppkg -i pljava-ossv1.4.0_pv1.2_gpdb4.3orca-rhel5-x86_64.gppkg</codeblock></li>
-          <li id="pv162228">Restart the database.<codeblock>$ gpstop -r</codeblock></li>
-          <li id="pv162229">Source the file <codeph>$GPHOME/greenplum_path.sh</codeph>.</li>
+                    <li dir="ltr">Reload
+                        <codeph>greenplum_path.sh</codeph>.<codeblock dir="ltr">$ source $GPHOME/greenplum_path.sh</codeblock></li>
+                    <li id="pv162228">Restart Greenplum Database.<codeblock>$ gpstop -r</codeblock></li>
+                  </ol>
+              </body>
+          </topic>
+        <topic id="topic_r3p_jf5_lv">
+            <title>Changing Java version used by PL/Java (Optional)</title>
+            <body>
+                <p dir="ltr">The PL/Java extension package ships with Java JRE 6u32. When the
+          package is installed, the JRE is installed on each host of your Greenplum Database
+          cluster. To use newer version of Java with PL/Java, perform these steps to specify the
+          location of the Java version. For information about supported Java versions, see the
+            <cite>Greenplum Database Release Notes</cite> for your release.</p>
+                <p>
+                    <note>The newer Java must be installed in the same location on all Greenplum Database
+                        hosts and must be accessible to the system user of the Greenplum Database administrator
+                          (<codeph>gpadmin</codeph>).</note>
+                  </p>
+                <ol id="ol_rf3_kf5_lv">
+                    <li dir="ltr"> In the <codeph>$GPHOME/greenplum_path.sh</codeph> file, modify the
+                          <codeph>JAVA_HOME</codeph> and <codeph>LD_LIBRARY_PATH</codeph> environment
+                          variables.<ul id="ol_dy5_5f5_lv">
+                            <li>Set the <codeph>JAVA_HOME</codeph> variable to the directory where your Java
+                                Runtime is installed. For example, for Oracle JRE this directory would be
+                                  <codeph>/usr/java/latest</codeph>. For OpenJDK, the directory is
+                                  <codeph>/usr/lib/jvm/jre</codeph>. This example changes the environment variable
+                                to use
+                                <codeph>/usr/java/latest</codeph>.<codeblock>JAVA_HOME=/usr/java/latest</codeblock></li>
+                            <li>Set the <codeph>LD_LIBRARY_PATH</codeph> to include the directory with Java server
+                                runtime libraries. PL/Java depends on <codeph>libjvm.so</codeph> and the shared
+                                object should be in your <codeph>LD_LIBRARY_PATH</codeph>. By default,
+                                  <codeph>libjvm.so</codeph> is available in
+                                  <codeph>$JAVA_HOME/lib/amd64/server</codeph>. This example adds the directory to
+                                the environment
+                                variable.<codeblock>LD_LIBRARY_PATH=$GPHOME/lib:$GPHOME/ext/python/lib:<b>$JAVA_HOME/lib/amd64/server</b>:$LD_LIBRARY_PATH</codeblock></li>
+                          </ul></li>
+                    <li dir="ltr">Copy the uppdated <codeph>greenplum_path.sh</codeph> file to all the
+                        Greenplum Database hosts. This example <codeph>gpscp</codeph> command copies the file to
+                        all hosts specified in the file
+                        <codeph>gphosts_file</codeph>.<codeblock>$ gpscp -f gphosts_file $GPHOME/greenplum_path.sh 
+              =:$GPHOME/greenplum_path.sh</codeblock></li>
+                    <li dir="ltr">Reload
+                        <codeph>greenplum_path.sh</codeph>.<codeblock dir="ltr">$ source $GPHOME/greenplum_path.sh</codeblock></li>
+                    <li dir="ltr">Restart Greenplum Database.<codeblock>$ gpstop -r</codeblock></li>
         </ol>
       </body>
     </topic>
@@ -164,12 +195,12 @@
             <codeph>gpadmin</codeph>.</p>
         <ol>
           <li id="pv162268">Enable PL/Java by running the SQL script
-              <codeph>$GPHOME/share/postgresql/pljava/install.sql</codeph> in the databases that use
-            PL/Java. For example, his example enables PL/Java on the database
-              <codeph>mytestdb</codeph>:<codeblock>$ psql -d mytestdb
+                          <codeph>$GPHOME/share/postgresql/pljava/install.sql</codeph> in the databases that
+                        will use PL/Java. For example, this example enables PL/Java on the database
+            <codeph>mytestdb</codeph>:<codeblock>$ psql -d mytestdb
   -f $GPHOME/share/postgresql/pljava/install.sql</codeblock><p>The
               script <codeph>install.sql</codeph> registers both the trusted and untrusted
-              PL/Java.</p></li>
+              PL/Java language.</p></li>
           <li id="pv160325">Copy your Java archives (JAR files) to the same directory on all
             Greenplum Database hosts. This example uses the Greenplum Database
              <codeph>gpscp</codeph> utility to copy the file <codeph>myclasses.jar</codeph> to the
@@ -182,7 +213,7 @@
             in the master <codeph>postgresql.conf</codeph> file. For this example, the parameter
             value is a colon (:) separated list of the JAR files. For
               example:<codeblock>$ gpconfig -c pljava_classpath
--v \'examples.jar:myclasses.jar\' --masteronly</codeblock><p>The
+-v \'examples.jar:myclasses.jar\'</codeblock><p>The
               file <codeph>examples.jar</codeph> is installed when you install the PL/Java extension
               package with the <codeph>gppkg</codeph> utility.</p><note>If you install JAR files in
               a directory other than <codeph>$GPHOME/lib/postgresql/java/</codeph>, you must specify
@@ -192,16 +223,13 @@
               configuration parameter in the <cite>Greenplum Database Reference
             Guide</cite>.</note></li>
           <li id="pv160329">Reload the <codeph>postgresql.conf</codeph>
-            file:<codeblock>$ gpstop -u</codeblock></li>
+            file.<codeblock>$ gpstop -u</codeblock></li>
           <li id="pv160335">(optional) Greenplum provides an <codeph>examples.sql</codeph> file
             containing sample PL/Java functions that you can use for testing. Run the commands in
             this file to create the test functions (which use the Java classes in
               <codeph>examples.jar</codeph>).
             <codeblock>$ psql -f $GPHOME/share/postgresql/pljava/examples.sql</codeblock></li>
         </ol>
-        <p>Enabling the PL/Java extension in the template1 database enables PL/Java in any new
-          Greenplum databases.</p>
-        <codeblock>$ psql template1 -f $GPHOME/share/postgresql/pljava/install.sql</codeblock>
       </body>
     </topic>
   </topic>
@@ -234,20 +262,20 @@
           uninstall the Greenplum PL/Java extension with the <codeph>gppkg</codeph> utility. </p>
         <ol>
           <li id="pv165538">Remove the <codeph>pljava_classpath</codeph> server configuration
-            parameter from the master <codeph>postgresql.conf</codeph> file. For
-            example:<codeblock>$ gpconfig -r pljava_classpath --masteronly</codeblock></li>
-          <li id="pv165539">Remove the JAR files from the
-              <codeph>$GPHOME/lib/postgresql/java/</codeph> directory of the Greenplum Database
-            hosts.</li>
+                        parameter from the <codeph>postgresql.conf</codeph> file on all Greenplum Database
+                        hosts. For example:<codeblock>$ gpconfig -r pljava_classpath</codeblock></li>
+                    <li id="pv165539">Remove the JAR files from the directories where they were installed on
+                        all Greenplum Database hosts. For information about JAR file installation directories,
+                        see <xref href="#topic6" format="dita"/>.</li>
           <li id="pv160641">Use the Greenplum <codeph>gppkg</codeph> utility with the
               <codeph>-r</codeph> option to uninstall the PL/Java extension. This example uninstalls
             the PL/Java extension on a Linux
-              system:<codeblock>$ gppkg -r pljava-ossv1.4.0_pv1.2_gpdb4.3orca</codeblock><p>You can
+              system:<codeblock>$ gppkg -r pljava-ossv1.4.0_pv1.3_gpdb4.3orca</codeblock><p>You can
               run the <codeph>gppkg</codeph> utility with the options <codeph>-q --all</codeph> to
               list the installed extensions and their versions.</p></li>
-          <li id="pv158621">After you uninstall the extension, restart the
-            database.<codeblock>$ gpstop -r </codeblock></li>
-          <li>Source the file <codeph>$GPHOME/greenplum_path.sh</codeph>.</li>
+                    <li dir="ltr">Reload
+                        <codeph>greenplum_path.sh</codeph>.<codeblock dir="ltr">$ source $GPHOME/greenplum_path.sh</codeblock></li>
+                    <li id="pv158621">Restart the database.<codeblock>$ gpstop -r </codeblock></li>
         </ol>
       </body>
     </topic>
@@ -766,18 +794,22 @@ eateStatement();
   <topic id="topic27" xml:lang="en">
     <title id="pv157586">Logging</title>
     <body>
-      <p>PL/Java uses the standard Java 1.4 Logger. Hence, you can write things like:</p>
+      <p>PL/Java uses the standard Java Logger. Hence, you can write things like:</p>
       <codeblock>Logger.getAnonymousLogger().info( "Time is " + new
 Date(System.currentTimeMillis()));</codeblock>
-      <p>At present, the logger is hard wired to a handler that maps the current state of the
-        Greenplum Database configuration setting <codeph>log_min_messages</codeph> to a valid Logger
-        level and that outputs all messages using the backend function <codeph>elog()</codeph>. The
-        following mapping apply between the Logger levels and the Greenplum Database backend
+            <p>At present, the logger uses a handler that maps the current state of the Greenplum Database
+                configuration setting <codeph>log_min_messages</codeph> to a valid Logger level and that
+                outputs all messages using the Greenplum Database backend function <codeph>elog()</codeph>. </p>
+            <note>The <codeph>log_min_messages</codeph> setting is read from the database the first time a
+                PL/Java function in a session is executed. On the Java side, the setting does not change
+                after the first PL/Java function execution in a specific session until the Greenplum
+                Database session that is working with PL/Java is restarted.</note>
+            <p>The following mapping apply between the Logger levels and the Greenplum Database backend
         levels.</p>
       <table id="pv157590">
         <title>PL/Java Logging Levels</title>
         <tgroup cols="2">
-          <colspec colnum="1" colname="col1" colwidth="110pt"/>
+          <colspec colnum="1" colname="col1" colwidth="131.25pt"/>
           <colspec colnum="2" colname="col2" colwidth="165pt"/>
           <thead>
             <row>
@@ -795,6 +827,10 @@ Date(System.currentTimeMillis()));</codeblock>
               <entry colname="col2">WARNING</entry>
             </row>
             <row>
+                            <entry colname="col1">CONFIG</entry>
+                            <entry colname="col2">LOG</entry>
+                          </row>
+                        <row>
               <entry colname="col1">INFO</entry>
               <entry colname="col2">INFO</entry>
             </row>
@@ -867,14 +903,14 @@ Date(System.currentTimeMillis()));</codeblock>
       </ul>
     </body>
     <topic id="topic34" xml:lang="en">
-      <title id="pv157635">Multi threading</title>
+      <title id="pv157635">Multi-threading</title>
       <body>
-        <p>Java is inherently multi threaded. The Greenplum Database backend is not. There is
+        <p>Java is inherently multi-threaded. The Greenplum Database backend is not. There is
           nothing stopping a developer from utilizing multiple Threads class in the Java code.
           Finalizers that call out to the backend might have been spawned from a background Garbage
           Collection thread. Several third party Java-packages that are likely to be used make use
           of multiple threads. How can this model coexist with the Greenplum Database backend in the
-          same process without creating havoc?</p>
+          same process?</p>
       </body>
       <topic id="topic35" xml:lang="en">
         <title>Solution</title>
@@ -915,7 +951,7 @@ Date(System.currentTimeMillis()));</codeblock>
         <p>Primitive types are always be passed by value. This includes the <codeph>String</codeph>
           type (this is a must since Java uses double byte characters). Complex types are often
           wrapped in Java objects and passed by reference. For example, a Java object can contain a
-          pointer to a palloc’ed or stack allocated memory and use native JNI calls to extract and
+          pointer to a palloc'ed or stack allocated memory and use native JNI calls to extract and
           manipulate data. Such data will become stale once a call has ended. Further attempts to
           access such data will at best give very unpredictable results but more likely cause a
           memory fault and a crash.</p>
@@ -999,6 +1035,8 @@ select java_substring(a, 1, 5) from temp;</codeblock>
       <p>The PL/Java Github wiki page - <xref href="https://github.com/tada/pljava/wiki"
           format="html" scope="external">https://github.com/tada/pljava/wiki</xref>
       </p>
+            <p> PL/Java 1.4.0 release - <xref href="https://github.com/tada/pljava/tree/B1_4"
+                  format="html" scope="external">https://github.com/tada/pljava/tree/B1_4</xref>.</p>     
     </body>
   </topic>
 </topic>
