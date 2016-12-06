@@ -166,12 +166,12 @@ s3://domain/test1/abcdefff</codeblock>
          <title>About S3 Data Files</title>
          <p>For writeable S3 tables, an insert operation results in one or more files placed in the
             S3 bucket using the filename format <codeph>
-               &lt;prefix>&lt;sha>&lt;segment_id>.&lt;extension>[.gz]</codeph> where:<ul
+               &lt;prefix>&lt;segment_id>&lt;sha>.&lt;extension>[.gz]</codeph> where:<ul
                id="ul_sw1_qvs_3x">
                <li><codeph>&lt;prefix></codeph> is the prefix specified in the S3 URL.</li>
+               <li><codeph>&lt;segment_id></codeph> is the Greenplum Database segment ID.</li>
                <li><codeph>&lt;sha></codeph> is a SHA256 digest that is used to ensure a unique
                   filename.</li>
-               <li><codeph>&lt;segment_id></codeph> is the Greenplum Database segment ID.</li>
                <li><codeph>&lt;extension></codeph> describes the file type (<codeph>.txt</codeph> or
                      <filepath>.csv</filepath>, depending on the value you provide in the
                      <codeph>FORMAT</codeph> clause of <codeph>CREATE WRITEABLE EXTERNAL
@@ -422,7 +422,7 @@ gpcheckcloud <b>-h</b></codeblock>
             bucket location using the <codeph>s3</codeph> configuration file
                <codeph>s3.mytestconf</codeph>:<codeblock>gpcheckcloud -u ./test-data.csv "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>A
             successful upload results in one or more files placed in the S3 bucket using the
-            filename format <codeph> 0&lt;sha>.data[.gz]</codeph>. See <xref
+            filename format <codeph> abc&lt;segment_id>&lt;sha>.data[.gz]</codeph>. See <xref
                href="#amazon-emr/section_c2f_zvs_3x" format="dita"/>.</p><p>This example attempts to
             connect to an S3 bucket location with the <codeph>s3</codeph> configuration file
                <codeph>s3.mytestconf</codeph>.<codeblock>gpcheckcloud -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
