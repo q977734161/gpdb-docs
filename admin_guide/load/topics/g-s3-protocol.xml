@@ -51,7 +51,7 @@
                <li>On each Greenplum Database segment, create and install the <codeph>s3</codeph>
                   protocol configuration file:<ol id="ol_mnq_rnq_kx">
                      <li>Create a template s3 protocol configuration file using the
-                           <codeph>gpcloudcheck</codeph>
+                           <codeph>gpcheckcloud</codeph>
                         utility:<codeblock>gpcheckcloud -t > ./mytest_s3.config</codeblock></li>
                      <li>Edit the template file to specify the <codeph>accessid</codeph> and
                            <codeph>secret</codeph> required to connect to the S3 location. See <xref
@@ -68,16 +68,16 @@
                            you must specify the location with the <codeph>config</codeph> parameter
                            in the <codeph>s3</codeph> protocol URL. See <xref
                               href="#amazon-emr/s3_config_param" format="dita"/>.</p></li>
-                     <li>Use the <codeph>gpcloudcheck</codeph> utility to validate connectivity to
+                     <li>Use the <codeph>gpcheckcloud</codeph> utility to validate connectivity to
                         the S3
                            bucket:<codeblock>gpcheckcloud -c "s3://&lt;s3-endpoint>/&lt;s3-bucket> config=./mytest_s3.config"</codeblock><p>Specify
                            the correct path to the configuration file for your system, as well as
                            the S3 endpoint name and bucket that you want to check.
-                              <codeph>gpcloudcheck</codeph> attempts to connect to the S3 endpoint
+                              <codeph>gpcheckcloud</codeph> attempts to connect to the S3 endpoint
                            and lists any files in the s3 bucket, if available. A successful
                            connection ends with the
                            message:<codeblock>Your configuration works well.</codeblock>You can
-                           optionally use <codeph>gpcloudcheck</codeph> to validate uploading to and
+                           optionally use <codeph>gpcheckcloud</codeph> to validate uploading to and
                            downloading from the S3 bucket, as described in <xref
                               href="#amazon-emr/s3chkcfg_utility" format="dita"/>.</p></li>
                   </ol></li>
