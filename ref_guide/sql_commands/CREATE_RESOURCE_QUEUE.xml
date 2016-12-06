@@ -77,6 +77,8 @@
       <p>For information about <codeph>statement_mem</codeph>, <codeph>max_statement</codeph>, and
           <codeph>gp_vmem_protect_limit</codeph>, see <xref href="../config_params/guc_config.xml" type="topic"
           format="dita"/>.</p>
+            <note>The query plan cost thresholds <codeph>MAX_COST</codeph> and <codeph>MIN_COST</codeph>
+                are deprecated and will be removed in a future release. </note>
     </section>
     <section id="section4">
       <title>Parameters</title>
@@ -104,15 +106,17 @@
         </plentry>
         <plentry>
           <pt>MAX_COST <varname>float</varname></pt>
-          <pd>Resource queues with a <codeph>MAX_COST</codeph> threshold set a maximum limit on the
-            total cost of queries that can be executed by roles assigned to that queue. Cost is
-            measured in the <i>estimated total cost</i> for the query as determined by the Greenplum
-            Database query optimizer (as shown in the <codeph>EXPLAIN</codeph> output for a query).
-            Therefore, an administrator must be familiar with the queries typically executed on the
-            system in order to set an appropriate cost threshold for a queue. Cost is measured in
-            units of disk page fetches; 1.0 equals one sequential disk page read. The value for
-              <codeph>MAX_COST</codeph> is specified as a floating point number (for example 100.0)
-            or can also be specified as an exponent (for example 1e+2).</pd>
+                    <pd><note>The <codeph>MAX_COST</codeph> parameter is deprecated and will be removed in a
+                          future release. </note>Resource queues with a <codeph>MAX_COST</codeph> threshold set
+                        a maximum limit on the total cost of queries that can be executed by roles assigned to
+                        that queue. Cost is measured in the <i>estimated total cost</i> for the query as
+                        determined by the Greenplum Database query optimizer (as shown in the
+                          <codeph>EXPLAIN</codeph> output for a query). Therefore, an administrator must be
+                        familiar with the queries typically executed on the system in order to set an
+                        appropriate cost threshold for a queue. Cost is measured in units of disk page fetches;
+                        1.0 equals one sequential disk page read. The value for <codeph>MAX_COST</codeph> is
+                        specified as a floating point number (for example 100.0) or can also be specified as an
+                        exponent (for example 1e+2).</pd>
         </plentry>
         <plentry>
           <pt>COST_OVERCOMMIT <varname>boolean</varname></pt>
@@ -124,15 +128,16 @@
         </plentry>
         <plentry>
           <pt>MIN_COST <varname>float</varname></pt>
-          <pd>The minimum query cost limit of what is considered a small query. Queries with a cost
-            under this limit will not be queued and run immediately. Cost is measured in the
-              <i>estimated total cost</i> for the query as determined by the Greenplum Database
-            query planner (as shown in the <codeph>EXPLAIN</codeph> output for a query). Therefore,
-            an administrator must be familiar with the queries typically executed on the system in
-            order to set an appropriate cost for what is considered a small query. Cost is measured
-            in units of disk page fetches; 1.0 equals one sequential disk page read. The value for
-              <codeph>MIN_COST </codeph>is specified as a floating point number (for example 100.0)
-            or can also be specified as an exponent (for example 1e+2).</pd>
+                    <pd><note>The <codeph>MIN_COST</codeph> parameter is deprecated and will be removed in a
+                          future release. </note>The minimum query cost limit of what is considered a small
+                        query. Queries with a cost under this limit will not be queued and run immediately. Cost
+                        is measured in the <i>estimated total cost</i> for the query as determined by the
+                        Greenplum Database query planner (as shown in the <codeph>EXPLAIN</codeph> output for a
+                        query). Therefore, an administrator must be familiar with the queries typically executed
+                        on the system in order to set an appropriate cost for what is considered a small query.
+                        Cost is measured in units of disk page fetches; 1.0 equals one sequential disk page
+                        read. The value for <codeph>MIN_COST </codeph>is specified as a floating point number
+                        (for example 100.0) or can also be specified as an exponent (for example 1e+2).</pd>
         </plentry>
         <plentry>
           <pt>PRIORITY={MIN|LOW|MEDIUM|HIGH|MAX}</pt>
@@ -156,6 +161,10 @@ rsqname='queue_name';</codeblock>
         Workload and Resources" in the <i>Greenplum Database Administrator Guide</i> for more
         information about using resource queues.</p>
       <p><codeph>CREATE RESOURCE QUEUE</codeph> cannot be run within a transaction.</p>
+            <p>The Greenplum Database server configuration parameter <codeph><xref
+                    href="../config_params/guc_category-list.xml#resource_usecost"/></codeph> controls
+                whether Greenplum Database ignores the <codeph>MIN_COST</codeph> and
+                  <codeph>MAX_COST</codeph> values that are specified in a resource queue definition.</p>
     </section>
     <section id="section6">
       <title>Examples</title>

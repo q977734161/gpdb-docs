@@ -37,15 +37,13 @@ VACUUM [FULL] [FREEZE] [VERBOSE] ANALYZE
         segment file to a new segment file, and then the current segment file is scheduled to be
         dropped and the new segment file is made available. Plain <codeph>VACUUM</codeph> of an
         append-optimized table allows scans, inserts, deletes, and updates of the table while a
-        segment file is compacted. </p>
+        segment file is compacted. However, an Access Exclusive lock is taken briefly to drop the
+        current segment file and activate the new segment file.</p>
       <p><codeph>VACUUM FULL</codeph> does more extensive processing, including moving of tuples
         across blocks to try to compact the table to the minimum number of disk blocks. This form is
-        much slower and requires an exclusive lock on each table while it is being processed. </p>
-      <p>With append-optimized tables, <codeph>VACUUM FULL</codeph> acquires an exclusive lock and
-        disallows inserts, updates and deletes, but <codeph>SELECT</codeph> statements can be
-        executed during most of the compaction process. When all visible rows have been copied to
-        the new segment file, the table is locked briefly while the new segment is made available
-        and the old segment is set to be dropped. </p>
+                much slower and requires an Access Exclusive lock on each table while it is being processed.
+                The Access Exclusive lock guarantees that the holder is the only transaction accessing the
+                table in any way.</p>
       <note type="important">For information on the use of <codeph>VACUUM</codeph>, <codeph>VACUUM
           FULL</codeph>, and <codeph>VACUUM ANALYZE</codeph>, see <xref href="#topic1/section6"
           type="section" format="dita"/>

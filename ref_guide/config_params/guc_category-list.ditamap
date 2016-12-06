@@ -607,6 +607,8 @@
             copy-to="guc_config-resource_cleanup_gangs_on_wait.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#resource_select_only" navtitle="resource_select_only"
             copy-to="guc_config-resource_select_only.xml" chunk="to-content select-topic"/>
+                <topicref href="guc_category-list.xml#resource_usecost" navtitle="resource_usecost"
+                        copy-to="guc_config-resource_usecost.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#runaway_detector_activation_percent"
             navtitle="runaway_detector_activation_percent"
             copy-to="guc_config-runaway_detector_activation_percent.xml"
@@ -694,7 +696,10 @@
         <topicref href="guc_category-list.xml#vacuum_freeze_min_age"
             navtitle="vacuum_freeze_min_age" copy-to="guc_config-vacuum_freeze_min_age.xml"
             chunk="to-content select-topic"/>
-        <topicref href="guc_category-list.xml#wal_receiver_status_interval"
+	<topicref href="guc_category-list.xml#validate_previous_free_tid"
+	                navtitle="validate_previous_free_tid"
+	                copy-to="guc_config-validate_previous_free_tid.xml" chunk="to-content select-topic"/>
+	    <topicref href="guc_category-list.xml#wal_receiver_status_interval"
             navtitle="wal_receiver_status_interval"
             copy-to="guc_config-wal_receiver_status_interval.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#writable_external_table_bufsize"

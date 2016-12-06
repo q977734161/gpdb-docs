@@ -9,7 +9,7 @@
 		</booklibrary>
 		<mainbooktitle id="pdf_version">Version 4.3</mainbooktitle>
 		<booktitlealt id="pdf_title">Reference Guide</booktitlealt>
-		<booktitlealt id="pdf_revision_number">Rev: A17</booktitlealt>
+		<booktitlealt id="pdf_revision_number">Rev: A19</booktitlealt>
 		<booktitlealt id="copyright_date">© 2016 Pivotal Software, Inc.</booktitlealt>
 	</booktitle>
 	<bookmeta>
@@ -302,7 +302,9 @@
 	<chapter href="ref_guide/extensions/pl_python.xml"
 		navtitle="Greenplum PL/Python Language Extension" id="pl_python"/>
 	<chapter href="ref_guide/extensions/pl_java.xml" navtitle="Greenplum PL/Java Language Extension"
-		id="pl_java"/>
+		 id="pl_java"/>
+	<chapter href="ref_guide/extensions/madlib.xml" navtitle="Greenplum MADlib Extension for Analytics"
+		 id="madlib"/>
 	<chapter href="ref_guide/extensions/fuzzystrmatch.xml"
 		navtitle="Greenplum Fuzzy String Match Extension" id="fuzzystrmatch"/>
 	<chapter href="ref_guide/feature_summary.xml" navtitle="Summary of Greenplum Features"
