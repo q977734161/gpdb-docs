@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic
   PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-<topic id="automate-gpchrondump" xml:lang="en">
+<topic id="automate-gpcrondump" xml:lang="en">
   <title id="kk155437">Backing Up with gpcrondump</title>
   <body>
     <p>Use <codeph>gpcrondump</codeph> to backup databases, data, and objects such as database roles

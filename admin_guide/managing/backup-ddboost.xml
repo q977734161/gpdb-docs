@@ -9,7 +9,7 @@
       backups to the EMC Data Domain storage appliance. Data Domain performs deduplication on the
       data it stores, so after the initial backup operation, the appliance stores only pointers to
       data that is unchanged. This reduces the size of backups on disk. When DD Boost is used with
-        <codeph>gpchrondump</codeph>, Greenplum Database participates in the deduplication process,
+        <codeph>gpcrondump</codeph>, Greenplum Database participates in the deduplication process,
       reducing the volume of data sent over the network. When you restore files from the Data Domain
       system with Data Domain Boost, some files are copied to the master local disk and are restored
       from there, and others are restored directly.</p>

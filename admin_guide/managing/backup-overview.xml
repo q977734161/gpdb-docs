@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-
 <topic id="backup-restore-over">
   <title>Backup and Restore Overview</title>
   <body>
@@ -15,7 +14,7 @@
       <title>Parallel Backup and Restore</title>
       <p>The Greenplum Database parallel dump utility <codeph>gpcrondump</codeph> backs up the
         Greenplum master instance and each active segment instance at the same time. </p>
-      <p>By default, <codeph>gpcrondump</codeph> creates dump files in the <codeph>gp_dump</codeph>
+      <p>By default, <codeph>gpcrondump</codeph> creates dump files in the <codeph>db_dumps</codeph>
         subdirectory of each segment instance. On the master, <codeph>gpcrondump</codeph> creates
         several dump files, containing database information such as DDL statements, the system
         catalog tables, and metadata files. On each segment, <codeph>gpcrondump</codeph> creates one
@@ -110,7 +109,7 @@
         <li>For partitioned append-optimized tables, only changed append-optimized/column-oriented
           table partitions are backed up. </li>
         <li>Incremental backups include all heap tables.</li>
-        <li>Use the <codeph>gpchrondump</codeph>
+        <li>Use the <codeph>gpcrondump</codeph>
           <codeph>--incremental</codeph> flag to specify an incremental backup.</li>
         <li>Restoring an incremental backup requires a full backup and all subsequent incremental
           backups, up to the backup you are restoring.</li>
