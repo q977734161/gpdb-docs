@@ -66,12 +66,14 @@
             <pt>gp_fts_probe_interval</pt>
             <pd>How often, in seconds, to begin a new FTS loop. For example if the setting is 60 and
               the probe loop takes 10 seconds, the FTS process sleeps 50 seconds. If the setting is
-              60 and probe loop takes 75 seconds, the process sleeps 0 seconds. Default: 60 </pd>
+              60 and probe loop takes 75 seconds, the process sleeps 0 seconds. The default is 60,
+              and the maximum is 3600. </pd>
           </plentry>
         </parml><parml>
           <plentry>
             <pt>gp_fts_probe_timeout</pt>
-            <pd>Probe timeout between master and segment, in seconds. Default: 20 </pd>
+            <pd>Probe timeout between master and segment, in seconds. The default is 20, and the
+              maximum is 3600. </pd>
           </plentry>
         </parml><parml>
           <plentry>
