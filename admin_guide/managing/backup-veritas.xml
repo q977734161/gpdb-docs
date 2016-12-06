@@ -129,13 +129,14 @@
             </table><p>See the <cite>Veritas NetBackup Administrator's Guide</cite> for information
               about the <filepath>bp.conf</filepath> file. </p></li>
           <li>Set the <codeph>LD_LIBRARY_PATH</codeph> environment variable for Greenplum Database
-            hosts to use NetBackup client 7.1, 7.5 or 7.6. Greenplum Database ships with NetBackup
-            SDK library files compatible with NetBackup 7.1, 7.5 and 7.6 clients. To use the
-            NetBackup client that ships with Greenplum Database, add the following line to the file
+            hosts to use NetBackup client 7.1, 7.5 or 7.6. Greenplum Database installs NetBackup SDK
+            library files that are used with the NetBackup 7.1, 7.5, or 7.6 client. To configure
+            Greenplum Database to use the library files that correspond to the version of the
+            NetBackup client that is installed on the hosts, add the following line to the file
               <codeph>$GPHOME/greenplum_path.sh</codeph>:<codeblock>LD_LIBRARY_PATH=$GPHOME/lib/nbu<varname>NN</varname>/lib:$LD_LIBRARY_PATH </codeblock><p>Replace
-              the <varname>NN</varname> with, 76, 75, or 71 depending on the NetBackup client you
-              need to use. </p><p>The <codeph>LD_LIBRARY_PATH</codeph> line should be added before
-              this line in
+              the <varname>NN</varname> with, 76, 75, or 71 depending on the NetBackup client that
+              is installed on the host. </p><p>The <codeph>LD_LIBRARY_PATH</codeph> line should be
+              added before this line in
             <codeph>$GPHOME/greenplum_path.sh</codeph>:</p><codeblock>export LD_LIBRARY_PATH</codeblock></li>
           <li>Execute this command to remove the current <codeph>LD_LIBRARY_PATH</codeph>
             value:<codeblock>unset LD_LIBRARY_PATH</codeblock></li>
