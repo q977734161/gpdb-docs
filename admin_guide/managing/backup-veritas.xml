@@ -5,8 +5,8 @@
   <title>Backing Up Databases with Veritas NetBackup</title>
   <body id="body_ebt_kzy_3p">
     <p>For Pivotal Greenplum Database on Red Hat Enterprise Linux, you can configure Pivotal
-      perform backup and restore operations with Veritas NetBackup. You configure Greenplum
-      configure Pivotal Greenplum Database and NetBackup and then run a <codeph>gpcrondump</codeph>
+      perform backup and restore operations with Veritas NetBackup. You configure Greenplum Database
+      and NetBackup and then run a Greenplum Database <codeph>gpcrondump</codeph> or
       or <codeph>gpdbrestore</codeph> command. Open source Greenplum Database does not include the
       NetBackup native API integration. The following topics describe how to set up NetBackup and
       back up or restore Greenplum Databases. </p>
@@ -56,12 +56,22 @@
       <note>Pivotal Greenplum Database uses the NetBackup API (XBSA) to communicate with NetBackup.
         Greenplum Database uses SDK version XBSA 1.1.0.</note>
       <ul id="ul_xw4_51z_3p">
-        <li>NetBackup client software installed and configured on the Pivotal Greenplum Database
-          master host and all segment hosts.<p>The NetBackup client software must be able to
-            communicate with the NetBackup server software.</p></li>
-        <li>NetBackup Master Server Version 7.5 and NetBackup Media Server Version 7.5</li>
-        <li>NetBackup Client version 7.1 or later.</li>
+        <li>Supported NetBackup Master Server software.<ul id="ul_fqs_lrd_px">
+            <li>NetBackup Master Server Version 7.5 and NetBackup Media Server Version 7.5</li>
+            <li>NetBackup Master Server Version 7.6 and NetBackup Media Server Version 7.6</li>
+          </ul></li>
+        <li>Supported NetBackup Client version: 7.1, 7.5, or 7.6.<p>NetBackup client software
+            installed and configured on the Greenplum Database master host and all segment
+            hosts.</p><p>The NetBackup client software must be able to communicate with the
+            NetBackup server software.</p><p>For NetBackup version 7.5 or 7.6, the client version
+            that is installed and configured on the Greenplum Database hosts must match the
+            NetBackup Server version that stores the Greenplum Database backup.</p><p>For NetBackup
+            Client version 7.1, Greenplum Database supports only NetBackup Server Version
+          7.5.</p></li>
       </ul>
+      <note>Greenplum Database support for NetBackup Client version 7.1 is deprecated. The NetBackup
+        SDK library files for NetBackup version 7.1 will be removed from the Greenplum Database
+        installation in a future release. </note>
     </body>
   </topic>
   <topic id="topic_nq4_m1z_3p">
@@ -118,15 +128,14 @@
               </tgroup>
             </table><p>See the <cite>Veritas NetBackup Administrator's Guide</cite> for information
               about the <filepath>bp.conf</filepath> file. </p></li>
-          <li>Set the <codeph>LD_LIBRARY_PATH</codeph> environment variable for Pivotal Greenplum
-            Database hosts to use NetBackup client 7.1 or 7.5. Pivotal Greenplum Database ships with
-            NetBackup SDK library files compatible with NetBackup 7.1 and 7.5 clients. To use the
-            NetBackup 7.1 or 7.5 client that ships with Pivotal Greenplum Database, add the
-            following line to the file
+          <li>Set the <codeph>LD_LIBRARY_PATH</codeph> environment variable for Greenplum Database
+            hosts to use NetBackup client 7.1, 7.5 or 7.6. Greenplum Database ships with NetBackup
+            SDK library files compatible with NetBackup 7.1, 7.5 and 7.6 clients. To use the
+            NetBackup client that ships with Greenplum Database, add the following line to the file
               <codeph>$GPHOME/greenplum_path.sh</codeph>:<codeblock>LD_LIBRARY_PATH=$GPHOME/lib/nbu<varname>NN</varname>/lib:$LD_LIBRARY_PATH </codeblock><p>Replace
-              the <varname>NN</varname> with 75 or 71 depending on the NetBackup client you need to
-              use. </p><p>The <codeph>LD_LIBRARY_PATH</codeph> line should be added before this line
-              in
+              the <varname>NN</varname> with, 76, 75, or 71 depending on the NetBackup client you
+              need to use. </p><p>The <codeph>LD_LIBRARY_PATH</codeph> line should be added before
+              this line in
             <codeph>$GPHOME/greenplum_path.sh</codeph>:</p><codeblock>export LD_LIBRARY_PATH</codeblock></li>
           <li>Execute this command to remove the current <codeph>LD_LIBRARY_PATH</codeph>
             value:<codeblock>unset LD_LIBRARY_PATH</codeblock></li>
@@ -214,7 +223,7 @@
       <pre>--netbackup-service-host <varname>netbackup_master_server</varname>
 --netbackup-block-size <varname>size</varname> (optional)</pre>
       <note>When performing a restore operation from NetBackup, you must specify the backup
-        timestamp with the gpdbrestore utility -t option.</note>
+        timestamp with the <codeph>gpdbrestore</codeph> utility <codeph>-t</codeph> option.</note>
       <p>The policy name and schedule name are defined on the NetBackup master server. See <xref
           href="#topic_vwm_v1z_3p" format="dita"/> for information about policy name and schedule
         name. See the <cite>Greenplum Database Utility Guide</cite> for information about the
