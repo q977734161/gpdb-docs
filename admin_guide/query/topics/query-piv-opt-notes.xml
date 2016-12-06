@@ -21,6 +21,10 @@
       </ul></p>
     <p>If the partitioned table contains more than 20,000 partitions, consider a redesign of the
       table schema. </p>
+    <p>The server configuration parameter <codeph>optimizer_join_order_threshold</codeph> specifies
+      the maximum number of join children for which the Pivotal Query Optimizer uses the dynamic
+      programming-based join ordering algorithm. For information about the parameter, see the
+        <cite>Greenplum Database Reference Guide</cite>.</p>
     <p>GPORCA generates minidumps to describe the optimization context for a
       given query. The minidump files are used by Pivotal support to analyze Greenplum Database
       issues. The information in the file is not in a format that can be easily used by customers
