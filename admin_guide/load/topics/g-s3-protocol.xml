@@ -117,9 +117,11 @@
                href="../../../ref_guide/sql_commands/CREATE_EXTERNAL_TABLE.xml#topic1"/>
             syntax.</note>
          <p>For writeable S3 tables, the <codeph>s3</codeph> protocol URL specifies the endpoint and
-            bucket name where Greenplum Database uploads data files for the table. The S3 file
-            prefix is used for each new file uploaded to the S3 location as a result of inserting
-            data to the table. See <xref href="#amazon-emr/section_c2f_zvs_3x" format="dita"/>.</p>
+            bucket name where Greenplum Database uploads data files for the table. The S3 bucket
+            permissions must be <codeph>Upload/Delete</codeph> for the S3 user ID that uploads the
+            files. The S3 file prefix is used for each new file uploaded to the S3 location as a
+            result of inserting data to the table. See <xref href="#amazon-emr/section_c2f_zvs_3x"
+               format="dita"/>.</p>
          <p>For read-only S3 tables, the S3 file prefix is optional. If you specify an
                <varname>S3_prefix</varname>, then <codeph>s3</codeph> protocol selects all files
             that start with the specified prefix as data files for the external table. The
@@ -200,7 +202,8 @@ s3://domain/test1/abcdefff</codeblock>
             be in gzip compressed format. The <codeph>s3</codeph> protocol recognizes the gzip
             format and uncompress the files. Only the gzip compression format is supported. </p>
          <p>The S3 file permissions must be <codeph>Open/Download</codeph> and <codeph>View</codeph>
-            for the S3 user ID that is accessing the files.</p>
+            for the S3 user ID that is accessing the files. Writeable S3 tables require the S3 user
+            ID to have <codeph>Upload/Delete</codeph> permissions.</p>
          <p>For read-only S3 tables, each segment can download one file at a time from S3 location
             using several threads. To take advantage of the parallel processing performed by the
             Greenplum Database segments, the files in the S3 location should be similar in size and
