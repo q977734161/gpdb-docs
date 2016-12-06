@@ -131,17 +131,12 @@ s3://domain/test1/abcdefff</codeblock>
             protocol</b></p><ol id="ol_ptx_bfs_55">
             <li>Create a function to access the <codeph>s3</codeph> protocol library.<p>In each
                   Greenplum database that accesses an S3 bucket with the <codeph>s3</codeph>
-                  protocol, create a function for the protocol. For writeable S3
-                  tables:<codeblock>CREATE OR REPLACE FUNCTION write_to_s3() RETURNS integer AS
-   '$libdir/gps3ext.so', 's3_export' LANGUAGE C STABLE;</codeblock></p><p>For
-                  read-only S3
-               tables:</p><codeblock>CREATE OR REPLACE FUNCTION read_from_s3() RETURNS integer AS
+                  protocol, create the read and write functions for the
+                  protocol:<codeblock>CREATE OR REPLACE FUNCTION write_to_s3() RETURNS integer AS
+   '$libdir/gps3ext.so', 's3_export' LANGUAGE C STABLE;</codeblock></p><codeblock>CREATE OR REPLACE FUNCTION read_from_s3() RETURNS integer AS
    '$libdir/gps3ext.so', 's3_import' LANGUAGE C STABLE;</codeblock></li>
-            <li> Declare the <codeph>s3</codeph> protocol and specify the function that is used to
-               write to or read from an S3 bucket. For writeable S3
-                  tables:<codeblock>CREATE PROTOCOL s3 (writefunc  = write_to_s3);</codeblock><p>For
-                  read-only S3
-                  tables:<codeblock>CREATE PROTOCOL s3 (readfunc = read_from_s3);</codeblock></p></li>
+            <li> Declare the <codeph>s3</codeph> protocol and specify the read and write
+               functions:<codeblock>CREATE PROTOCOL s3 (writefunc  = write_to_s3, readfunc = read_from_s3);</codeblock></li>
          </ol><note>The protocol name <codeph>s3</codeph> must be the same as the protocol of the
             URL specified for the external table you create to access an S3 resource. <p>The
                corresponding function is called by every Greenplum Database segment instance. All
@@ -151,8 +146,8 @@ s3://domain/test1/abcdefff</codeblock>
                   id="ol_kq2_5bt_3x">
                   <li>Create a template file using the <codeph>gpcloudcheck</codeph>
                      utility:<codeblock>gpcheckcloud -t > ./mytest_s3.config</codeblock></li>
-                  <li>Edit the template file to specify the accessid and secret required to connect
-                     to the S3 location.</li>
+                  <li>Edit the template file to specify the <codeph>accessid</codeph> and
+                        <codeph>secret</codeph> required to connect to the S3 location.</li>
                   <li>Edit any other configuration file parameters as described in <xref
                         href="#amazon-emr/s3_config_file" format="dita"/>.</li>
                </ol></li>
