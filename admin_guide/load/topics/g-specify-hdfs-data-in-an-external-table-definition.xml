@@ -6,7 +6,7 @@
    <body>
       <p>The <codeph>LOCATION</codeph> clause of the <codeph>CREATE EXTERNAL TABLE</codeph> command
          for HDFS files differs slightly for Hadoop HA (High Availability) clusters, Hadoop clusters
-         without HA, and MapR clusters.  </p>
+         without HA, and MapR clusters. </p>
       <p>In a Hadoop HA cluster, the <codeph>LOCATION</codeph> clause references the logical
          nameservices id (the <codeph>dfs.nameservices</codeph> property in the
             <codeph>hdfs-site.xml</codeph> configuration file). The <codeph>hdfs-site.xml</codeph>
@@ -37,6 +37,10 @@
                   <codeph>gphdfs</codeph>. Wildcard characters are allowed. If you specify a
                directory, the default is all files in the directory. <p>You can specify only a
                   directory for writable external tables.</p></li>
+            <li>The URI of the <codeph>LOCATION</codeph> clause cannot contain any of these four
+               characters: <codeph>\</codeph>, <codeph>'</codeph>, <codeph>&lt;</codeph>,
+                  <codeph>></codeph>. The <codeph>CREATE EXTERNAL TABLE</codeph> returns a an error
+               if the URI contains any of the characters.</li>
             <li id="du172453">Format restrictions are as follows.<ul id="ul_lr5_x1b_kp">
                   <li id="du192074">Only the <codeph>gphdfs_import</codeph> formatter is allowed for
                      readable external tables with a custom format.</li>
