@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic
   PUBLIC "-//OASIS//DTD DITA Composite//EN" "ditabase.dtd">
-<topic id="backup-symantec">
-  <title>Backing Up Databases with Symantec NetBackup</title>
+<topic id="backup-veritas">
+  <title>Backing Up Databases with Veritas NetBackup</title>
   <body id="body_ebt_kzy_3p">
     <p>For Pivotal Greenplum Database on Red Hat Enterprise Linux, you can configure Pivotal
-      Greenplum Database to perform backup and restore operations with Symantec NetBackup. You
+      perform backup and restore operations with Veritas NetBackup. You configure Greenplum
       configure Pivotal Greenplum Database and NetBackup and then run a <codeph>gpcrondump</codeph>
       or <codeph>gpdbrestore</codeph> command. Open source Greenplum Database does not include the
       NetBackup native API integration. The following topics describe how to set up NetBackup and
@@ -46,7 +46,7 @@
         <li>NetBackup client software that resides on the Greenplum Database hosts that contain data
           to be backed up. </li>
       </ul>
-      <p>See the <cite>Symantec NetBackup Getting Started Guide</cite> for information about
+      <p>See the <cite>Veritas NetBackup Getting Started Guide</cite> for information about
         NetBackup.</p>
     </body>
   </topic>
@@ -54,7 +54,7 @@
     <title>System Requirements</title>
     <body>
       <note>Pivotal Greenplum Database uses the NetBackup API (XBSA) to communicate with NetBackup.
-        Pivotal Greenplum Database uses SDK version Symantec XBSA 1.1.0.</note>
+        Greenplum Database uses SDK version XBSA 1.1.0.</note>
       <ul id="ul_xw4_51z_3p">
         <li>NetBackup client software installed and configured on the Pivotal Greenplum Database
           master host and all segment hosts.<p>The NetBackup client software must be able to
@@ -116,7 +116,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table><p>See the <cite>Symantec NetBackup Administrator's Guide</cite> for information
+            </table><p>See the <cite>Veritas NetBackup Administrator's Guide</cite> for information
               about the <filepath>bp.conf</filepath> file. </p></li>
           <li>Set the <codeph>LD_LIBRARY_PATH</codeph> environment variable for Pivotal Greenplum
             Database hosts to use NetBackup client 7.1 or 7.5. Pivotal Greenplum Database ships with
@@ -135,7 +135,7 @@
         </ol>
       </section>
       <section>
-        <p>See the <cite>Symantec NetBackup Administrator's Guide</cite> for information about
+        <p>See the <cite>Veritas NetBackup Administrator's Guide</cite> for information about
           configuring NetBackup servers.</p>
         <ol id="ol_yml_gbz_3p">
           <li>Ensure that the Pivotal Greenplum Database hosts are listed as NetBackup clients for
@@ -167,7 +167,7 @@
   <topic id="topic_vwm_v1z_3p">
     <title>Configuring NetBackup for Pivotal Greenplum Database</title>
     <body>
-      <p>See the <cite>Symantec NetBackup Administrator's Guide</cite> for information about
+      <p>See the <cite>Veritas NetBackup Administrator's Guide</cite> for information about
         configuring NetBackup servers.</p>
       <ol id="ol_xqz_x1z_3p">
         <li>Ensure that the Pivotal Greenplum Database hosts are listed as NetBackup clients for the

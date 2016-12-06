@@ -108,7 +108,7 @@
             <plentry>
                <pt>NetBackup</pt>
                <pd>Through native API integration, Pivotal Greenplum Database backups can be
-                 streamed to a Symantec NetBackup cluster.</pd>
+               <pd>Through native API integration, backups can be streamed to a Veritas NetBackup
             </plentry>
             <plentry>
                <pt>NFS</pt>
