@@ -169,25 +169,30 @@ s3://domain/test1/abcdefff</codeblock>
          </ol></section>
       <section id="s3_config_file">
          <title>s3 Protocol Configuration File</title>
-         <p>When using the <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol
+         <p>When using the <codeph>s3</codeph> protocol, an <codeph>s3</codeph> protocol
             configuration file is required on all Greenplum Database segments. The default location
-            is
-            <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p>
+            is:<codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p>
          <p>The <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
             directory, the <varname>gpseg-prefix</varname> is the segment prefix, and
                <varname>N</varname> is the segment ID. The segment data directory, prefix, and ID
             are set when you initialize a Greenplum Database system.</p>
          <p>If you have multiple segment instances on segment hosts, you can simplify the
-            configuration by creating a single location on each segment host. Then you specify the
-            absolute path to the location with the <codeph>config</codeph> parameter in the
-               <codeph>s3</codeph> protocol <codeph>LOCATION</codeph> clause. This example specifies
-            a location in the <codeph>gpadmin</codeph> home directory. </p>
+            configuration by creating a single location on each segment host. Then you can specify
+            the absolute path to the location with the <codeph>config</codeph> parameter in the
+               <codeph>s3</codeph> protocol <codeph>LOCATION</codeph> clause. However, note that
+            both read-only and writeable S3 external tables use the same parameter values for their
+            connections. If you want to configure protocol parameters differently for read-only and
+            writeable S3 tables, then you must use two different  <codeph>s3</codeph> protocol
+            configuration files and specify the correct file in the <codeph>CREATE EXTERNAL
+               TABLE</codeph> statement when you create each table.</p>
+         <p>This example specifies a single file location in the <codeph>gpadmin</codeph> home
+            directory:</p>
          <codeblock>config=/home/gpadmin/s3/s3.conf</codeblock>
          <p>All segment instances on the hosts use the file
                <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p>
          <p>The <codeph>s3</codeph> protocol configuration file is a text file that consists of a
                <codeph>[default]</codeph> section and parameters This is an example configuration
-            file.<codeblock>[default]
+            file:<codeblock>[default]
 secret = "secret"
 accessid = "user access id"
 connections = 3
@@ -215,16 +220,27 @@ chunksize = 67108864</codeblock></p>
                   <pt>chunksize</pt>
                   <pd>The buffer size that each segment thread uses for reading from or writing to
                      the S3 server. The default is 64 MB. The minimum is 8MB and the maximum is
-                     128MB. When inserting data to an S3 table, each Greenplum Database segment
-                     writes the data into its buffer until it is full, after which it writes the
-                     buffer to a file in the S3 bucket. This process is then repeated as necessary
-                     on each segment until the insert operation completes.</pd>
+                     128MB. <p>When inserting data to a writeable S3 table, each Greenplum Database
+                        segment writes the data into its buffer (using multiple threads up to the
+                           <codeph>threadnum</codeph> value) until it is full, after which it writes
+                        the buffer to a file in the S3 bucket. This process is then repeated as
+                        necessary on each segment until the insert operation
+                        completes.</p><p>Because Amazon S3 allows a maximum of 10,000 parts for
+                        multipart uploads, the minimum <codeph>chunksize</codeph> value of 8MB
+                        supports a maximum insert size of 80GB per Greenplum database segment. The
+                        maximum <codeph>chunksize</codeph> value of 128MB supports an insert size
+                        1.28TB per segment. For writeable S3 tables, you must ensure that the
+                           <codeph>chunksize</codeph> setting can support the anticipated table size
+                        of your table. See <xref
+                           href="http://docs.aws.amazon.com/AmazonS3/latest/dev/mpuoverview.html"
+                           format="html" scope="external">Multipart Upload Overview</xref> in the S3
+                        documentation for more information about uploads to S3.</p></pd>
                </plentry>
                <plentry>
                   <pt>threadnum</pt>
                   <pd>The maximum number of concurrent connections a segment can create when
-                     downloading data from the S3 bucket. The default is 4. The minimum is 1 and the
-                     maximum is 8.</pd>
+                     uploading data to or downloading data from the S3 bucket. The default is 4. The
+                     minimum is 1 and the maximum is 8.</pd>
                </plentry>
                <plentry>
                   <pt>encryption</pt>
@@ -236,17 +252,18 @@ chunksize = 67108864</codeblock></p>
                </plentry>
                <plentry>
                   <pt>low_speed_limit</pt>
-                  <pd>The download speed lower limit, in bytes per second. The default speed is
-                     10240 (10K). If the download speed is slower than the limit for longer than the
-                     time specified by <codeph>low_speed_time</codeph>, the download connection is
-                     aborted and retried. After 3 retries, the <codeph>s3</codeph> protocol returns
-                     an error. A value of 0 specifies no lower limit.</pd>
+                  <pd>The upload/download speed lower limit, in bytes per second. The default speed
+                     is 10240 (10K). If the upload or download speed is slower than the limit for
+                     longer than the time specified by <codeph>low_speed_time</codeph>, then the
+                     connection is aborted and retried. After 3 retries, the <codeph>s3</codeph>
+                     protocol returns an error. A value of 0 specifies no lower limit.</pd>
                </plentry>
                <plentry>
                   <pt>low_speed_time</pt>
-                  <pd>When the connection speed is less than <codeph>low_speed_limit</codeph>, the
-                     amount of time, in minutes, to wait before aborting a download from an S3
-                     bucket. The default is 1 minute. A value of 0 specifies no time limit.</pd>
+                  <pd>When the connection speed is less than <codeph>low_speed_limit</codeph>, this
+                     parameter specified the amount of time, in minutes, to wait before aborting an
+                     upload to or a download from the S3 bucket. The default is 1 minute. A value of
+                     0 specifies no time limit.</pd>
                </plentry>
             </parml>
             <note>You must ensure that there is sufficient memory on the Greenplum Database segment
@@ -272,6 +289,14 @@ chunksize = 67108864</codeblock></p>
                <li>For writeable S3 external tables, only the <codeph>INSERT</codeph> operation is
                   supported. <codeph>UPDATE</codeph>, <codeph>DELETE</codeph>, and
                      <codeph>TRUNCATE</codeph> operations are not supported.</li>
+               <li>Because Amazon S3 allows a maximum of 10,000 parts for multipart uploads, the
+                  maximum <codeph>chunksize</codeph> value of 128MB supports a maximum insert size
+                  of 1.28TB per Greenplum database segment for writeable s3 tables. You must ensure
+                  that the <codeph>chunksize</codeph> setting can support the anticipated table size
+                  of your table. See <xref
+                     href="http://docs.aws.amazon.com/AmazonS3/latest/dev/mpuoverview.html"
+                     format="html" scope="external">Multipart Upload Overview</xref> in the S3
+                  documentation for more information about uploads to S3.</li>
                <li>To take advantage of the parallel processing performed by the Greenplum Database
                   segment instances, the files in the S3 location for read-only S3 tables should be
                   similar in size and the number of files should allow for multiple segments to
@@ -285,9 +310,9 @@ chunksize = 67108864</codeblock></p>
       <section id="s3chkcfg_utility"><title>About the gpcheckcloud Utility</title><p>The Greenplum
             Database utility <codeph>gpcheckcloud</codeph> helps users create an <codeph>s3</codeph>
             protocol configuration file and test a configuration file. You can specify options to
-            test the ability to access an S3 bucket with a configuration file, and optionally
-            download data from files in the bucket.</p><p>If you run the utility without any
-            options, it sends a template configuration file to <codeph>STDOUT</codeph>. You can
+            test the ability to access an S3 bucket with a configuration file, and optionally upload
+            data to or download data from files in the bucket.</p><p>If you run the utility without
+            any options, it sends a template configuration file to <codeph>STDOUT</codeph>. You can
             capture the output and create an <codeph>s3</codeph> configuration file to connect to
             Amazon S3. </p><p>The utility is installed in the Greenplum Database
                <codeph>$GPHOME/bin</codeph> directory.</p><b>Syntax</b>
@@ -320,7 +345,8 @@ gpcheckcloud <b>-h</b></codeblock>
                <pt>-u</pt>
                <pd>Upload a file to the S3 bucket specified in the <codeph>s3</codeph> protocol URL
                   using the specified configuration file if available. Use this option to test
-                  compression and chunksize setting for your configuration.</pd>
+                  compression and <codeph>chunksize</codeph> and <codeph>autocompress</codeph>
+                  settings for your configuration.</pd>
             </plentry>
             <plentry>
                <pt>-t</pt>
@@ -340,11 +366,10 @@ gpcheckcloud <b>-h</b></codeblock>
             bucket location using the <codeph>s3</codeph> configuration file
                <codeph>s3.mytestconf</codeph>:<codeblock>gpcheckcloud -u ./test-data.csv "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>A
             successful upload results in one or more files placed in the S3 bucket using the
-            filename format <codeph> &lt;prefix>&lt;sha>&lt;segment_id>.data[.gz]</codeph>. See
-               <xref href="#amazon-emr/section_c2f_zvs_3x" format="dita"/>.</p><p>This example
-            attempts to connect to an S3 bucket location with the <codeph>s3</codeph> configuration
-            file
-            <codeph>s3.mytestconf</codeph>.<codeblock>gpcheckcloud -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
+            filename format <codeph> 0&lt;sha>.data[.gz]</codeph>. See <xref
+               href="#amazon-emr/section_c2f_zvs_3x" format="dita"/>.</p><p>This example attempts to
+            connect to an S3 bucket location with the <codeph>s3</codeph> configuration file
+               <codeph>s3.mytestconf</codeph>.<codeblock>gpcheckcloud -c "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p><p>Download
             all files from the S3 bucket location and send the output to <codeph>STDOUT</codeph>.
             <codeblock>gpcheckcloud -d "s3://domain/test1/abc config=s3.mytestconf"</codeblock></p></section>
    </body>
