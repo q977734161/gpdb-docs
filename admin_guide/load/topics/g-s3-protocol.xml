@@ -331,10 +331,13 @@ chunksize = 67108864</codeblock></p>
                      of 0 specifies no time limit.</pd>
                </plentry>
             </parml>
-            <note>You must ensure that there is sufficient memory on the Greenplum Database segment
-               hosts when the <codeph>s3</codeph> protocol to accesses the files. Greenplum Database
-               allocates <codeph>threadnum * chunksize</codeph> memory on each segment host when
-               accessing S3 files.</note>
+            <note><ph id="memory-phrase">Greenplum Database allocates <codeph>threadnum *
+                     chunksize</codeph> memory on each segment host when accessing S3 files.
+                  Consider this memory that is required by the <codeph>s3</codeph> protocol when you
+                  configure overall Greenplum Database memory, and increase the value of <xref
+                     href="../../../ref_guide/config_params/guc_category-list.xml#gp_vmem_protect_limit"
+                  /> accordingly.</ph>
+            </note>
          </sectiondiv>
       </section>
       <section id="section_tsq_n3t_3x">
