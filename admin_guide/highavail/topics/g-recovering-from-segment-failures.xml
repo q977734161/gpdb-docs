@@ -64,7 +64,7 @@
         hardware failures on different segment hosts happen simultaneously. Greenplum Database is
         unavailable if a double fault occurs. To recover from a double fault:</p>
       <ol>
-        <li id="ki165670">Restart Greenplum Database:<codeblock>$ gpstop -r</codeblock>
+        <li id="ki165670">Restart Greenplum Database:<codeblock>$ gpstop -r</codeblock></li>
         <li id="ki165671">After the system restarts, run
           <codeph>gprecoverseg</codeph>:<codeblock>$ gprecoverseg</codeblock>
         </li>

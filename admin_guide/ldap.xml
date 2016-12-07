@@ -40,13 +40,11 @@
           <codeph>ldap</codeph> line and specify the <codeph>ldaptls</codeph> parameter with the
         value 1. The default port is 389. In this example, the authentication method parameters
         include the <codeph>ldaptls</codeph> parameter.
-      <p>This example <codeph>ldapserver</codeph> parameter specifies a secure connection and the
-        TLS/SSL protocol for the LDAP server <codeph>myldap.com</codeph>.</p>
-      <codeblock>ldapserver=ldaps://myldap.com</codeblock>
-      <p>To specify a non-default port, add a colon (:) and the port number after the LDAP server
-        name. This example <codeph>ldapserver</codeph> parameter includes the
-          <codeph>ldaps://</codeph> prefix and the non-default port 550.</p>
-      <codeblock>ldapserver=ldaps://myldap.com:550</codeblock>
+        <codeblock>ldap ldapserver=myldap.com ldaptls=1 ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com"</codeblock></p>
+      <p>Specify a non-default port with the <codeph>ldapport</codeph> parameter. In this example,
+        the authentication method includes the <codeph>ldaptls</codeph> parameter and the
+        <codeph>ldapport</codeph> parameter to specify the port
+        550.<codeblock>ldap ldapserver=myldap.com ldaptls=1 ldapport=500 ldapprefix="uid=" ldapsuffix=",ou=People,dc=pivotal,dc=com"</codeblock></p>
     </section>
     <section>
       <title>Configuring Authentication with a System-wide OpenLDAP System</title>

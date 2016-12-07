@@ -107,8 +107,7 @@
             </plentry>
             <plentry>
                <pt>NetBackup</pt>
-               <pd>Through native API integration, Pivotal Greenplum Database backups can be
-               <pd>Through native API integration, backups can be streamed to a Veritas NetBackup
+               <pd>Through native API integration, backups can be streamed to a Veritas NetBackup cluster.</pd>
             </plentry>
             <plentry>
                <pt>NFS</pt>

@@ -341,7 +341,8 @@
       </section>
       <section>
         <title>How Memory Limits Work</title>
-          memory that all active queries submitted through the queue can consume for a segment
+          <p>Setting MEMORY_LIMIT on a resource queue sets the maximum amount of memory 
+          that all active queries submitted through the queue can consume for a segment
           instance. The amount of memory allotted to a query is the queue memory limit divided by
           the active statement limit. (Pivotal recommends that memory limits be used in conjunction
           with statement-based queues rather than cost-based queues.) For example, if a queue has a
@@ -502,7 +503,7 @@
                   advantage of the fact that not all operators execute at the same time. The query
                   plan is divided into stages and Greenplum Database eagerly frees memory allocated
                   to a previous stage at the end of that stage's execution, then allocates the
-                  eagerly freed memory to the new stage.</p><p><ph otherprops="gpdb">When set to
+                  eagerly freed memory to the new stage.</p><p>When set to
                     <codeph>auto</codeph>, query memory usage is controlled by
                     <codeph>statement_mem</codeph> and resource queue memory limits. </p></li>
               <li id="iz172366"><codeph>statement_mem</codeph> and
