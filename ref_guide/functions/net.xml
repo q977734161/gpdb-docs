@@ -66,7 +66,7 @@
             </entry>
             <entry>is greater than</entry>
             <entry>
-              <codeph>inet '192.168.1.5' &gt; inet '192.168.1.4'</codeph>
+              <codeph>inet '192.168.1.5' &gt; inet '192.0.2.4'</codeph>
             </entry>
           </row>
           <row>
@@ -75,7 +75,7 @@
             </entry>
             <entry>is not equal</entry>
             <entry>
-              <codeph>inet '192.168.1.5' &lt;&gt; inet '192.168.1.4'</codeph>
+              <codeph>inet '192.168.1.5' &lt;&gt; inet '192.0.2.4'</codeph>
             </entry>
           </row>
           <row>
@@ -156,7 +156,7 @@
             </entry>
             <entry>subtraction</entry>
             <entry>
-              <codeph>inet '192.168.1.43' - 36</codeph>
+              <codeph>inet '192.0.2.43' - 36</codeph>
             </entry>
           </row>
           <row>
@@ -165,7 +165,7 @@
             </entry>
             <entry>subtraction</entry>
             <entry>
-              <codeph>inet '192.168.1.43' - inet '192.168.1.19'</codeph>
+              <codeph>inet '192.0.2.43' - inet '192.0.2.19'</codeph>
             </entry>
           </row>
         </tbody>
@@ -236,7 +236,7 @@
               <codeph>broadcast('192.168.1.5/24')</codeph>
             </entry>
             <entry>
-              <codeph>192.168.1.255/24</codeph>
+              <codeph>192.0.2.255/24</codeph>
             </entry>
           </row>
           <row>

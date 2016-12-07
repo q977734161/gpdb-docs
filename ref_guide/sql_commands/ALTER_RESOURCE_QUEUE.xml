@@ -40,8 +40,6 @@
                     that were previously set. A resource queue must have either an
                       <codeph>ACTIVE_STATEMENTS</codeph> or a <codeph>MAX_COST</codeph> value. Do not remove
                     both these <codeph>queue_attributes</codeph> from a resource queue.</p>
-                <note>The query plan cost thresholds <codeph>MAX_COST</codeph> and <codeph>MIN_COST</codeph>
-                    are deprecated and will be removed in a future release. </note>
               </section>
             <section id="section4">
                 <title>Parameters</title>
@@ -67,13 +65,12 @@
                       </plentry>
                     <plentry>
                         <pt>MAX_COST <varname>float</varname></pt>
-                        <pd><note>The <codeph>MAX_COST</codeph> parameter is deprecated and will be removed in a
-                              future release. </note>The total query optimizer cost of statements submitted from
-                            users in this resource queue allowed on the system at any one time. The value for
-                              <codeph>MAX_COST</codeph> is specified as a floating point number (for example 100.0)
-                            or can also be specified as an exponent (for example 1e+2). To reset
-                              <codeph>MAX_COST</codeph> to have no limit, enter a value of
-                            <codeph>-1.0</codeph>.</pd>
+                        <pd>The total query optimizer cost of statements submitted from users in
+            this resource queue allowed on the system at any one time. The value for
+              <codeph>MAX_COST</codeph> is specified as a floating point number (for example 100.0)
+            or can also be specified as an exponent (for example 1e+2). To reset
+              <codeph>MAX_COST</codeph> to have no limit, enter a value of
+            <codeph>-1.0</codeph>.</pd>
                       </plentry>
                     <plentry>
                         <pt>COST_OVERCOMMIT <varname>boolean</varname></pt>
@@ -85,13 +82,12 @@
                       </plentry>
                     <plentry>
                         <pt>MIN_COST <varname>float</varname></pt>
-                        <pd><note>The <codeph>MIN_COST</codeph> parameter is deprecated and will be removed in a
-                              future release. </note>Queries with a cost under this limit will not be queued and run
-                            immediately. Cost is measured in units of disk page fetches; 1.0 equals one sequential
-                            disk page read. The value for <codeph>MIN_COST</codeph> is specified as a floating point
-                            number (for example 100.0) or can also be specified as an exponent (for example 1e+2).
-                            To reset <codeph>MIN_COST</codeph> to have no limit, enter a value of
-                              <codeph>-1.0</codeph>.</pd>
+                        <pd>Queries with a cost under this limit will not be queued and run
+            immediately. Cost is measured in units of disk page fetches; 1.0 equals one sequential
+            disk page read. The value for <codeph>MIN_COST</codeph> is specified as a floating point
+            number (for example 100.0) or can also be specified as an exponent (for example 1e+2).
+            To reset <codeph>MIN_COST</codeph> to have no limit, enter a value of
+              <codeph>-1.0</codeph>.</pd>
                       </plentry>
                     <plentry>
                         <pt>PRIORITY={MIN|LOW|MEDIUM|HIGH|MAX}</pt>
@@ -107,10 +103,6 @@
                 <p>Use <codeph><xref href="./CREATE_ROLE.xml#topic1" type="topic" format="dita"/></codeph> or
             <codeph><xref href="./ALTER_ROLE.xml#topic1" type="topic" format="dita"/></codeph> to
                           add a role (user) to a resource queue.</p>
-                    <p>The Greenplum Database server configuration parameter <codeph><xref
-                            href="../config_params/guc_category-list.xml#resource_usecost"/></codeph> controls
-                        whether the Greenplum Database ignores the <codeph>MIN_COST</codeph> and
-                          <codeph>MAX_COST</codeph> values that are specified in a resource queue definition.</p>
                     </section>
                     <section id="section6">
                       <title>Examples</title>
@@ -119,12 +111,10 @@
                       <p>Change the memory limit for a resource queue: </p>
                       <codeblock>ALTER RESOURCE QUEUE myqueue WITH (MEMORY_LIMIT='2GB');</codeblock>
                       <p>Reset the maximum and minimum query cost limit for a resource queue to no limit: </p>
-                      <codeblock>ALTER RESOURCE QUEUE myqueue WITH (MAX_COST=-1.0, MIN_COST= 
-                -1.0);</codeblock>
+                      <codeblock>ALTER RESOURCE QUEUE myqueue WITH (MAX_COST=-1.0, MIN_COST=-1.0);</codeblock>
                       <p>Reset the query cost limit for a resource queue to 3<sup>10</sup> (or 30000000000.0) and do
                         not allow overcommit:</p>
-                      <codeblock>ALTER RESOURCE QUEUE myqueue WITH (MAX_COST=3e+10, 
-                COST_OVERCOMMIT=FALSE);</codeblock>
+                      <codeblock>ALTER RESOURCE QUEUE myqueue WITH (MAX_COST=3e+10, COST_OVERCOMMIT=FALSE);</codeblock>
                       <p>Reset the priority of queries associated with a resource queue to the minimum level:</p>
                       <codeblock>ALTER RESOURCE QUEUE myqueue WITH (PRIORITY=MIN);</codeblock>
                       <p>Remove the <codeph>MAX_COST</codeph> and <codeph>MEMORY_LIMIT</codeph> limits from a

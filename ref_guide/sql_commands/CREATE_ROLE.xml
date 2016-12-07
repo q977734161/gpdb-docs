@@ -162,6 +162,9 @@
                         to a resource queue. The special keyword <codeph>NONE</codeph> means that
                         the role is assigned to the default resource queue. A role can only belong
                         to one resource queue. </pd>
+                                        <pd>Roles with the <codeph>SUPERUSER</codeph> attribute are exempt from resource
+                                                queue limits. For a superuser role, queries always run immediately
+                                                regardless of limits imposed by an assigned resource queue.</pd>
                 </plentry>
                 <plentry>
                     <pt>DENY <varname>deny_point</varname></pt>

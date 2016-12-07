@@ -553,7 +553,11 @@
         <topicref href="guc_category-list.xml#max_statement_mem" navtitle="max_statement_mem"
             copy-to="guc_config-max_statement_mem.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#optimizer" navtitle="optimizer"
-            copy-to="guc_config-optimizer.xml" chunk="to-content select-topic"/>
+		  copy-to="guc_config-optimizer.xml" chunk="to-content select-topic"/>
+	<topicref href="guc_category-list.xml#optimizer_array_expansion_threshold"
+	               navtitle="optimizer_array_expansion_threshold"
+	               copy-to="guc_config-optimizer_array_expansion_threshold.xml"
+	               chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#optimizer_analyze_root_partition"
             navtitle="optimizer_analyze_root_partition"
             copy-to="guc_config-optimizer_analyze_root_partition.xml"

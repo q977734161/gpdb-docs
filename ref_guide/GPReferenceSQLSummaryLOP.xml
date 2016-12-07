@@ -272,6 +272,13 @@ OPERATOR CLASS</title>
 		<p conref="sql_commands/CREATE_OPERATOR_CLASS.xml#topic1/sql_command_desc"/>
 		<codeblock conref="sql_commands/CREATE_OPERATOR_CLASS.xml#topic1/sql_command_synopsis"/>
 		<p otherprops="op-html">See <xref href="sql_commands/CREATE_OPERATOR_CLASS.xml"/> for more information.</p>
+		<section>
+			<title>CREATE PROTOCOL</title>
+		</section>
+		<p conref="sql_commands/CREATE_PROTOCOL.xml#topic1/sql_command_desc"/>
+		<codeblock conref="sql_commands/CREATE_PROTOCOL.xml#topic1/sql_command_synopsis"/>
+		<p otherprops="op-html">See <xref href="sql_commands/CREATE_PROTOCOL.xml"/> for more
+			information.</p>
 		<section id="ae1904333">
 			<title>CREATE
 RESOURCE QUEUE</title>
@@ -446,6 +453,13 @@ OPERATOR CLASS</title>
 		<p conref="sql_commands/DROP_OWNED.xml#topic1/sql_command_desc"/>
 		<codeblock conref="sql_commands/DROP_OWNED.xml#topic1/sql_command_synopsis"/>
 		<p otherprops="op-html">See <xref href="sql_commands/DROP_OWNED.xml"/> for more information.</p>
+		<section>
+			<title>DROP PROTOCOL</title>
+		</section>
+		<p conref="sql_commands/DROP_PROTOCOL.xml#topic1/sql_command_desc"/>
+		<codeblock conref="sql_commands/DROP_PROTOCOL.xml#topic1/sql_command_synopsis"/>
+		<p otherprops="op-html">See <xref href="sql_commands/DROP_PROTOCOL.xml"/> for more
+			information.</p>
 		<section id="ae1904899">
 			<title>DROP
 RESOURCE QUEUE</title>

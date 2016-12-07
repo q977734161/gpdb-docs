@@ -326,9 +326,8 @@
             <stentry>
               <p>
                 <xref href="#optimizer" type="section">optimizer</xref>
-              </p>
-              <p><xref href="#optimizer_array_expansion_threshold" type="section"
-                  >optimizer_array_expansion_threshold</xref></p>
+		</p><xref href="#optimizer_array_expansion_threshold" type="section"
+		                >optimizer_array_expansion_threshold</xref>
               <p>
                 <xref href="#optimizer_analyze_root_partition" type="section"
                   >optimizer_analyze_root_partition</xref>
@@ -1108,6 +1107,7 @@
               <p>
                 <xref href="#resource_select_only" type="section">resource_select_only</xref>
               </p>
+                            <p><xref href="#resource_usecost" type="section">resource_usecost</xref></p>
               <p>
                 <xref href="#runaway_detector_activation_percent" type="section"
                   >runaway_detector_activation_percent</xref>
@@ -1269,7 +1269,7 @@
       </body>
     </topic>
     <topic id="topic49" xml:lang="en">
-      <title id="kh182770">Greenplum Database Array Configuration Parameters</title>
+      <title id="kh182770">Greenplum Array Configuration Parameters</title>
       <body>
         <p>The parameters in this topic control the configuration of the Greenplum Database array
           and its components: segments, master, distributed transaction manager, master mirror, and
@@ -1296,25 +1296,34 @@
               </stentry>
               <stentry>
                 <p>
-                  <xref href="#gp_interconnect_setup_timeout" type="section"
-                    >gp_interconnect_setup_timeout</xref>
+                  <xref href="#gp_interconnect_snd_queue_depth" type="section"
+                    >gp_interconnect_snd_queue_depth</xref>
                 </p>
                 <p>
-                  <xref href="#gp_interconnect_snd_queue_depth" type="section">gp_interconnect_snd_queue_depth</xref>
+                   <xref href="#gp_max_packet_size" type="section">gp_max_packet_size</xref>
                 </p>
                 <p>
                   <xref href="#gp_interconnect_type" type="section">gp_interconnect_type</xref>
                 </p>
+                              </stentry>
+                          </strow>
+                      </simpletable>
+                    <p>This configuration parameter is deprecated and not used in Greenplum Database 4.3.9.0
+                        and later releases.</p>
+                    <simpletable frame="none" id="simpletable_a4p_gks_wv">
+                        <strow>
+                            <stentry>                
                 <p>
-                  <xref href="#gp_max_packet_size" type="section">gp_max_packet_size</xref>
+                                    <xref href="#gp_interconnect_setup_timeout" type="section"
+                                        >gp_interconnect_setup_timeout</xref>
                 </p>
               </stentry>
+                        <stentry/>
             </strow>
           </simpletable>
-                    <note>The Greenplum Database interconnect types TCP and UDP are deprecated. In the next
-                        major release, only the UDPIFC interconnect type will be supported by Greenplum
-                        Database. The server configuration parameter <xref href="#gp_interconnect_type"
-                          type="section">gp_interconnect_type</xref> controls the interconnect type.</note>
+                    <note>For Greenplum Database 4.3.9.0 and later, the interconnect types TCP and UDP have
+                        been removed. Only the UDPIFC interconnect type is supported by Greenplum Database. See
+                          <xref href="#gp_interconnect_type" format="dita"/>.</note>
         </body>
       </topic>
       <topic id="topic51" xml:lang="en">
@@ -2109,8 +2118,6 @@
               <li>
                 <xref href="#optimizer" type="section">optimizer</xref>
               </li>
-                            <li><xref href="#optimizer_array_expansion_threshold" type="section"
-                                  >optimizer_array_expansion_threshold</xref></li>
               <li>
                 <xref href="#optimizer_analyze_root_partition" type="section"
                   >optimizer_analyze_root_partition</xref>
@@ -2173,6 +2180,9 @@
               <li>
                 <xref href="#resource_select_only"/>
               </li>
+                            <li>
+                                <xref href="#resource_usecost"/>
+                              </li>
               <li>
                 <xref href="#runaway_detector_activation_percent"/>
               </li>
@@ -8383,50 +8393,6 @@
         </table>
       </body>
     </topic>
-        <topic id="optimizer_array_expansion_threshold">
-            <title>optimizer_array_expansion_threshold</title>
-            <body>
-                <p>When the Pivotal Query Optimizer (PQO) is enabled and is processing a query that contains
-                    a predicate with a constant array, the
-                      <codeph>optimizer_array_expansion_threshold</codeph> parameter limits the optimization
-                    process based on the number of constants in the array. If the array in the query predicate
-                    contains more than the number elements specified by parameter, PQO disables the
-                    transformation of the predicate into its disjunctive normal form during query
-                    optimization. </p>
-                <p>The default value is 25. </p>
-                <p>For example, when PQO is executing a query that contains an <codeph>IN</codeph> clause
-                    with more than 25 elements, PQO does not transform the predicate into its disjunctive
-                    normal form during query optimization to reduce optimization time consume less memory. The
-                    difference in query processing can be seen in the filter condition for the
-                      <codeph>IN</codeph> clause of the query <codeph>EXPLAIN</codeph> plan.</p>
-                <p>Changing the value of this parameter changes the trade-off between a shorter optimization
-                    time and lower memory consumption, and the potential benefits from constraint derivation
-                    during query optimization, for example conflict detection and partition elimination.</p>
-                <p>The parameter can be set for a database system, an individual database, or a session or
-                    query.</p>
-                <table id="table_b4p_3rh_hw">
-                    <tgroup cols="3">
-                        <colspec colnum="1" colname="col1" colwidth="1*"/>
-                        <colspec colnum="2" colname="col2" colwidth="1*"/>
-                        <colspec colnum="3" colname="col3" colwidth="1*"/>
-                        <thead>
-                            <row>
-                                <entry colname="col1">Value Range</entry>
-                                <entry colname="col2">Default</entry>
-                                <entry colname="col3">Set Classifications</entry>
-                              </row>
-                          </thead>
-                        <tbody>
-                            <row>
-                                <entry colname="col1">Integer > 0</entry>
-                                <entry colname="col2">25</entry>
-                                <entry colname="col3">master<p>session</p><p>reload</p></entry>
-                              </row>
-                          </tbody>
-                      </tgroup>
-                  </table>
-              </body>
-          </topic>
     <topic id="optimizer_control">
       <title>optimizer_control</title>
       <body>
@@ -9045,11 +9011,9 @@ $ gpconfig -c pgcrypto.fips -v on --masteronly</codeblock></p>
     <topic id="resource_select_only">
       <title>resource_select_only</title>
       <body>
-                <p>Sets the types of queries managed by resource queues. If set to on, then
-                      <codeph>SELECT</codeph>, <codeph>SELECT INTO</codeph>, <codeph>CREATE TABLE AS
-                        SELECT</codeph>, and <codeph>DECLARE CURSOR</codeph> commands are evaluated. If set to
-                    off <codeph>INSERT</codeph>, <codeph>UPDATE</codeph>, and <codeph>DELETE</codeph> commands
-                    will be evaluated as well.</p>
+        <p>Sets the types of queries managed by resource queues. If set to on, then SELECT, SELECT
+          INTO, CREATE TABLE AS SELECT, and DECLARE CURSOR commands are evaluated. If set to off
+          INSERT, UPDATE, and DELETE commands will be evaluated as well.</p>
         <table id="resource_select_only_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -9073,6 +9037,40 @@ $ gpconfig -c pgcrypto.fips -v on --masteronly</codeblock></p>
         </table>
       </body>
     </topic>
+        <topic id="resource_usecost">
+            <title>resource_usecost</title>
+            <body>
+                <p>Specifies whether Greenplum Database ignores the query plan cost threshold
+                      <codeph>MAX_COST</codeph> or <codeph>MIN_COST</codeph> if the threshold is specified a
+                    Greenplum Database resource queue definition. The default is <codeph>on</codeph> to use
+                    the query plan cost threshold.</p>
+                <note>For resource queues, the query plan cost thresholds <codeph>MAX_COST</codeph> and
+                      <codeph>MIN_COST</codeph> are deprecated and will be removed in a future release. </note>
+                <p>For information about resource queues, see "Workload Management with Resource Queues" in
+                    the <cite>Greenplum Database Administrator Guide</cite>. </p>
+                <table id="table_f4q_cb3_yv">
+                    <tgroup cols="3">
+                        <colspec colnum="1" colname="col1" colwidth="1*"/>
+                        <colspec colnum="2" colname="col2" colwidth="1*"/>
+                        <colspec colnum="3" colname="col3" colwidth="1*"/>
+                        <thead>
+                            <row>
+                                <entry colname="col1">Value Range</entry>
+                                <entry colname="col2">Default</entry>
+                                <entry colname="col3">Set Classifications</entry>
+                              </row>
+                          </thead>
+                        <tbody>
+                            <row>
+                                <entry colname="col1">Boolean</entry>
+                                <entry colname="col2">on</entry>
+                                <entry colname="col3">master<p>session</p><p>reload</p></entry>
+                              </row>
+                          </tbody>
+                      </tgroup>
+                  </table>
+              </body>
+          </topic>
     <topic id="runaway_detector_activation_percent">
       <title>runaway_detector_activation_percent</title>
       <body>
