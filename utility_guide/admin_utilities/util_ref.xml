@@ -31,12 +31,9 @@
             <xref href="gpbitmapreindex.xml#topic1"/>
           </p>
           <p otherprops="gpdb">
-            <xref href="gpcheck.xml#topic1" type="topic" format="dita"/> (deprecated)</p>
-          <p otherprops="gpdb">
             <xref href="gpcheckcat.xml#topic1"/>
           </p>
           <p otherprops="gpdb">gpchecknet (deprecated)</p>
-          <p otherprops="gpdb">gpcheckos (deprecated)</p>
           <p>
             <xref href="gpcheckperf.xml#topic1" type="topic" format="dita"/>
           </p>
@@ -52,7 +49,6 @@
           <p otherprops="gpdb">
             <xref href="gpdeletesystem.xml#topic1" type="topic" format="dita"/>
           </p>
-          <p otherprops="gpdb"> gpdetective (deprecated)</p>
           <p otherprops="gpdb"> gp_dump (deprecated)</p>
           <p>
             <xref href="gpexpand.xml#topic1" type="topic" format="dita"/>
@@ -107,11 +103,9 @@
             <xref href="gpreload.xml#topic1"/>
           </p>
           <p otherprops="gpdb"> gp_restore (deprecated)</p>
-          <p otherprops="gpdb">gpsizecalc (deprecated)</p>
           <p>
             <xref href="gpscp.xml#topic1" type="topic" format="dita"/>
           </p>
-          <p otherprops="gpdb">gpskew (deprecated)</p>
           <p otherprops="gpdb">
             <xref href="gpseginstall.xml#topic1" type="topic" format="dita"/>
           </p>
