@@ -184,7 +184,7 @@
             <entry colname="col2">char</entry>
             <entry colname="col3"/>
             <entry colname="col4">The storage mode of a table<p><codeph>a</codeph>=
-                append-optimized, <codeph>h</codeph> = heap, <codeph>v</codeph> = virtual,
+              append-optimized, <codeph>c</codeph>= column-oriented, <codeph>h</codeph> = heap, <codeph>v</codeph> = virtual,
                   <codeph>x</codeph>= external table.</p></entry>
           </row>
           <row>

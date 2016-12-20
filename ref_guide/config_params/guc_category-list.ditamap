@@ -172,9 +172,9 @@
         <topicref href="guc_category-list.xml#gp_appendonly_compaction"
             navtitle="gp_appendonly_compaction" copy-to="guc_config-gp_appendonly_compaction.xml"
             chunk="to-content select-topic"/>
-        <topicref href="guc_category-list.xml#gp_appendonly_compaction_threshhold"
-            navtitle="gp_appendonly_compaction_threshhold"
-            copy-to="guc_config-gp_appendonly_compaction_threshhold.xml"
+        <topicref href="guc_category-list.xml#gp_appendonly_compaction_threshold"
+            navtitle="gp_appendonly_compaction_threshold"
+            copy-to="guc_config-gp_appendonly_compaction_threshold.xml"
             chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#gp_autostats_mode" navtitle="gp_autostats_mode"
             copy-to="guc_config-gp_autostats_mode.xml" chunk="to-content select-topic"/>
@@ -270,6 +270,7 @@
             copy-to="guc_config-gp_enable_predicate_propagation.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#gp_enable_preunique" navtitle="gp_enable_preunique"
             copy-to="guc_config-gp_enable_preunique.xml" chunk="to-content select-topic"/>
+        <topicref href="guc_category-list.xml#gp_enable_relsize_collection"/>
         <topicref href="guc_category-list.xml#gp_enable_sequential_window_plans"
             navtitle="gp_enable_sequential_window_plans"
             copy-to="guc_config-gp_enable_sequential_window_plans.xml"
@@ -568,6 +569,7 @@
             navtitle="optimizer_enable_master_only_queries"
             copy-to="guc_config-optimizer_enable_master_only_queries.xml"
             chunk="to-content select-topic"/>
+	<topicref href="guc_category-list.xml#optimizer_join_order_threshold"/>
         <topicref href="guc_category-list.xml#optimizer_minidump" navtitle="optimizer_minidump"
             copy-to="guc_config-optimizer_minidump.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#password_encryption" navtitle="password_encryption"
@@ -703,7 +705,9 @@
 	<topicref href="guc_category-list.xml#validate_previous_free_tid"
 	                navtitle="validate_previous_free_tid"
 	                copy-to="guc_config-validate_previous_free_tid.xml" chunk="to-content select-topic"/>
-	    <topicref href="guc_category-list.xml#wal_receiver_status_interval"
+	<topicref href="guc_category-list.xml#vmem_process_interrupt" navtitle="vmem_process_interrupt"
+		        copy-to="guc_config-vmem_process_interrupt.xml" chunk="to-content select-topic"/>
+	<topicref href="guc_category-list.xml#wal_receiver_status_interval"
             navtitle="wal_receiver_status_interval"
             copy-to="guc_config-wal_receiver_status_interval.xml" chunk="to-content select-topic"/>
         <topicref href="guc_category-list.xml#writable_external_table_bufsize"

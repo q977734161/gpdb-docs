@@ -208,7 +208,7 @@
           <pd>For table columns that contain textual data, specify the data
             type <codeph>VARCHAR</codeph> or <codeph>TEXT</codeph>. Specifying the data type
               <codeph>CHAR</codeph> is not recommended. In Greenplum Database, the data types
-              <codeph>VARCHAR</codeph> and <codeph>TEXT</codeph> handle padding added to the data
+              <codeph>VARCHAR</codeph> or <codeph>TEXT</codeph> handles padding added to the data
             (space characters added after the last non-space character) as significant characters,
             the data type <codeph>CHAR</codeph> does not. See <xref href="#topic1/section5"
               format="dita"/>.</pd>
@@ -308,6 +308,8 @@
             columns in the partition key if the table is partitioned. Note that a
               <codeph>&lt;key&gt;</codeph> constraint in a partitioned table is not the same as a
             simple <codeph>UNIQUE INDEX</codeph>.</pd>
+          <pd>For information about unique constraint management and limitations, see <xref
+              href="#topic1/section5" format="dita"/>.</pd>
         </plentry>
         <plentry>
           <pt>PRIMARY KEY ( <varname>column constraint</varname> )</pt>
@@ -324,6 +326,8 @@
               <codeph>&lt;key&gt;</codeph> must contain all the columns in the partition key if the
             table is partitioned. Note that a <codeph>&lt;key&gt;</codeph> constraint in a
             partitioned table is not the same as a simple <codeph>UNIQUE INDEX</codeph>.</pd>
+          <pd>For information about primary key management and limitations, see <xref
+              href="#topic1/section5" format="dita"/>.</pd>
         </plentry>
         <plentry>
           <pt>CHECK ( <varname>expression</varname> )</pt>
@@ -591,11 +595,15 @@
           example, if the primary key is (a,b,c), the distribution key can be only one of the
           following: (a), (a,b), or (a,b,c).<p>A primary key constraint is simply a combination of a
             unique constraint and a not-null constraint.</p><p>Greenplum Database automatically
-            creates an index for each unique constraint or primary key constraint to enforce
-            uniqueness. Thus, it is not necessary to create an index explicitly for primary key
-            columns.</p><p>Foreign key constraints are not supported in Greenplum Database.
-            </p><p>For inherited tables, unique constraints, primary key constraints, indexes and
-            table privileges are <i>not</i> inherited in the current implementation.</p></li>
+            creates a <codeph>UNIQUE</codeph> index for each <codeph>UNIQUE</codeph> or
+              <codeph>PRIMARY KEY</codeph> constraint to enforce uniqueness. Thus, it is not
+            necessary to create an index explicitly for primary key columns. <codeph>UNIQUE</codeph>
+            and <codeph>PRIMARY KEY</codeph> constraints are not allowed on append-optimized tables
+            because the <codeph>UNIQUE</codeph> indexes that are created by the constraints are not
+            allowed on append-optimized tables.</p><p>Foreign key constraints are not supported in
+            Greenplum Database. </p><p>For inherited tables, unique constraints, primary key
+            constraints, indexes and table privileges are <i>not</i> inherited in the current
+            implementation.</p></li>
         <li>For append-optimized tables, <codeph>UPDATE</codeph> and <codeph>DELETE</codeph> are not
           allowed in a serializable transaction and will cause the transaction to abort.
             <codeph>CLUSTER</codeph>, <codeph>DECLARE...FOR</codeph><codeph>UPDATE</codeph>, and
@@ -637,7 +645,7 @@
       </ul>
       <note type="important">The current Greenplum Database legacy optimizer allows list partitions
         with multi-column (composite) partition keys. GPORCA does not support
-        composite keys, so using composite partition keys is not recommended.</note>
+        composite keys, so avoid using composite partition keys.</note>
     </section>
     <section id="section6">
       <title>Examples</title>

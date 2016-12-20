@@ -12,9 +12,10 @@
     ( <varname>column_name</varname> <varname>data_type</varname> [, ...] | LIKE <varname>other_table </varname>)
       LOCATION ('file://<varname>seghost</varname>[:<varname>port</varname>]/<varname>path</varname>/<varname>file</varname>' [, ...])
         | ('gpfdist://<varname>filehost</varname>[:<varname>port</varname>]/<varname>file_pattern[#transform]</varname>' [, ...]
-        | ('gpfdists://<varname>filehost</varname>[:<varname>port</varname>]/<varname>file_pattern[#transform]</varname>' [, ...])
+        | ('gpfdists://<varname>filehost</varname>[:<varname>port</varname>]/<varname>file_pattern[#transform]</varname>'
+            [, ...])
         | ('gphdfs://<varname>hdfs_host</varname>[:port]/<varname>path</varname>/<varname>file</varname>')
-        | ('s3://<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/[<varname>S3_prefix</varname>]
+        | ('s3://<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/[<varname>S3_prefix</varname>]
             [config=<varname>config_file</varname>]')
       FORMAT 'TEXT' 
             [( [HEADER]
@@ -92,6 +93,21 @@ CREATE WRITABLE EXTERNAL TABLE <varname>table_name</varname>
     [ ENCODING '<varname>write_encoding</varname>' ]
     [ DISTRIBUTED BY (<varname>column</varname>, [ ... ] ) | DISTRIBUTED RANDOMLY ]
 
+CREATE WRITABLE EXTERNAL TABLE <varname>table_name</varname>
+    ( <varname>column_name</varname> <varname>data_type</varname> [, ...] | LIKE <varname>other_table </varname>)
+     LOCATION('s3://<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/[<varname>S3_prefix</varname>]
+            [config=<varname>config_file</varname>]')
+      FORMAT 'TEXT' 
+               [( [DELIMITER [AS] '<varname>delimiter</varname>']
+               [NULL [AS] '<varname>null string</varname>']
+               [ESCAPE [AS] '<varname>escape</varname>' | 'OFF'] )]
+          | 'CSV'
+               [([QUOTE [AS] '<varname>quote</varname>'] 
+               [DELIMITER [AS] '<varname>delimiter</varname>']
+               [NULL [AS] '<varname>null string</varname>']
+               [FORCE QUOTE <varname>column</varname> [, ...]] ]
+               [ESCAPE [AS] '<varname>escape</varname>'] )]
+
 CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
     ( <varname>column_name</varname> <varname>data_type</varname> [, ...] | LIKE <varname>other_table</varname> )
     EXECUTE '<varname>command</varname>' [ON ALL]
@@ -111,8 +127,8 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
     </section>
     <section id="section3">
       <title>Description</title>
-      <p>See "Loading and Unloading Data" in the <cite>Greenplum Database Administrator Guide</cite> for
-        detailed information about external tables.</p>
+      <p>See "Loading and Unloading Data" in the <cite>Greenplum Database Administrator Guide</cite>
+        for detailed information about external tables.</p>
       <p><codeph>CREATE EXTERNAL TABLE</codeph> or <codeph>CREATE EXTERNAL WEB TABLE</codeph>
         creates a new readable external table definition in Greenplum Database. Readable external
         tables are typically used for fast, parallel data loading. Once an external table is
@@ -142,17 +158,17 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
         command. If the data in the file does not use the default column delimiter, escape
         character, null string and so on, you must specify the additional formatting options so that
         the data in the external file is read correctly by Greenplum Database. For information about
-        using a custom format, see "Loading and Unloading Data" in the <i>Greenplum Database
-          Administrator Guide</i>.</p>
+        using a custom format, see "Loading and Unloading Data" in the <cite>Greenplum Database
+          Administrator Guide</cite>.</p>
       <p>For the <codeph>gphdfs</codeph> protocol, you can also specify the <codeph>AVRO</codeph> or
           <codeph>PARQUET</codeph> in the <codeph>FORMAT</codeph> clause to read or write Avro or
-        Parquet format files. For information about Avro or Parquet file, see <xref
+        Parquet format files. For information about Avro and Parquet files, see <xref
           href="#topic1/section9" format="dita"/>.</p>
-            <p>When accessing files from an Amazon Web Services (AWS) S3 bucket with the
-                  <codeph>s3</codeph> protocol, only readable external tables are supported. Before you can
-                create an external table that reads from the S3 bucket, you must configure Greenplum
-                Database to support the protocol. See <xref href="#topic1/section10" format="dita"/>.</p>
-      
+      <p>Before you can create an external table that writes to or reads from an Amazon Web Services
+        (AWS) S3 bucket, you must configure Greenplum Database to support the protocol. S3 external
+        tables can use either CSV or text-formatted files. Writeable S3 external tables support only
+        the <codeph>INSERT</codeph> operation. See <xref href="#topic1/section10" format="dita"
+        />.</p>
     </section>
     <section id="section4">
       <title>Parameters</title>
@@ -210,15 +226,20 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
             protocol. If using the <codeph>gpfdist</codeph> protocol, the <codeph>path</codeph> is
             relative to the directory from which <codeph>gpfdist</codeph> is serving files (the
             directory specified when you started the <codeph>gpfdist</codeph> program). Also,
-            <codeph>gpfdist</codeph> can use wildcards or other C-style pattern matching (for
-                        example, a whitespace character is <codeph>[[:space:]]</codeph>) to denote multiple
-                        files in a directory. For example:</pd>
+              <codeph>gpfdist</codeph> can use wildcards or other C-style pattern matching (for
+            example, a whitespace character is <codeph>[[:space:]]</codeph>) to denote multiple
+            files in a directory. For example:</pd>
           <pd>
             <codeblock>'gpfdist://filehost:8081/*'
 'gpfdist://masterhost/my_load_file'
 'file://seghost1/dbfast1/external/myfile.txt'
 'http://intranet.example.com/finance/expenses.csv'</codeblock>
           </pd>
+          <pd>For the <codeph>gphdfs</codeph> protocol, the URI of the <codeph>LOCATION</codeph>
+            clause cannot contain any of these four characters: <codeph>\</codeph>,
+              <codeph>'</codeph>, <codeph>&lt;</codeph>, <codeph>></codeph>. The <codeph>CREATE
+              EXTERNAL TABLE</codeph> command returns a an error if the URI contains any of the
+            characters.</pd>
           <pd>If you are using MapR clusters with the <codeph>gphdfs</codeph> protocol, you specify
             a specific cluster and the file:<ul id="ul_xdj_wzt_hq">
               <li>To specify the default cluster, the first entry in the MapR configuration file
@@ -233,12 +254,13 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
                 configuration file and <varname>file_path</varname> is the path to the file.</li>
             </ul></pd>
           <pd>For writable external tables, specifies the URI location of the
-              <codeph>gpfdist</codeph> process that will collect data output from the Greenplum
-            segments and write it to the named file. The <codeph>path</codeph> is relative to the
-            directory from which <codeph>gpfdist</codeph> is serving files (the directory specified
-            when you started the <codeph>gpfdist</codeph> program). If multiple
-              <codeph>gpfdist</codeph> locations are listed, the segments sending data will be
-            evenly divided across the available output locations. For example:</pd>
+              <codeph>gpfdist</codeph> process or S3 protocol that will collect data output from the
+            Greenplum segments and write it to one or more named files. For <codeph>gpfdist</codeph>
+            the <codeph>path</codeph> is relative to the directory from which
+              <codeph>gpfdist</codeph> is serving files (the directory specified when you started
+            the <codeph>gpfdist</codeph> program). If multiple <codeph>gpfdist</codeph> locations
+            are listed, the segments sending data will be evenly divided across the available output
+            locations. For example:</pd>
           <pd>
             <codeblock>'gpfdist://outputhost:8081/data1.out',
 'gpfdist://outputhost:8081/data2.out'</codeblock>
@@ -246,79 +268,43 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
           <pd>With two <codeph>gpfdist</codeph> locations listed as in the above example, half of
             the segments would send their output data to the <codeph>data1.out</codeph> file and the
             other half to the <codeph>data2.out</codeph> file.</pd>
-          <pd>If you specify <codeph>gphdfs</codeph> protocol to read or write file to a Hadoop file
-            system (HDFS), you can read or write an Avro or Parquet format file by specifying the
-              <codeph>FORMAT</codeph> clause with either <codeph>AVRO</codeph> or
+          <pd>If you specify <codeph>gphdfs</codeph> protocol to read or write a file to a Hadoop
+            file system (HDFS), you can read or write an Avro or Parquet format file by specifying
+            the <codeph>FORMAT</codeph> clause with either <codeph>AVRO</codeph> or
               <codeph>PARQUET</codeph>. </pd>
           <pd>For information about the options when specifying a location for an Avro or Parquet
             file, see <xref href="#topic1/section9" format="dita"/>.</pd>
-                    <pd>When you create a readable external table with the <codeph>s3</codeph>
-            protocol, only the <codeph>TEXT</codeph> and <codeph>CSV</codeph> formats are supported.
-            The files can be in gzip compressed format. The <codeph>s3</codeph> protocol recognizes
-            the gzip format and uncompresses the files. Only the gzip compression format is
-            supported. </pd>
-                    <pd>Before you can create external tables with the <codeph>s3</codeph> protocol, you must
-                        configure Greenplum Database. For information about configuring Greenplum Database, see
-                          <xref href="#topic1/section10" format="dita"/>.</pd>
-          <pd>For the <codeph>s3</codeph> protocol, you specify a location for files and an optional
-                        configuration file in the <codeph>LOCATION</codeph> clause. This is the syntax of the
-                        clause.<codeblock>'s3://<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/[<varname>S3_prefix</varname>] [config=<varname>config_file_location</varname>]'</codeblock></pd>
-          <pd>The AWS <varname>S3_endpoint</varname> and S3 <varname>bucket_name</varname> define
-                        the location of the files. If needed, the <codeph>S3_prefix</codeph> specify the group
-                        of files in the bucket. For information about the S3 endpoints see the Amazon S3
-                        documentation <xref
-              href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region" format="html"
-                            scope="external"
-                            >http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region</xref>. For
-                          information about S3 buckets and folders, see the Amazon S3 documentation <xref
-                            href="http://aws.amazon.com/documentation/s3/" format="html" scope="external"
-                            >http://aws.amazon.com/documentation/s3/</xref>. </pd>
-                    <pd>If you specify an <varname>S3_prefix</varname>, the <codeph>s3</codeph>
-            protocol selects the files that have the specified S3 file prefix. The
-              <codeph>s3</codeph> protocol does not use the slash character (<codeph>/</codeph>) as
-            delimiter. For example, these files have <codeph>domain</codeph> as the
-              <varname>S3_endpoint</varname>, and <codeph>test1</codeph> as the
-              <varname>bucket_name</varname>.<codeblock>s3://domain/test1/abc
-s3://domain/test1/abc/
-s3://domain/test1/abc/xx
-s3://domain/test1/abcdef
-s3://domain/test1/abcdefff</codeblock><ul
-              id="ul_yll_xjm_qv">
-              <li>If the file location is <codeph>s3://domain/test1/abc</codeph>, the
-                  <codeph>s3</codeph> protocol selects all 5 files.</li>
-              <li>If the file location is <codeph>s3://domain/test1/abc/</codeph>, the
-                  <codeph>s3</codeph> protocol selects the files
-                  <codeph>s3://domain/test1/abc/</codeph> and
-                  <codeph>s3://domain/test1/abc/xx</codeph>.</li>
-              <li>If the file location is <codeph>s3://domain/test1/abcd</codeph> the
-                  <codeph>s3</codeph> protocol selects the files
-                  <codeph>s3://domain/test1/abcdef</codeph> and
-                  <codeph>s3://domain/test1/abcdefff</codeph></li>
-</ul>Wildcard characters are not supported in a <varname>S3_prefix</varname>.</pd>
-                    <pd>For information about the S3 prefix, see the Amazon S3 documentation <xref
-                          href="http://docs.aws.amazon.com/AmazonS3/latest/dev/ListingKeysHierarchy.html"
-                          format="html" scope="external">Listing Keys Hierarchically Using a Prefix and
-                          Delimiter</xref>.</pd>
-                      <pd>All the files specified by the S3 file location
-                          (<varname>S3_endpoint</varname>/<varname>bucket_name</varname>/<varname>S3_prefix</varname>)
-            are used as the source for the external table and must have the same format and each
-                          file must contain complete data rows. A data row cannot be split between files. The S3
-                          file permissions must be <codeph>Open/Download</codeph> and <codeph>View</codeph> for
-                          the S3 user ID that is accessing the files. </pd>
-                        <pd>The <codeph>config</codeph> parameter specifies the location of the
-            required <codeph>s3</codeph> protocol configuration file that contains AWS connection
-            credentials and communication parameters. See <xref href="#topic1/s3_config_file"
-              format="dita"/>.</pd>
-                        <pd>This is an example readable external table definition with the <codeph>s3</codeph>
-                          protocol.<codeblock>CREATE READABLE EXTERNAL TABLE S3TBL (date text, time text, amt int)
-                 location('s3://s3-us-west-2.amazonaws.com/s3test.pivotal.io/dataset1/normal/
-                    config=/home/gpadmin/aws_s3/s3.conf')
-                 FORMAT 'csv';</codeblock></pd>
-                        <pd>The S3 bucket is at the S3 endpoint <codeph>s3-us-west-2.amazonaws.com</codeph> and
-                          the S3 bucket name is <codeph>s3test.pivotal.io</codeph>. The S3 prefix for the
-                          files in the bucket is <codeph>/dataset1/normal/</codeph>. The configuration file is in
-                            <codeph>/home/gpadmin/s3/s3.conf</codeph> on all Greenplum Database segments.</pd>
-              
+          <pd>When you create an external table with the <codeph>s3</codeph> protocol, only the
+              <codeph>TEXT</codeph> and <codeph>CSV</codeph> formats are supported. The files can be
+            in gzip compressed format. The <codeph>s3</codeph> protocol recognizes the gzip format
+            and uncompress the files. Only the gzip compression format is supported. </pd>
+          <pd>Before you can create external tables with the <codeph>s3</codeph> protocol, you must
+            configure Greenplum Database. For information about configuring Greenplum Database, see
+              <xref href="#topic1/section10" format="dita"/>.</pd>
+          <pd>
+            <p>For writeable S3 tables, the <codeph>s3</codeph> protocol URL specifies the endpoint
+              and bucket name where data files are uploaded for the table, as well as an optional S3
+              file prefix to use when creating new files for data inserted to the table. If you
+              specify an <varname>S3_prefix</varname> for read-only s3 tables, the
+                <codeph>s3</codeph> protocol selects those all those files that have the specified
+              S3 file prefix.</p>
+            <note conref="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr/s3-prefix-note"
+            />
+          </pd>
+          <pd>The <codeph>config</codeph> parameter specifies the location of the required
+              <codeph>s3</codeph> protocol configuration file that contains AWS connection
+            credentials and communication parameters. </pd>
+          <pd>This is an example read-only external table definition with the <codeph>s3</codeph>
+            protocol.<codeblock>CREATE READABLE EXTERNAL TABLE S3TBL (date text, time text, amt int)
+   location('s3://s3-us-west-2.amazonaws.com/s3test.pivotal.io/dataset1/normal/
+      config=/home/gpadmin/aws_s3/s3.conf')
+   FORMAT 'csv';</codeblock></pd>
+          <pd>The S3 bucket is at the S3 endpoint <codeph>s3-us-west-2.amazonaws.com</codeph> and
+            the S3 bucket name is <codeph>s3test.pivotal.io</codeph>. The S3 prefix for the files in
+            the bucket is <codeph>/dataset1/normal/</codeph>. The configuration file is in
+              <codeph>/home/gpadmin/s3/s3.conf</codeph> on all Greenplum Database segments.</pd>
+          <pd>See <xref href="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr"/> for more
+            information.</pd>
         </plentry>
         <plentry>
           <pt>EXECUTE <varname>'command'</varname> [ON ...]</pt>
@@ -326,33 +312,36 @@ s3://domain/test1/abcdefff</codeblock><ul
             readable web external tables, specifies the OS command to be executed by the segment
             instances. The <varname>command</varname> can be a single OS command or a script. The
               <codeph>ON</codeph> clause is used to specify which segment instances will execute the
-            given command.<ul id="ul_xd1_wq2_m4"><li id="br150831">ON ALL is the default. The
-                command will be executed by every active (primary) segment instance on all segment
-                hosts in the Greenplum Database system. If the command executes a script, that
-                script must reside in the same location on all of the segment hosts and be
-                executable by the Greenplum superuser (<codeph>gpadmin</codeph>).</li><li
-                id="br153076">ON MASTER runs the command on the master host only. <note>Logging is
+            given command.<ul id="ul_xd1_wq2_m4">
+              <li id="br150831">ON ALL is the default. The command will be executed by every active
+                (primary) segment instance on all segment hosts in the Greenplum Database system. If
+                the command executes a script, that script must reside in the same location on all
+                of the segment hosts and be executable by the Greenplum superuser
+                  (<codeph>gpadmin</codeph>).</li>
+              <li id="br153076">ON MASTER runs the command on the master host only. <note>Logging is
                   not supported for web external tables when the <codeph>ON MASTER</codeph> clause
-                  is specified.</note></li><li id="br150832">ON <varname>number</varname> means the
-                command will be executed by the specified number of segments. The particular
-                segments are chosen randomly at runtime by the Greenplum Database system. If the
-                command executes a script, that script must reside in the same location on all of
-                the segment hosts and be executable by the Greenplum superuser
-                  (<codeph>gpadmin</codeph>). </li><li id="br150833">HOST means the command will be
-                executed by one segment on each segment host (once per segment host), regardless of
-                the number of active segment instances per host. </li><li id="br153082">HOST
-                  <varname>segment_hostname</varname> means the command will be executed by all
-                active (primary) segment instances on the specified segment host. </li><li
-                id="br153092">SEGMENT <varname>segment_id</varname> means the command will be
+                  is specified.</note></li>
+              <li id="br150832">ON <varname>number</varname> means the command will be executed by
+                the specified number of segments. The particular segments are chosen randomly at
+                runtime by the Greenplum Database system. If the command executes a script, that
+                script must reside in the same location on all of the segment hosts and be
+                executable by the Greenplum superuser (<codeph>gpadmin</codeph>). </li>
+              <li id="br150833">HOST means the command will be executed by one segment on each
+                segment host (once per segment host), regardless of the number of active segment
+                instances per host. </li>
+              <li id="br153082">HOST <varname>segment_hostname</varname> means the command will be
+                executed by all active (primary) segment instances on the specified segment host. </li>
+              <li id="br153092">SEGMENT <varname>segment_id</varname> means the command will be
                 executed only once by the specified segment. You can determine a segment instance's
                 ID by looking at the <varname>content</varname> number in the system catalog table
                   <xref href="../system_catalogs/gp_segment_configuration.xml" type="topic"
                   format="dita"/>. The <varname>content</varname> ID of the Greenplum Database
-                master is always <codeph>-1</codeph>.</li></ul><p>For writable external tables, the
-                <varname>command</varname> specified in the <codeph>EXECUTE</codeph> clause must be
-              prepared to have data piped into it. Since all segments that have data to send will
-              write their output to the specified command or program, the only available option for
-              the <codeph>ON</codeph> clause is <codeph>ON ALL</codeph>.</p></pd>
+                master is always <codeph>-1</codeph>.</li>
+            </ul><p>For writable external tables, the <varname>command</varname> specified in the
+                <codeph>EXECUTE</codeph> clause must be prepared to have data piped into it. Since
+              all segments that have data to send will write their output to the specified command
+              or program, the only available option for the <codeph>ON</codeph> clause is <codeph>ON
+                ALL</codeph>.</p></pd>
         </plentry>
       </parml>
       <parml>
@@ -367,12 +356,23 @@ s3://domain/test1/abcdefff</codeblock><ul
             />.</pd>
         </plentry>
         <plentry>
+          <pt>FORMAT 'CUSTOM' (formatter=<varname>formatter_specification</varname>)</pt>
+          <pd>Specifies a custom data format. The <varname>formatter_specification</varname>
+            specifies the function to use to format the data, followed by comma-separated parameters
+            to the formatter function. The length of the formatter specification, the string
+            including <codeph>Formatter=</codeph>, can be up to approximately 50K bytes.</pd>
+          <pd>For information about using a custom format, see "Loading and Unloading Data" in the
+              <cite>Greenplum Database Administrator Guide</cite>.</pd>
+        </plentry>
+        <plentry>
           <pt>DELIMITER</pt>
           <pd>Specifies a single ASCII character that separates columns within each row (line) of
             data. The default is a tab character in <codeph>TEXT</codeph> mode, a comma in
               <codeph>CSV</codeph> mode. In <codeph>TEXT</codeph> mode for readable external tables,
             the delimiter can be set to <codeph>OFF</codeph> for special use cases in which
             unstructured data is loaded into a single-column table. </pd>
+          <pd>For the <codeph>s3</codeph> protocol, the delimiter cannot be a newline character
+              (<codeph>\n</codeph>) or a carriage return character (<codeph>\r</codeph>).</pd>
         </plentry>
         <plentry>
           <pt>NULL</pt>
@@ -416,6 +416,9 @@ s3://domain/test1/abcdefff</codeblock><ul
             header row (contains the names of the table columns) and should not be included as data
             for the table. If using multiple data source files, all files must have a header
             row.</pd>
+          <pd>For the <codeph>s3</codeph> protocol, the column names in the header row cannot
+            contain a newline character (<codeph>\n</codeph>) or a carriage return
+              (<codeph>\r</codeph>).</pd>
         </plentry>
         <plentry>
           <pt>QUOTE</pt>
@@ -626,16 +629,16 @@ customer_id=123;</codeblock>
         file. After the file name, you can specify parameters with the HTTP query string syntax that
         starts with ? and uses &amp; between field value pairs.</p><p>For this example
           <varname>location</varname> parameter, this URL sets compression parameters for an Avro
-        format writeable external
-        table.<codeblock>'gphdfs://myhdfs:8081/avro/singleAvro/array2.avro?compress=true&amp;compression_type=block&amp;codec=snappy' FORMAT 'AVRO'</codeblock></p><p>See
+        format writeable external table.
+        <codeblock>'gphdfs://myhdfs:8081/avro/singleAvro/array2.avro?compress=true&amp;compression_type=block&amp;codec=snappy' FORMAT 'AVRO'</codeblock></p><p>See
         "Loading and Unloading Data" in the <i>Greenplum Database Administrator Guide</i> for
         information about reading and writing the Avro and Parquet format files with external
         tables.</p><p><b>Avro Files</b></p><p>For readable external tables, the only valid parameter
         is <codeph>schema</codeph>. When reading multiple Avro files, you can specify a file that
-        contains an Avro schema. See "Avro Schema Overrides" in the Greenplum Database</p><p>For
-        writable external tables, you can specify <codeph>schema</codeph>,
-          <codeph>namespace</codeph>, and parameters for compression.</p><table
-        id="table_hd5_2yv_vs">
+        contains an Avro schema. See "Avro Schema Overrides" in the <cite>Greenplum Database
+          Administrator Guide</cite>.</p><p>For writable external tables, you can specify
+          <codeph>schema</codeph>, <codeph>namespace</codeph>, and parameters for
+        compression.</p><table id="table_hd5_2yv_vs">
         <title>Avro Format External Table location Parameters </title>
         <tgroup cols="4">
           <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -720,10 +723,20 @@ customer_id=123;</codeblock>
         compression:<codeblock> 'compress=true&amp;codec=snappy'</codeblock></p><p>These two sets of
         parameters specify <codeph>deflate</codeph> compression and are
           equivalent:</p><codeblock> 'compress=true&amp;codec=deflate&amp;codec_level=1'
- 'compress=true&amp;codec_level=1'</codeblock><p><b>Parquet
-          Files</b></p><p>For external tables, you can add parameters after the file specified in
-        the <varname>location</varname>. This table lists the valid parameters and values.</p><table
-        id="table_jpk_1j5_hs">
+ 'compress=true&amp;codec_level=1'</codeblock><p><b>gphdfs
+          Limitations for Avro Files</b></p><p>For a Greenplum Database writeable external table
+        definition, columns cannot specify the <codeph>NOT NULL</codeph> clause.</p><p>Greenplum
+        Database supports only a single top-level schema in Avro files or specified with the
+          <codeph>schema</codeph> parameter in the <codeph>CREATE EXTERNAL TABLE</codeph> command.
+        An error is returned if Greenplum Database detects multiple top-level schemas.
+        </p><p>Greenplum Database does not support the Avro <codeph>map</codeph> data type and
+        returns an error when encountered.</p><p>When Greenplum Database reads an array from an Avro
+        file, the array is converted to the literal text value. For example, the array
+          <codeph>[1,3]</codeph> is converted to <codeph>'{1,3}'</codeph>. </p><p>User defined types
+        (UDT), including array UDT, are supported. For a writable external table, the type is
+        converted to string.</p><p><b>Parquet Files</b></p><p>For external tables, you can add
+        parameters after the file specified in the <varname>location</varname>. This table lists the
+        valid parameters and values.</p><table id="table_jpk_1j5_hs">
         <title>Parquet Format External Table location Parameters</title>
         <tgroup cols="4">
           <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -796,154 +809,19 @@ customer_id=123;</codeblock>
             compression if text columns contain similar or duplicate data. </li>
         </ol>
       </note></section>
-        <section id="section10"><title>s3 Protocol Configuration</title><p>The <codeph>s3</codeph>
-              protocol is used with a URI to specify the location of files in an Amazon Simple Storage
-              Service (Amazon S3) bucket. The protocol downloads all files specified by the
-                <codeph>LOCATION</codeph> clause. Each Greenplum Database segment instance downloads one
-              file at a time using several threads. The segment instances download files until all files
-              have been downloaded. </p><p>Before you create a readable external table with the
-                  <codeph>s3</codeph> protocol, you must configure the Greenplum Database system.<ul
-                    id="ul_qlk_42s_55">
-          <li>Configure the database to support the <codeph>s3</codeph> protocol.</li>
-                <li>Create and install the <codeph>s3</codeph> protocol configuration file on all the
-                  Greenplum Database segments.</li>
-              </ul></p><sectiondiv>
-              <p><b>To configure a database to support the <codeph>s3</codeph> protocol</b></p>
-              <ol id="ol_ptx_bfs_55">
-                <li>Create a function to access the <codeph>s3</codeph> protocol library.<p>In each
-                    Greenplum database that accesses an S3 bucket with the <codeph>s3</codeph> protocol,
-                    create a function for the
-                  protocol:</p><codeblock>CREATE OR REPLACE FUNCTION read_from_s3() RETURNS integer AS
-         '$libdir/gps3ext.so', 's3_import'
-      LANGUAGE C STABLE;</codeblock></li>
-                <li> Declare the <codeph>s3</codeph> protocol and specify the function that is used to
-                  read from an S3
-                  bucket.<codeblock>CREATE PROTOCOL s3 (readfunc = read_from_s3);</codeblock></li>
-              </ol>
-              <note>The protocol name <codeph>s3</codeph> must be the same as the protocol of the URL
-                specified for the readable external table you create to access an S3 resource. <p>The
-                  function is called by every segment. All Greenplum Database segments must have access to
-                  the S3 bucket.</p></note>
-            </sectiondiv><sectiondiv>
-              <p><b>To create and install the <codeph>s3</codeph> protocol configuration file</b></p>
-              <ol id="ol_c1r_nqt_55">
-                <li>Create a configuration file with the S3 configuration information.</li>
-                <li>Install the file in the same location for all Greenplum Database segments on all
-                  hosts. <p>You can specify the location of the file with the <codeph>config</codeph>
-                    parameter in the <codeph>LOCATION</codeph> clause of the <codeph>EXTERNAL
-                      TABLE</codeph> command. This is the default
-                    location:</p><codeblock><varname>gpseg_data-dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock><p>The
-                      <varname>gpseg-data-dir</varname> is the path to the Greenplum Database segment data
-                    directory, the <varname>gpseg-prefix</varname> is the segment prefix, and
-                      <varname>N</varname> is the segment ID. The segment data directory, prefix, and ID
-                    are set when you initialize a Greenplum Database system.</p><p>If you have multiple
-                    segment instances on segment hosts, you can simplify the configuration by creating a
-                    single location on each segment host. Then you specify the absolute path to the
-                    location with the <codeph>config</codeph> parameter in the <codeph>s3</codeph>
-                    protocol <codeph>LOCATION</codeph> clause. </p></li>
-              </ol>
-            </sectiondiv></section>
-          <section>
-            <title>s3 Protocol Limitations</title>
-            <p>These are <codeph>s3</codeph> protocol limitations: <ul id="ul_gsf_ydw_1v">
-                <li>Only the S3 path-style URL is
-                  supported.<codeblock>s3://<varname>S3_endpoint</varname>/<varname>bucketname</varname>/[<varname>S3_prefix</varname>]</codeblock></li>
-              </ul><ul id="ul_hsf_ydw_1v">
-                <li>Only the S3 endpoint is supported. The protocol does not support virtual hosting of S3
-                  buckets (binding a domain name to an S3 bucket).</li>
-                <li>AWS signature version 2 and version 4 signing process are supported. <p>For
-                    information about the S3 endpoints supported by each signing process, see <xref
-                      href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region"
-                      format="html" scope="external"
-                      >http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region</xref>.</p></li>
-                <li>S3 encryption is not supported. The S3 file property <uicontrol>Server Side
-                    Encryption</uicontrol> must be <codeph>None</codeph>.</li>
-              </ul></p>
-      <note>To take advantage of the parallel processing performed by the Greenplum Database segment
-        instances, the files in the S3 location should be similar in size and the number of files
-        should allow for multiple segments to download the data from the S3 location. For example,
-        if the Greenplum Database system consists of 16 segments and there was sufficient network
-        bandwidth, creating 16 files in the S3 location allows each segment to download a file from
-        the S3 location. In contrast, if the location contained only 1 or 2 files, only 1 or 2
-        segments download data.</note>
-          </section>
-          <section id="s3_config_file"><title>s3 Protocol Configuration File</title>
-            <p>When using the <codeph>s3</codeph> protocol, the <codeph>s3</codeph> protocol configuration file is
-              required on all Greenplum Database segments. The default location is
-              <codeblock><varname>gpseg_data_dir</varname>/<varname>gpseg-prefix</varname><varname>N</varname>/s3/s3.conf</codeblock></p>
-            <p>The <varname>gpseg_data_dir</varname> is the path to the Greenplum Database segment data
-              directory, the <varname>gpseg-prefix</varname> is the segment prefix, and
-                <varname>N</varname> is the segment ID. The segment data directory, prefix, and ID are set
-              when you initialize a Greenplum Database system.</p>
-            <p>If you have multiple segment instances on segment hosts, you can simplify the configuration
-              by creating a single location on each segment host. Then you specify the absolute path to
-              the location with the <codeph>config</codeph> parameter in the <codeph>s3</codeph> protocol
-                <codeph>LOCATION</codeph> clause. This example specifies a location in the
-                <codeph>gpadmin</codeph> home directory. </p>
-            <codeblock>config=/home/gpadmin/s3/s3.conf</codeblock>
-            <p>All segment instances on the hosts use the file
-              <codeph>/home/gpadmin/s3/s3.conf</codeph>.</p>
-            <p>The <codeph>s3</codeph> protocol configuration file is a text file that consists of a
-                <codeph>[default]</codeph> section and parameters. This is an example configuration
-              file.<codeblock>[default]
-      secret = "secret"
-      accessid = "user access id"
-      connections = 3
-      chunksize = 67108864</codeblock></p><p>You
-                can test your <codeph>s3</codeph> configuration file and the ability for your host to
-                connect to an S3 bucket with the Greenplum Database utility <codeph>gpcheckcloud</codeph>. For
-                information about the utility, see "s3:// Protocol" in the <cite>Greenplum Database
-                    Administrator Guide</cite>.</p>
-            <sectiondiv>
-              <p><b>s3 Configuration File Parameters</b></p>
-              <parml>
-                <plentry>
-                  <pt>accessid</pt>
-                  <pd>Required. AWS S3 ID to access the S3 bucket.</pd>
-                </plentry>
-                <plentry>
-                  <pt>secret</pt>
-                  <pd>Required. AWS S3 passcode for the S3 ID to access the S3 bucket.</pd>
-                </plentry>
-                <plentry>
-                  <pt>chunksize</pt>
-                  <pd>The buffer size for each segment thread. The default is 64MB. The minimum is 2MB and
-                    the maximum is128MB.</pd>
-                </plentry>
-                <plentry>
-                  <pt>threadnum</pt>
-                  <pd>The maximum number of concurrent connections a segment can create when downloading
-                    data from the S3 bucket. The default is 4. The minimum is 1 and the maximum is 8.</pd>
-                </plentry>
-                <plentry>
-                  <pt>encryption</pt>
-                  <pd>Use connections that are secured with Secure Sockets Layer (SSL). Default value is
-                      <codeph>true</codeph>. The values <codeph>true</codeph>, <codeph>t</codeph>,
-                      <codeph>on</codeph>, <codeph>yes</codeph>, and <codeph>y</codeph> (case insensitive)
-                    are treated as <codeph>true</codeph>. Any other value is treated as
-                      <codeph>false</codeph>.</pd>
-                </plentry>
-                <plentry>
-                  <pt>low_speed_limit</pt>
-                  <pd>The download speed lower limit, in bytes per second. The default speed is
-              10240 (10K). If the download speed is slower than the limit for longer than the time
-              specified by <codeph>low_speed_time</codeph>, the download connection is aborted and
-              retried. After 3 retries, the <codeph>s3</codeph> protocol returns an error. A value
-              of 0 specifies no lower limit.</pd>
-                </plentry>
-                <plentry>
-                  <pt>low_speed_time</pt>
-                  <pd>When the connection speed is less than <codeph>low_speed_limit</codeph>, the
-              amount of time, in minutes, to wait before aborting a download from an S3 bucket. The
-              default is 1 minute. A value of 0 specifies no time limit.</pd>
-                </plentry>
-              </parml>
-              <note>You must ensure that there is sufficient memory on the Greenplum Database segment
-                hosts when the <codeph>s3</codeph> protocol to accesses the files. Greenplum Database
-                allocates <codeph>connections * chunksize</codeph> memory on each segment host when
-                accessing S3 files.</note>
-            </sectiondiv></section>
-      <section id="section6">
+    <section id="section10">
+      <title>s3 Protocol Configuration</title>
+      <p>The <codeph>s3</codeph> protocol is used with a URI to specify the location of files in an
+        Amazon Simple Storage Service (Amazon S3) bucket. The protocol creates or downloads all
+        files specified by the <codeph>LOCATION</codeph> clause. Each Greenplum Database segment
+        instance downloads or uploads one file at a time using several threads. See <xref
+          href="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr"/>. </p>
+    </section>
+    <section conref="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr/s3_prereq"/>
+    <section conref="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr/section_tsq_n3t_3x"/>
+    <section conref="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr/section_stk_c2r_kx"/>
+    <section conref="../../admin_guide/load/topics/g-s3-protocol.xml#amazon-emr/s3_config_file"/>
+    <section id="section6">
       <title>Compatibility</title>
       <p><codeph>CREATE EXTERNAL TABLE</codeph> is a Greenplum Database extension. The SQL standard
         makes no provisions for external tables.</p>

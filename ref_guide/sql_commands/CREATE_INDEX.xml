@@ -175,7 +175,7 @@
                         <p><codeph>UNIQUE</codeph> indexes are allowed only if the index columns are
                                 the same as (or a superset of) the Greenplum distribution key
                                 columns.</p>
-                        <p><codeph>UNIQUE</codeph> indexes are not allowed on append-only
+                        <p><codeph>UNIQUE</codeph> indexes are not allowed on append-optimized
                                 tables.</p>
                         <p>A <codeph>UNIQUE</codeph> index can be created on a partitioned table.
                                 However, uniqueness is enforced only within a partition; uniqueness

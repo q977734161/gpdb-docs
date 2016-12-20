@@ -326,8 +326,9 @@
             <stentry>
               <p>
                 <xref href="#optimizer" type="section">optimizer</xref>
-		</p><xref href="#optimizer_array_expansion_threshold" type="section"
-		                >optimizer_array_expansion_threshold</xref>
+              </p>
+              <p><xref href="#optimizer_array_expansion_threshold" type="section"
+                  >optimizer_array_expansion_threshold</xref></p>
               <p>
                 <xref href="#optimizer_analyze_root_partition" type="section"
                   >optimizer_analyze_root_partition</xref>
@@ -1107,7 +1108,6 @@
               <p>
                 <xref href="#resource_select_only" type="section">resource_select_only</xref>
               </p>
-                            <p><xref href="#resource_usecost" type="section">resource_usecost</xref></p>
               <p>
                 <xref href="#runaway_detector_activation_percent" type="section"
                   >runaway_detector_activation_percent</xref>
@@ -1198,7 +1198,7 @@
                     >gp_appendonly_compaction</xref>
                 </p>
                 <p>
-                  <xref href="#gp_appendonly_compaction_threshhold"/></p>
+                  <xref href="#gp_appendonly_compaction_threshold"/></p>
                                 <p otherprops="gpdb"><xref href="#validate_previous_free_tid"/>  
                 </p>
               </stentry>
@@ -1269,7 +1269,7 @@
       </body>
     </topic>
     <topic id="topic49" xml:lang="en">
-      <title id="kh182770">Greenplum Array Configuration Parameters</title>
+      <title id="kh182770">Greenplum Database Array Configuration Parameters</title>
       <body>
         <p>The parameters in this topic control the configuration of the Greenplum Database array
           and its components: segments, master, distributed transaction manager, master mirror, and
@@ -1296,34 +1296,25 @@
               </stentry>
               <stentry>
                 <p>
-                  <xref href="#gp_interconnect_snd_queue_depth" type="section"
-                    >gp_interconnect_snd_queue_depth</xref>
+                  <xref href="#gp_interconnect_setup_timeout" type="section"
+                    >gp_interconnect_setup_timeout</xref>
                 </p>
                 <p>
-                   <xref href="#gp_max_packet_size" type="section">gp_max_packet_size</xref>
+                  <xref href="#gp_interconnect_snd_queue_depth" type="section">gp_interconnect_snd_queue_depth</xref>
                 </p>
                 <p>
                   <xref href="#gp_interconnect_type" type="section">gp_interconnect_type</xref>
                 </p>
-                              </stentry>
-                          </strow>
-                      </simpletable>
-                    <p>This configuration parameter is deprecated and not used in Greenplum Database 4.3.9.0
-                        and later releases.</p>
-                    <simpletable frame="none" id="simpletable_a4p_gks_wv">
-                        <strow>
-                            <stentry>                
                 <p>
-                                    <xref href="#gp_interconnect_setup_timeout" type="section"
-                                        >gp_interconnect_setup_timeout</xref>
+                  <xref href="#gp_max_packet_size" type="section">gp_max_packet_size</xref>
                 </p>
               </stentry>
-                        <stentry/>
             </strow>
           </simpletable>
-                    <note>For Greenplum Database 4.3.9.0 and later, the interconnect types TCP and UDP have
-                        been removed. Only the UDPIFC interconnect type is supported by Greenplum Database. See
-                          <xref href="#gp_interconnect_type" format="dita"/>.</note>
+                    <note>The Greenplum Database interconnect types TCP and UDP are deprecated. In the next
+                        major release, only the UDPIFC interconnect type will be supported by Greenplum
+                        Database. The server configuration parameter <xref href="#gp_interconnect_type"
+                          type="section">gp_interconnect_type</xref> controls the interconnect type.</note>
         </body>
       </topic>
       <topic id="topic51" xml:lang="en">
@@ -1665,7 +1656,7 @@
                 <xref href="#gp_appendonly_compaction"/>
               </li>
               <li>
-                <xref href="#gp_appendonly_compaction_threshhold"/>
+                <xref href="#gp_appendonly_compaction_threshold"/>
               </li>
               <li>
                 <xref href="#gp_autostats_mode"/>
@@ -2118,6 +2109,8 @@
               <li>
                 <xref href="#optimizer" type="section">optimizer</xref>
               </li>
+                            <li><xref href="#optimizer_array_expansion_threshold" type="section"
+                                  >optimizer_array_expansion_threshold</xref></li>
               <li>
                 <xref href="#optimizer_analyze_root_partition" type="section"
                   >optimizer_analyze_root_partition</xref>
@@ -2180,9 +2173,6 @@
               <li>
                 <xref href="#resource_select_only"/>
               </li>
-                            <li>
-                                <xref href="#resource_usecost"/>
-                              </li>
               <li>
                 <xref href="#runaway_detector_activation_percent"/>
               </li>
@@ -5600,14 +5590,12 @@
     <topic id="gp_interconnect_hash_multiplier">
       <title>gp_interconnect_hash_multiplier</title>
       <body>
-                <p>Sets the size of the hash table used by the UDP and UDPIFC interconnect to track
-                    connections. This number is multiplied by the number of segments to determine the number
-                    of buckets in the hash table. Increasing the value may increase interconnect performance
-                    for complex multi-slice queries (while consuming slightly more memory on the segment
-                    hosts).</p>
-                <note>For Greenplum Database 4.3.9.0 and later, the interconnect types TCP and UDP have been
-                    removed. Only the UDPIFC interconnect type is supported by Greenplum Database. See <xref
-                        href="#gp_interconnect_type" format="dita"/>.</note>
+        <p>Sets the size of the hash table that Greenplum Database uses to track interconnect
+          connections when <xref href="#gp_interconnect_type" format="dita"/> is
+            <codeph>UDP</codeph> or <codeph>UDPIFC</codeph>. This number is multiplied by the number
+          of segments to determine the number of buckets in the hash table. Increasing the value may
+          increase interconnect performance for complex multi-slice queries (while consuming
+          slightly more memory on the segment hosts).</p>
             <table id="gp_interconnect_hash_multiplier_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -5634,16 +5622,14 @@
     <topic id="gp_interconnect_queue_depth">
       <title>gp_interconnect_queue_depth</title>
       <body>
-                <p>Sets the amount of data per-peer to be queued by the UDP and UDPIFC interconnect on
-                    receivers (when data is received but no space is available to receive it the data will be
-                    dropped, and the transmitter will need to resend it). Increasing the depth from its
-                    default value will cause the system to use more memory; but may increase performance. It
-                    is reasonable for this to be set between 1 and 10. Queries with data skew potentially
-                    perform better when this is increased. Increasing this may radically increase the amount
-                    of memory used by the system.</p>
-                <note>For Greenplum Database 4.3.9.0 and later, the interconnect types TCP and UDP have been
-                    removed. Only the UDPIFC interconnect type is supported by Greenplum Database. See <xref
-                        href="#gp_interconnect_type" format="dita"/>.</note>
+        <p>When <xref href="#gp_interconnect_type" format="dita"/> is <codeph>UDP</codeph> or
+            <codeph>UDPIFC</codeph>, sets the amount of data per-peer to be queued by the Greenplum
+          Database interconnect on receivers (when data is received but no space is available to
+          receive it the data will be dropped, and the transmitter will need to resend it).
+          Increasing the depth from its default value will cause the system to use more memory; but
+          may increase performance. It is reasonable for this to be set between 1 and 10. Queries
+          with data skew potentially perform better when this is increased. Increasing this may
+          radically increase the amount of memory used by the system.</p>
             <table id="gp_interconnect_queue_depth_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -5670,14 +5656,8 @@
     <topic id="gp_interconnect_setup_timeout">
       <title>gp_interconnect_setup_timeout</title>
       <body>
-        <p>When the interconnect type is UDP, the time to wait for the Interconnect to complete
-          setup before it times out.</p>
-        <p>This parameter is used only when <xref href="#gp_interconnect_type" format="dita"/> is
-          set to UDP.</p>
-                <note>This parameter is deprecated and not used in Greenplum Database 4.3.9.0 and later
-                    releases. Only the UDPIFC network protocol is supported. See <xref
-                        href="#gp_interconnect_type" format="dita">gp_interconnect_type</xref>. <p>This
-                        parameter will be removed in a future Greenplum Database release.</p></note>
+        <p>When the <xref href="#gp_interconnect_type" format="dita"/> is <codeph>UDP</codeph>, the
+          time to wait for the Interconnect to complete setup before it times out.</p>
             <table id="gp_interconnect_setup_timeout_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -5704,12 +5684,13 @@
     <topic id="gp_interconnect_snd_queue_depth">
       <title>gp_interconnect_snd_queue_depth</title>
       <body>
-        <p>Sets the amount of data per-peer to be queued by the updifc interconnect on senders.
+        <p>Sets the amount of data per-peer to be queued by the UDP interconnect on senders when
+            <xref href="#gp_interconnect_type" format="dita"/> is set to <codeph>UDPIFC</codeph>.
           Increasing the depth from its default value will cause the system to use more memory; but
           may increase performance. Reasonable values for this parameter are between 1 and 4.
-                    Increasing the value might radically increase the amount of memory used by the system. For
-                    information about interconnect types, see <xref href="#gp_interconnect_type" format="dita"
-                        >gp_interconnect_type</xref>.</p>
+          Increasing the value might radically increase the amount of memory used by the system. For
+          information about interconnect types, see <xref href="#gp_interconnect_type" format="dita"
+            >gp_interconnect_type</xref>.</p>
             <table id="gp_interconnect_snd_queue_depth_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -5736,22 +5717,19 @@
     <topic id="gp_interconnect_type">
       <title>gp_interconnect_type</title>
       <body>
-                <p>This parameter is deprecated in Greenplum Database 4.3.9.0. The parameter will be removed
-                    in a future release.</p>
-                <p>Sets the networking protocol used for Greenplum Database interconnect traffic. With the
-                    TCP protocol, Greenplum Database has an upper limit of 1000 segment instances - less than
-                    that if the query workload involves complex, multi-slice queries.</p>
-                <p>The UDP protocol allows for greater interconnect scalability. Note that the Greenplum
-                    Database software does the additional packet verification and checking not performed by
-                    UDP, so reliability and performance is equivalent to TCP.</p>
+        <p>This parameter is deprecated in Greenplum Database 4.3.9.0. The parameter will be removed in a future release.</p>
+        <p>Sets the networking protocol used for Greenplum Database interconnect traffic. With the
+          TCP protocol, Greenplum Database has an upper limit of 1000 segment instances - less than
+          that if the query workload involves complex, multi-slice queries.</p>
+        <p>The UDP protocol allows for greater interconnect scalability. Note that the Greenplum
+          Database software does the additional packet verification and checking not performed by
+          UDP, so reliability and performance is equivalent to TCP.</p>
         <p>UDPIFC specifies using UDP with flow control for interconnect traffic. Specify the
           interconnect flow control method with <xref href="#gp_interconnect_fc_method"
             format="dita"/>.</p>
-                <note type="important">The Greenplum Database interconnect types TCP and UDP have been
-                    removed in Greenplum Database 4.3.9.0 and later releases. Only the UDPIFC interconnect
-                    type is supported. If the value <codeph>TCP</codeph> or <codeph>UDP</codeph> is specified,
-                    Greenplum Database returns an error and uses the UDPIFC interconnect. </note>
-                <table id="table_jn5_frn_xv">
+        <note>The Greenplum Database interconnect types TCP and UDP are deprecated. In the next
+          major release, only the UDPIFC interconnect type will be supported by Greenplum Database. </note>
+        <table id="table_jn5_frn_xv">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
             <colspec colnum="2" colname="col2" colwidth="1*"/>
@@ -5765,15 +5743,13 @@
             </thead>
             <tbody>
               <row>
-                <entry colname="col1">TCP *<p>UDP *</p><p>UDPIFC</p></entry>
+                <entry colname="col1">TCP<p>UDP</p><p>UDPIFC</p></entry>
                 <entry colname="col2">UDPIFC</entry>
                 <entry colname="col3">local<p>system</p><p>restart</p></entry>
               </row>
             </tbody>
           </tgroup>
         </table>
-                <note><b>*</b> The values <codeph>TCP</codeph> and <codeph>UDP</codeph> are not valid in
-                    Greenplum Database 4.3.9.0 and later releases. </note>
       </body>
     </topic>
     <topic id="gp_log_format">
@@ -5920,11 +5896,12 @@
       <title>gp_max_packet_size</title>
       <body>
         <p>Sets the size (in bytes) of messages sent by the UDP interconnect, and sets the
-                    tuple-serialization chunk size for UDP, UDPIFC and TCP interconnect.</p>
-                <note type="important">In Greenplum Database 4.3.9.0 and later releases, the Greenplum
-                    Database interconnect types TCP and UDP have been removed. Only the UDPIFC interconnect
-                    type is supported. See <xref href="#gp_interconnect_type" type="section"
-                        >gp_interconnect_type</xref>.</note>
+          tuple-serialization chunk size when <xref href="#gp_interconnect_type" format="dita"/> is
+                      <codeph>tcp</codeph>, <codeph>UDP</codeph> or <codeph>UDPIFC</codeph>.</p>
+                <note>The Greenplum Database interconnect types TCP and UDP are deprecated. In the next
+                    major release, only the UDPIFC interconnect type will be supported by Greenplum Database.
+                    The server configuration parameter <xref href="#gp_interconnect_type" type="section"
+                        >gp_interconnect_type</xref> controls the interconnect type.</note>
             <table id="gp_max_packet_size_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -8393,6 +8370,50 @@
         </table>
       </body>
     </topic>
+        <topic id="optimizer_array_expansion_threshold">
+            <title>optimizer_array_expansion_threshold</title>
+            <body>
+                <p>When the Pivotal Query Optimizer (PQO) is enabled and is processing a query that contains
+                    a predicate with a constant array, the
+                      <codeph>optimizer_array_expansion_threshold</codeph> parameter limits the optimization
+                    process based on the number of constants in the array. If the array in the query predicate
+                    contains more than the number elements specified by parameter, PQO disables the
+                    transformation of the predicate into its disjunctive normal form during query
+                    optimization. </p>
+                <p>The default value is 25. </p>
+                <p>For example, when PQO is executing a query that contains an <codeph>IN</codeph> clause
+                    with more than 25 elements, PQO does not transform the predicate into its disjunctive
+                    normal form during query optimization to reduce optimization time consume less memory. The
+                    difference in query processing can be seen in the filter condition for the
+                      <codeph>IN</codeph> clause of the query <codeph>EXPLAIN</codeph> plan.</p>
+                <p>Changing the value of this parameter changes the trade-off between a shorter optimization
+                    time and lower memory consumption, and the potential benefits from constraint derivation
+                    during query optimization, for example conflict detection and partition elimination.</p>
+                <p>The parameter can be set for a database system, an individual database, or a session or
+                    query.</p>
+                <table id="table_b4p_3rh_hw">
+                    <tgroup cols="3">
+                        <colspec colnum="1" colname="col1" colwidth="1*"/>
+                        <colspec colnum="2" colname="col2" colwidth="1*"/>
+                        <colspec colnum="3" colname="col3" colwidth="1*"/>
+                        <thead>
+                            <row>
+                                <entry colname="col1">Value Range</entry>
+                                <entry colname="col2">Default</entry>
+                                <entry colname="col3">Set Classifications</entry>
+                              </row>
+                          </thead>
+                        <tbody>
+                            <row>
+                                <entry colname="col1">Integer > 0</entry>
+                                <entry colname="col2">25</entry>
+                                <entry colname="col3">master<p>session</p><p>reload</p></entry>
+                              </row>
+                          </tbody>
+                      </tgroup>
+                  </table>
+              </body>
+          </topic>
     <topic id="optimizer_control">
       <title>optimizer_control</title>
       <body>
@@ -9011,9 +9032,11 @@ $ gpconfig -c pgcrypto.fips -v on --masteronly</codeblock></p>
     <topic id="resource_select_only">
       <title>resource_select_only</title>
       <body>
-        <p>Sets the types of queries managed by resource queues. If set to on, then SELECT, SELECT
-          INTO, CREATE TABLE AS SELECT, and DECLARE CURSOR commands are evaluated. If set to off
-          INSERT, UPDATE, and DELETE commands will be evaluated as well.</p>
+                <p>Sets the types of queries managed by resource queues. If set to on, then
+                      <codeph>SELECT</codeph>, <codeph>SELECT INTO</codeph>, <codeph>CREATE TABLE AS
+                        SELECT</codeph>, and <codeph>DECLARE CURSOR</codeph> commands are evaluated. If set to
+                    off <codeph>INSERT</codeph>, <codeph>UPDATE</codeph>, and <codeph>DELETE</codeph> commands
+                    will be evaluated as well.</p>
         <table id="resource_select_only_table">
           <tgroup cols="3">
             <colspec colnum="1" colname="col1" colwidth="1*"/>
@@ -9037,40 +9060,6 @@ $ gpconfig -c pgcrypto.fips -v on --masteronly</codeblock></p>
         </table>
       </body>
     </topic>
-        <topic id="resource_usecost">
-            <title>resource_usecost</title>
-            <body>
-                <p>Specifies whether Greenplum Database ignores the query plan cost threshold
-                      <codeph>MAX_COST</codeph> or <codeph>MIN_COST</codeph> if the threshold is specified a
-                    Greenplum Database resource queue definition. The default is <codeph>on</codeph> to use
-                    the query plan cost threshold.</p>
-                <note>For resource queues, the query plan cost thresholds <codeph>MAX_COST</codeph> and
-                      <codeph>MIN_COST</codeph> are deprecated and will be removed in a future release. </note>
-                <p>For information about resource queues, see "Workload Management with Resource Queues" in
-                    the <cite>Greenplum Database Administrator Guide</cite>. </p>
-                <table id="table_f4q_cb3_yv">
-                    <tgroup cols="3">
-                        <colspec colnum="1" colname="col1" colwidth="1*"/>
-                        <colspec colnum="2" colname="col2" colwidth="1*"/>
-                        <colspec colnum="3" colname="col3" colwidth="1*"/>
-                        <thead>
-                            <row>
-                                <entry colname="col1">Value Range</entry>
-                                <entry colname="col2">Default</entry>
-                                <entry colname="col3">Set Classifications</entry>
-                              </row>
-                          </thead>
-                        <tbody>
-                            <row>
-                                <entry colname="col1">Boolean</entry>
-                                <entry colname="col2">on</entry>
-                                <entry colname="col3">master<p>session</p><p>reload</p></entry>
-                              </row>
-                          </tbody>
-                      </tgroup>
-                  </table>
-              </body>
-          </topic>
     <topic id="runaway_detector_activation_percent">
       <title>runaway_detector_activation_percent</title>
       <body>

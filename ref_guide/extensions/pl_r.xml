@@ -146,24 +146,25 @@
       </topic>
     </topic>
     <topic id="topic_om3_kbr_lp">
-      <title>Migrating from PL/R from R 2.12.0 to R 3.1.0</title>
+      <title>Migrating the PL/R Extension to use R Language Version 3.3.1</title>
       <body>
-        <p>The PL/R extension package for Greenplum Database 4.3.3.0 and later supports R 3.1.0. </p>
-        <p>To migrate Greenplum Database PL/R extension to the PL/R extension that supports R 3.1.0,
-          uninstall the old PL/R extension package and install the
-          extension package that supports R 3.1.0. </p>
+        <p>The PL/R extension package for Greenplum Database 4.3.9.0 and later supports R language
+          version 3.3.1. </p>
+        <p>To migrate the Greenplum Database PL/R extension to the PL/R extension that supports R
+          3.3.1, Pivotal recommends uninstalling the old PL/R extension package and installing the
+          extension package that supports R 3.3.1. </p>
         <p>See <xref href="#topic8" format="dita"/> and <xref href="#topic4" format="dita"/> for
           information about uninstalling and installing the PL/R extension package.</p>
-        <p>After installing PL/R extension package that supports R 3.1.0, you must re-install R
+        <p>After installing PL/R extension package that supports R 3.3.1, you must re-install R
           packages. </p>
-        <p>This page on the R web site, describes the changes to R: </p>
+        <p>This page on the R web site (or the <codeph>NEWS</codeph> file in the R 3.3.1 release
+          download), describes the changes to R: </p>
         <p>
-          <xref
-            href="http://cran.r-project.org/src/base/NEWS.html"
-            format="html" scope="external">http://cran.r-project.org/src/base/NEWS.html</xref>
+          <xref href="https://cran.r-project.org/doc/manuals/r-release/NEWS.html" format="html"
+            scope="external">https://cran.r-project.org/doc/manuals/r-release/NEWS.html</xref>
         </p>
-        <p>See the information in section <cite>CHANGES IN R 3.1.0</cite> and earlier sections for
-          information about changes in R3.1.0 and earlier.</p>
+        <p>See the information in section <cite>CHANGES IN R 3.3.1</cite> and earlier sections for
+          information about changes in R3.3.1 and earlier.</p>
       </body>
     </topic>
     <topic id="topic9" xml:lang="en">
