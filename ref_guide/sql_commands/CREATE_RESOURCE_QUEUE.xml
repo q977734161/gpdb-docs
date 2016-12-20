@@ -57,7 +57,8 @@
       <p>Resource queues with an optional <codeph>MEMORY_LIMIT</codeph> threshold set a maximum
         limit on the amount of memory that all queries submitted through a resource queue can
         consume on a segment host. This determines the total amount of memory that all worker
-        processes of a query can consume on a segment host during query execution. Use <codeph>MEMORY_LIMIT</codeph> in conjunction with
+        processes of a query can consume on a segment host during query execution. Greenplum
+        recommends that <codeph>MEMORY_LIMIT</codeph> be used in conjunction with
           <codeph>ACTIVE_STATEMENTS</codeph> rather than with <codeph>MAX_COST</codeph>. The default
         amount of memory allotted per query on statement-based queues is: <codeph>MEMORY_LIMIT /
           ACTIVE_STATEMENTS</codeph>. The default amount of memory allotted per query on cost-based
@@ -75,8 +76,8 @@
         execution if the segment host memory limit specified in
           <codeph>gp_vmem_protect_limit</codeph> is exceeded.</p>
       <p>For information about <codeph>statement_mem</codeph>, <codeph>max_statement</codeph>, and
-          <codeph>gp_vmem_protect_limit</codeph>, see <xref href="../config_params/guc_config.xml" type="topic"
-          format="dita"/>.</p>
+          <codeph>gp_vmem_protect_limit</codeph>, see <xref href="../config_params/guc_config.xml"
+          type="topic" format="dita"/>.</p>
     </section>
     <section id="section4">
       <title>Parameters</title>
@@ -104,15 +105,15 @@
         </plentry>
         <plentry>
           <pt>MAX_COST <varname>float</varname></pt>
-                    <pd>Resource queues with a <codeph>MAX_COST</codeph> threshold set a maximum
-            limit on the total cost of queries that can be executed by roles assigned to that queue.
-            Cost is measured in the <i>estimated total cost</i> for the query as determined by the
-            Greenplum Database query optimizer (as shown in the <codeph>EXPLAIN</codeph> output for
-            a query). Therefore, an administrator must be familiar with the queries typically
-            executed on the system in order to set an appropriate cost threshold for a queue. Cost
-            is measured in units of disk page fetches; 1.0 equals one sequential disk page read. The
-            value for <codeph>MAX_COST</codeph> is specified as a floating point number (for example
-            100.0) or can also be specified as an exponent (for example 1e+2).</pd>
+          <pd>Resource queues with a <codeph>MAX_COST</codeph> threshold set a maximum limit on the
+            total cost of queries that can be executed by roles assigned to that queue. Cost is
+            measured in the <i>estimated total cost</i> for the query as determined by the Greenplum
+            Database query optimizer (as shown in the <codeph>EXPLAIN</codeph> output for a query).
+            Therefore, an administrator must be familiar with the queries typically executed on the
+            system in order to set an appropriate cost threshold for a queue. Cost is measured in
+            units of disk page fetches; 1.0 equals one sequential disk page read. The value for
+              <codeph>MAX_COST</codeph> is specified as a floating point number (for example 100.0)
+            or can also be specified as an exponent (for example 1e+2).</pd>
         </plentry>
         <plentry>
           <pt>COST_OVERCOMMIT <varname>boolean</varname></pt>
@@ -124,9 +125,9 @@
         </plentry>
         <plentry>
           <pt>MIN_COST <varname>float</varname></pt>
-                    <pd>The minimum query cost limit of what is considered a small query. Queries
-            with a cost under this limit will not be queued and run immediately. Cost is measured in
-            the <i>estimated total cost</i> for the query as determined by the Greenplum Database
+          <pd>The minimum query cost limit of what is considered a small query. Queries with a cost
+            under this limit will not be queued and run immediately. Cost is measured in the
+              <i>estimated total cost</i> for the query as determined by the Greenplum Database
             query planner (as shown in the <codeph>EXPLAIN</codeph> output for a query). Therefore,
             an administrator must be familiar with the queries typically executed on the system in
             order to set an appropriate cost for what is considered a small query. Cost is measured
@@ -144,33 +145,38 @@
         </plentry>
       </parml>
     </section>
-        <section id="section5"><title>Notes</title><p>Use the
+    <section id="section5"><title>Notes</title><p>Use the
           <codeph>gp_toolkit.gp_resqueue_status</codeph> system view to see the limit settings and
         current status of a resource
-        queue:</p><codeblock>SELECT * from gp_toolkit.gp_resqueue_status WHERE rsqname='queue_name';</codeblock><p>There
+        queue:</p><codeblock>SELECT * from gp_toolkit.gp_resqueue_status WHERE 
+  rsqname='queue_name';</codeblock><p>There
         is also another system view named <codeph>pg_stat_resqueues</codeph> which shows statistical
         metrics for a resource queue over time. To use this view, however, you must enable the
           <codeph>stats_queue_level</codeph> server configuration parameter. See "Managing Workload
         and Resources" in the <i>Greenplum Database Administrator Guide</i> for more information
         about using resource queues.</p><p><codeph>CREATE RESOURCE QUEUE</codeph> cannot be run
-        within a transaction.</p>Also, a SQL statement that is run during the execution of an
-        <codeph>EXPLAIN ANALYZE</codeph> command is excluded from resource queues. </section>
+        within a transaction.</p>Also, an SQL statement that is run during the execution of an
+        <codeph>EXPLAIN ANALYZE</codeph> command is excluded from resource queues.</section>
     <section id="section6">
       <title>Examples</title>
       <p>Create a resource queue with an active query limit of 20: </p>
       <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=20);</codeblock>
       <p>Create a resource queue with an active query limit of 20 and a total memory limit of 2000MB
         (each query will be allocated 100MB of segment host memory at execution time): </p>
-      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=20, MEMORY_LIMIT='2000MB');</codeblock>
+      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=20, 
+  MEMORY_LIMIT='2000MB');</codeblock>
       <p>Create a resource queue with a query cost limit of 3000.0: </p>
       <codeblock>CREATE RESOURCE QUEUE myqueue WITH (MAX_COST=3000.0);</codeblock>
       <p>Create a resource queue with a query cost limit of 3<sup>10</sup> (or 30000000000.0) and do
         not allow overcommit. Allow small queries with a cost under 500 to run immediately:</p>
-      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (MAX_COST=3e+10, COST_OVERCOMMIT=FALSE, MIN_COST=500.0);</codeblock>
+      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (MAX_COST=3e+10, 
+  COST_OVERCOMMIT=FALSE, MIN_COST=500.0);</codeblock>
       <p>Create a resource queue with both an active query limit and a query cost limit:</p>
-      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=30, MAX_COST=5000.00);</codeblock>
+      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=30, 
+  MAX_COST=5000.00);</codeblock>
       <p>Create a resource queue with an active query limit of 5 and a maximum priority setting: </p>
-      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=5, PRIORITY=MAX);</codeblock>
+      <codeblock>CREATE RESOURCE QUEUE myqueue WITH (ACTIVE_STATEMENTS=5, 
+  PRIORITY=MAX);</codeblock>
     </section>
     <section id="section7">
       <title>Compatibility</title>

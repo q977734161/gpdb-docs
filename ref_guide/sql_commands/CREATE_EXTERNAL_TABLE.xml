@@ -166,7 +166,7 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
           href="#topic1/section9" format="dita"/>.</p>
       <p>Before you can create an external table that writes to or reads from an Amazon Web Services
         (AWS) S3 bucket, you must configure Greenplum Database to support the protocol. S3 external
-        tables can use either CSV or text-formatted files. Writeable S3 external tables support only
+        tables can use either CSV or text-formatted files. Writable S3 external tables support only
         the <codeph>INSERT</codeph> operation. See <xref href="#topic1/section10" format="dita"
         />.</p>
     </section>
@@ -282,7 +282,7 @@ CREATE WRITABLE EXTERNAL WEB TABLE <varname>table_name</varname>
             configure Greenplum Database. For information about configuring Greenplum Database, see
               <xref href="#topic1/section10" format="dita"/>.</pd>
           <pd>
-            <p>For writeable S3 tables, the <codeph>s3</codeph> protocol URL specifies the endpoint
+            <p>For writable S3 tables, the <codeph>s3</codeph> protocol URL specifies the endpoint
               and bucket name where data files are uploaded for the table, as well as an optional S3
               file prefix to use when creating new files for data inserted to the table. If you
               specify an <varname>S3_prefix</varname> for read-only s3 tables, the
@@ -724,7 +724,7 @@ customer_id=123;</codeblock>
         parameters specify <codeph>deflate</codeph> compression and are
           equivalent:</p><codeblock> 'compress=true&amp;codec=deflate&amp;codec_level=1'
  'compress=true&amp;codec_level=1'</codeblock><p><b>gphdfs
-          Limitations for Avro Files</b></p><p>For a Greenplum Database writeable external table
+          Limitations for Avro Files</b></p><p>For a Greenplum Database writable external table
         definition, columns cannot specify the <codeph>NOT NULL</codeph> clause.</p><p>Greenplum
         Database supports only a single top-level schema in Avro files or specified with the
           <codeph>schema</codeph> parameter in the <codeph>CREATE EXTERNAL TABLE</codeph> command.
