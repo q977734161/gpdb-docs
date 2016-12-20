@@ -53,10 +53,9 @@
     <topic id="topic3" xml:lang="en">
       <title>Transaction ID Management</title>
       <body>
-        <p><keyword keyref="product_name_short"/>'s MVCC transaction semantics depend on comparing
+        <p>The Greenplum Database MVCC transaction semantics depend on comparing
           transaction ID (XID) numbers to determine visibility to other transactions. Transaction ID
-          numbers are compared using modulo 2<sup>32</sup> arithmetic, so a <keyword
-            keyref="product_name_short"/> system that runs more than about two billion transactions
+          numbers are compared using modulo 2<sup>32</sup> arithmetic, so a Greenplum Database system that runs more than about two billion transactions
           can experience transaction ID wraparound, where past transactions appear to be in the
           future. This means past transactions' outputs become invisible. Therefore, it is necessary
           to <codeph>VACUUM</codeph> every table in every database at least once per two billion
