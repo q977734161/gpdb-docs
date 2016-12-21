@@ -82,7 +82,7 @@
             message occurs). Should not be used otherwise as it increases resource allocation. Valid
             range is 32K to 256MB. (The upper limit is 1MB on Windows systems.)<note>Memory issues
               might occur if you specify a large maximum row length and run a large number of
-                <codeph>gpfidst</codeph> concurrent connections. For example, setting this value to
+                <codeph>gpfdist</codeph> concurrent connections. For example, setting this value to
               the maximum of 1MB with 96 concurrent <codeph>gpfdist</codeph> processes requires
               approximately 97GB of memory (<codeph>(96 + 1) x 1MB</codeph>).</note></pd>
         </plentry>
