@@ -356,7 +356,7 @@ gp_email_to='test_account@example.com'
       <topic id="topic16" xml:lang="en">
         <title>Checking Sizing of Distributed Databases and Tables</title>
         <body>
-          <p>The <codeph><keyword keyref="toolkit_prefix"/>toolkit</codeph> administrative schema
+          <p>The <codeph>gp_toolkit</codeph> administrative schema
             contains several views that you can use to determine the disk space usage for a
             distributed Greenplum database, schema, table, or index. </p>
           <p>For a list of the available sizing views for checking database object sizes and disk
@@ -365,11 +365,9 @@ gp_email_to='test_account@example.com'
         <topic id="topic17" xml:lang="en">
           <title id="kj155338">Viewing Disk Space Usage for a Database </title>
           <body>
-            <p>To see the total size of a database (in bytes), use the <i><keyword
-                  keyref="toolkit_prefix"/>size_of_database</i> view in the <i><keyword
-                  keyref="toolkit_prefix"/>toolkit</i> administrative schema. For example: </p>
+            <p>To see the total size of a database (in bytes), use the <i>gp_size_of_database</i> view in the <i>gp_toolkit</i> administrative schema. For example: </p>
             <p>
-              <codeblock>=&gt; SELECT * FROM <keyword keyref="toolkit_prefix"/>toolkit.<keyword keyref="toolkit_prefix"/>size_of_database
+              <codeblock>=&gt; SELECT * FROM gp_toolkit.gp_size_of_database
    ORDER BY soddatname;
 </codeblock>
             </p>
@@ -378,7 +376,7 @@ gp_email_to='test_account@example.com'
         <topic id="topic18" xml:lang="en">
           <title id="kj155347">Viewing Disk Space Usage for a Table </title>
           <body>
-            <p>The <i><keyword keyref="toolkit_prefix"/>toolkit</i> administrative schema contains
+            <p>The <i>gp_toolkit</i> administrative schema contains
               several views for checking the size of a table. The table sizing views list the table
               by object ID (not by name). To check the size of a table by name, you must look up the
               relation name (<codeph>relname</codeph>) in the <i>pg_class</i> table. For
@@ -386,7 +384,7 @@ gp_email_to='test_account@example.com'
             <p>
               <codeblock>=&gt; SELECT relname AS name, sotdsize AS size, sotdtoastsize
    AS toast, sotdadditionalsize AS other
-   FROM <keyword keyref="toolkit_prefix"/>size_of_table_disk as sotd, pg_class
+   FROM gp_size_of_table_disk as sotd, pg_class
    WHERE sotd.sotdoid=pg_class.oid ORDER BY relname;
 </codeblock>
             </p>
@@ -397,18 +395,17 @@ gp_email_to='test_account@example.com'
         <topic id="topic19" xml:lang="en">
           <title id="kj176079">Viewing Disk Space Usage for Indexes </title>
           <body>
-            <p>The <i><keyword keyref="toolkit_prefix"/>toolkit</i> administrative schema contains a
+            <p>The <i>gp_toolkit</i> administrative schema contains a
               number of views for checking index sizes. To see the total size of all index(es) on a
-              table, use the <i><keyword keyref="toolkit_prefix"/>size_of_all_table_indexes</i>
-              view. To see the size of a particular index, use the <i><keyword
-                  keyref="toolkit_prefix"/>size_of_index</i> view. The index sizing views list
+              table, use the <i>gp_ize_of_all_table_indexes</i>
+              view. To see the size of a particular index, use the <i>gp_size_of_index</i> view. The index sizing views list
               tables and indexes by object ID (not by name). To check the size of an index by name,
               you must look up the relation name (<codeph>relname</codeph>) in the <i>pg_class</i>
               table. For example:</p>
             <p>
               <codeblock>=&gt; SELECT soisize, relname as indexname
-   FROM pg_class, <keyword keyref="toolkit_prefix"/>size_of_index
-   WHERE pg_class.oid=<keyword keyref="toolkit_prefix"/>size_of_index.soioid
+   FROM pg_class, gp_size_of_index
+   WHERE pg_class.oid=gp_size_of_index.soioid
    AND pg_class.relkind='i';
 </codeblock>
             </p>
@@ -733,27 +730,24 @@ Distributed by: (sale_id)
     <topic id="topic27" xml:lang="en">
       <title id="kj185498">Viewing Query Workfile Usage Information</title>
       <body>
-        <p>The Greenplum Database administrative schema <i><keyword keyref="toolkit_prefix"
-            />toolkit</i> contains views that display information about Greenplum Database
+        <p>The Greenplum Database administrative schema <i>gp_toolkit</i> contains views that display information about Greenplum Database
           workfiles. Greenplum Database creates workfiles on disk if it does not have sufficient
           memory to execute the query in memory. This information can be used for troubleshooting
           and tuning queries. The information in the views can also be used to specify the values
-          for the Greenplum Database configuration parameters <codeph><keyword
-              keyref="toolkit_prefix"/>workfile_limit_per_query</codeph> and <codeph><keyword
-              keyref="toolkit_prefix"/>workfile_limit_per_segment</codeph>. </p>
-        <p>These are the views in the schema <i><keyword keyref="toolkit_prefix"/>toolkit</i>:</p>
+          for the Greenplum Database configuration parameters <codeph>gp_workfile_limit_per_query</codeph> and <codeph>gp_workfile_limit_per_segment</codeph>. </p>
+        <p>These are the views in the schema <i>gp_toolkit</i>:</p>
         <ul>
-          <li id="kj191083">The <keyword keyref="toolkit_prefix"/>workfile_entries view contains one
+          <li id="kj191083">The gp_workfile_entries view contains one
             row for each operator using disk space for workfiles on a segment at the current
             time.</li>
-          <li id="kj191084">The <keyword keyref="toolkit_prefix"/>workfile_usage_per_query view
+          <li id="kj191084">The gp_workfile_usage_per_query view
             contains one row for each query using disk space for workfiles on a segment at the
             current time. </li>
-          <li id="kj191085">The <keyword keyref="toolkit_prefix"/>workfile_usage_per_segment view
+          <li id="kj191085">The gp_workfile_usage_per_segment view
             contains one row for each segment. Each row displays the total amount of disk space used
             for workfiles on the segment at the current time.</li>
         </ul>
-        <p>For information about using <i><keyword keyref="toolkit_prefix"/>toolkit</i>, see <xref
+        <p>For information about using <i>gp_toolkit</i>, see <xref
             href="#topic31" format="dita"/>.</p>
       </body>
     </topic>
@@ -1010,16 +1004,14 @@ Distributed by: (sale_id)
     </topic>
   </topic>
   <topic id="topic31" xml:lang="en">
-    <title id="kj168900">Using <keyword keyref="toolkit_prefix"/>toolkit</title>
+    <title id="kj168900">Using gp_toolkit</title>
     <body>
-      <p>Use Greenplum's administrative schema <i><keyword keyref="toolkit_prefix"/>toolkit</i> to
+      <p>Use Greenplum's administrative schema <i>gp_toolkit</i> to
         query the system catalogs, log files, and operating environment for system status
-        information. The <codeph><keyword keyref="toolkit_prefix"/>toolkit</codeph> schema contains
-        several views you can access using SQL commands. The <i><keyword keyref="toolkit_prefix"
-          />toolkit</i> schema is accessible to all database users. Some objects require superuser
-        permissions. Use a command similar to the following to add the <i><keyword
-            keyref="toolkit_prefix"/>toolkit</i> schema to your schema search path:</p>
-      <codeblock>=&gt; ALTER ROLE myrole SET search_path TO myschema,<keyword keyref="toolkit_prefix"/>toolkit;</codeblock>
+        information. The <codeph>gp_toolkit</codeph> schema contains
+        several views you can access using SQL commands. The <i>gp_toolkit</i> schema is accessible to all database users. Some objects require superuser
+        permissions. Use a command similar to the following to add the <i>gp_toolkit</i> schema to your schema search path:</p>
+      <codeblock>=&gt; ALTER ROLE myrole SET search_path TO myschema,gp_toolkit;</codeblock>
       <p>For a description of the available administrative schema views and their usages, see the
           <cite>Greenplum Database Reference Guide</cite>.</p>
     </body>
